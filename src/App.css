@@ -2,21 +2,98 @@
   text-align: center;
 }
 
-.App-logo {
+.App-react-logo {
   animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
+  max-height: calc(3 * (10px + 1.2vmin));
   pointer-events: none;
 }
 
-.App-header {
+.App-mui-logo {
+  margin: calc(10px + 1.2vmin);
+  max-height: calc(2 * (10px + 1.2vmin));
+  pointer-events: none;
+}
+
+.App-controls {
   background-color: #282c34;
-  min-height: 100vh;
+  min-width: 100vw;
+  min-height: calc(4 * (10px + 1.2vmin));
+  font-size: calc(10px + 1.2vmin);
+  color: white;
+  box-sizing: border-box;
+  box-shadow: 0 2px 1px 2px #282c34;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.App-controls-left {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.App-controls-left>* {
+  padding-left: calc(.5 * (10px + 1.2vmin));
+  margin-right: calc(.5 * (10px + 1.2vmin));
+}
+
+.App-controls-right {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.App-controls-right>* {
+  margin-left: calc(.5 * (10px + 1.2vmin));
+  padding-right: calc(.5 * (10px + 1.2vmin));
+}
+
+.App-controls-section {
+  display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  margin: 0 calc(.5 * (10px + 1.2vmin));
+}
+
+.volume-slider-container {
+  width: 200px;
+}
+
+.App-wrapper {
+  min-width: 100vw;
+  min-height: calc(100vh - 8 * (10px + 1.2vmin));
+}
+
+.App-container {
+  padding: calc(1.5 * (10px + 1.2vmin));
+}
+
+.freq-slider-container {
+  min-width: 200px;
+}
+
+.freq-slider-value {
+  width: 10ch;
+}
+
+.App-footer {
+  position: fixed;
+  bottom: 0;
+  background-color: #282c34;
+  min-width: 100vw;
+  min-height: calc(4 * (10px + 1.2vmin));
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 1.2vmin);
   color: white;
+  box-sizing: border-box;
+  box-shadow: 0 -2px 1px 2px #282c34;
 }
 
 .App-link {
