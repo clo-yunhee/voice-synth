@@ -4,19 +4,23 @@
 
 .App-react-logo {
   animation: App-logo-spin infinite 20s linear;
-  max-height: calc(3 * (10px + 1.2vmin));
+  height: calc(3 * (10px + 1.2vmin));
   pointer-events: none;
 }
 
 .App-mui-logo {
   margin: calc(10px + 1.2vmin);
-  max-height: calc(2 * (10px + 1.2vmin));
+  height: calc(2 * (10px + 1.2vmin));
   pointer-events: none;
 }
 
 .App-controls {
+  z-index: 20;
+  position: fixed;
+  top: 0;
   background-color: #282c34;
   min-width: 100vw;
+  max-height: 100vh;
   min-height: calc(4 * (10px + 1.2vmin));
   font-size: calc(10px + 1.2vmin);
   color: white;
@@ -65,22 +69,42 @@
 
 .App-wrapper {
   min-width: 100vw;
-  min-height: calc(100vh - 8 * (10px + 1.2vmin));
+  min-height: 100vh;
+  padding: calc(4 * (10px + 1.2vmin)) 0;
 }
 
 .App-container {
+  max-width: 100vw;
+  max-height: calc(100vh - 7 * (10px + 1.2vmin));
   padding: calc(1.5 * (10px + 1.2vmin));
 }
 
 .freq-slider-container {
-  min-width: 200px;
+  padding: 3vmin;
+  min-width: 250px;
 }
 
 .freq-slider-value {
   width: 10ch;
 }
 
+.source-container {
+  padding: 3vmin;
+  min-width: 250px;
+}
+
+.glottal-flow-container {
+  padding: 3vmin;
+  min-width: 250px;
+}
+
+.glottal-flow-svg {
+  padding: 6px;
+  border: 1px #8997b3 dashed;
+}
+
 .App-footer {
+  z-index: 20;
   position: fixed;
   bottom: 0;
   background-color: #282c34;
