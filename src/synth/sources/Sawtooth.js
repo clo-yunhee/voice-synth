@@ -2,13 +2,13 @@ import PeriodicWaveBuffer from './PeriodicWaveBuffer'
 
 class Sawtooth extends PeriodicWaveBuffer {
 
-    getDefaultParams() {
-        return {}
-    }
+  getDefaultParams() {
+    return {}
+  }
 
-    getSample(t) {
-        return 1 - t;
-    };
+  getSample(t) {
+    return 1 - t;
+  };
 
 }
 

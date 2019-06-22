@@ -38,7 +38,7 @@
   justify-content: flex-start;
 }
 
-.App-controls-left>* {
+.App-controls-left > * {
   padding-left: calc(.5 * (10px + 1.2vmin));
   margin-right: calc(.5 * (10px + 1.2vmin));
 }
@@ -50,7 +50,7 @@
   justify-content: flex-end;
 }
 
-.App-controls-right>* {
+.App-controls-right > * {
   margin-left: calc(.5 * (10px + 1.2vmin));
   padding-right: calc(.5 * (10px + 1.2vmin));
 }
@@ -88,11 +88,7 @@
   width: 10ch;
 }
 
-.source-container {
-  padding: 3vmin;
-  min-width: 250px;
-}
-
+.source-container,
 .glottal-flow-container {
   padding: 3vmin;
   min-width: 250px;
@@ -101,6 +97,30 @@
 .glottal-flow-svg {
   padding: 6px;
   border: 1px #8997b3 dashed;
+}
+
+.vt-container {
+  padding: 3vmin;
+}
+
+.formant-freq-slider-container {
+  min-width: 250px;
+}
+
+.formant-freq-value {
+  width: 10ch;
+}
+
+.formant-band-container {
+  font-size: small !important;
+}
+
+.formant-band-slider-container {
+  min-width: 75px;
+}
+
+.formant-band-value {
+  width: 11ch;
 }
 
 .App-footer {

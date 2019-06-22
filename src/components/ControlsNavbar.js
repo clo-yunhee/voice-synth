@@ -32,16 +32,15 @@ class ControlsNavbar extends React.Component {
   onPlayPause = () => {
     if (this.state.playing) {
       this.context.stop();
-      this.setState({ playing: false });
-    }
-    else {
+      this.setState({playing: false});
+    } else {
       this.context.start();
-      this.setState({ playing: true });
+      this.setState({playing: true});
     }
   };
 
   onVolume = (evt, newValue) => {
-    this.setState({ volume: newValue });
+    this.setState({volume: newValue});
     this.context.setVolume(newValue);
   };
 

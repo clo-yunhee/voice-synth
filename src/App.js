@@ -1,11 +1,10 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import './App.css';
 import VoiceSynth from './synth/VoiceSynth';
 import ControlsNavbar from './components/ControlsNavbar'
 import GlottalSource from "./components/GlottalSource";
-import GlottalSourcePlot from "./components/GlottalSourcePlot";
+import VocalTract from './components/VocalTract'
 import Footer from "./components/Footer";
 
 class App extends React.PureComponent {
@@ -18,13 +17,14 @@ class App extends React.PureComponent {
 
     ControlsNavbar.contextType = App.Context;
     GlottalSource.contextType = App.Context;
+    VocalTract.contextType = App.Context;
   }
 
   render() {
     return (
         <App.Context.Provider value={this.synth}>
           <div className="App">
-            <ControlsNavbar />
+            <ControlsNavbar/>
             <div className="App-wrapper">
               <Grid
                   container
@@ -34,20 +34,11 @@ class App extends React.PureComponent {
                   alignContent="flex-start"
                   className="App-container"
               >
-                <Grid item>
-                  <GlottalSource />
-                </Grid>
-                <Grid item>
-                  <GlottalSourcePlot />
-                </Grid>
-                <Grid item>
-                  <Paper className="vt-picker-container">
-
-                  </Paper>
-                </Grid>
+                <GlottalSource/>
+                <VocalTract/>
               </Grid>
             </div>
-            <Footer />
+            <Footer/>
           </div>
         </App.Context.Provider>
     );

@@ -7,7 +7,7 @@ class Footer extends React.PureComponent {
   render() {
     return (
         <footer className="App-footer">
-          <img src={reactLogo} className="App-react-logo" alt="React logo" />
+          <img src={reactLogo} className="App-react-logo" alt="React logo"/>
           <p>
             <span>Powered by </span>
             <a
@@ -28,7 +28,7 @@ class Footer extends React.PureComponent {
               Material-UI
             </a>
           </p>
-          <img src={muiLogo} className="App-mui-logo" alt="Material-UI logo" />
+          <img src={muiLogo} className="App-mui-logo" alt="Material-UI logo"/>
         </footer>
     )
   }
