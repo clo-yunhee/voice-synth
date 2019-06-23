@@ -1,3 +1,4 @@
+import * as math from 'mathjs'
 import Sawtooth from './sources/Sawtooth'
 import CutoffSawtooth from './sources/CutoffSawtooth'
 import RosenbergC from "./sources/RosenbergC"
@@ -148,7 +149,8 @@ class VoiceSynth {
   }
 
   _setFilters(change, i) {
-    /*for (let i = 0; i < this.vocalTractFilter.length; ++i) {
+    /*
+    for (let i = 0; i < this.vocalTractFilter.length; ++i) {
       const flt = this.vocalTractFilter[i];
       const Fi = this.formantF[i];
       const Qi = Fi / this.formantBw[i];
@@ -189,11 +191,10 @@ class VoiceSynth {
         const r = Math.exp(-Math.PI * Bw / fs);
         const phi = 2 * Math.PI * F / fs;
 
-        const re = r * Math.cos(phi);
-        const im = r * Math.sin(phi);
+        const pole = math.complex({r, phi});
 
-        this.poles[j] = {re, im};
-        this.poles[N + j] = {re, im: -im};
+        this.poles[j] = pole;
+        this.poles[N + j] = math.conj(pole);
       }
     }
 
@@ -205,23 +206,27 @@ class VoiceSynth {
 
   static _calculatePoly(z) {
     const N = z.length;
-    const Pre = new Array(N + 1);
-    const Pim = new Array(N + 1);
+    /*const P = math.zeros(N + 1);
+    P.set([0], math.complex(1));*/
 
-    Pre.fill(0);
-    Pim.fill(0);
-
-    Pre[0] = 1;
+    const P = math.identity(1, N + 1);
 
     for (let k = 0; k < N; ++k) {
       //P[1:k+1] = P[1:k+1] - z[k] * P[0:k];
 
-      const {re, im} = z[k];
+      const ind = math.index(0, math.range(0, k, true));
+      const ind1 = math.index(0, math.range(1, k + 1, true));
 
-      for (let i = k; i >= 0; --i) {
-        Pre[i + 1] -= re * Pre[i] - im * Pim[i];
-        Pim[i + 1] -= re * Pim[i] + im * Pre[i];
-      }
+      const Pz = math.multiply(z[k], P.subset(ind));
+      const PmPz = math.chain(P.subset(ind1)).subtract(Pz).done();
+
+      P.subset(ind1, PmPz);
+    }
+
+    const Pre = new Array(N + 1);
+
+    for (let k = 0; k < N + 1; ++k) {
+      Pre[k] = math.re(P.get([0, k]));
     }
 
     return Pre;

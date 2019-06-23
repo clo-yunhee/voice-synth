@@ -29,12 +29,24 @@ class PeriodicWaveBuffer {
 
     const noiseData = new Float32Array(noiseLen);
 
-    // Add noise only during glottal opening. (threshold of 0.2)
+    // Add pink noise only during glottal opening. (threshold of 0.2)
     let openFrames = 0;
+
+    let b = [0, 0, 0, 0, 0, 0, 0];
 
     for (let i = 0; i < noiseLen; ++i) {
       if (data[i % data.length] >= 0.2) {
-        noiseData[i] = Math.random() - 0.5;
+        const white = Math.random() * 2 - 1;
+        b[0] = 0.99886 * b[0] + white * 0.0555179;
+        b[1] = 0.99332 * b[1] + white * 0.0750759;
+        b[2] = 0.96900 * b[2] + white * 0.1538520;
+        b[3] = 0.86650 * b[3] + white * 0.3104856;
+        b[4] = 0.55000 * b[4] + white * 0.5329522;
+        b[5] = -0.7616 * b[5] - white * 0.0168980;
+        noiseData[i] = b[0] + b[1] + b[2] + b[3] + b[4] + b[5] + b[6] + white * 0.5362;
+        noiseData[i] *= 0.11; // (roughly) compensate for gain
+        b[6] = white * 0.115926;
+
         openFrames++;
       } else {
         noiseData[i] = 0;
@@ -42,7 +54,7 @@ class PeriodicWaveBuffer {
     }
 
     // Scale noise based on proportion of open frames.
-    const noiseAmp = (openFrames / noiseLen) * 0.06;
+    const noiseAmp = (.5 + openFrames / noiseLen) ** 1.8 * 0.1;
 
     for (let i = 0; i < noiseLen; ++i) {
       noiseData[i] *= noiseAmp;
