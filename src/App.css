@@ -145,6 +145,10 @@
   color: #61dafb;
 }
 
+.source-link-container {
+  padding: 0 3vmin;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
