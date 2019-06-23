@@ -6,6 +6,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
 import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
+import Tooltip from "@material-ui/core/Tooltip";
 import React from "react";
 
 class GlottalSource extends React.PureComponent {
@@ -14,37 +15,39 @@ class GlottalSource extends React.PureComponent {
 
   constructor(props) {
     super(props);
-    this.state = this.getInitialState();
+    this.synth = this.props.synth;
+    this.state = this.getSyncState();
   }
 
   componentDidMount() {
-    this.context.addResetListener(this.onReset);
-    this._syncSourceParams();
+    this.synth.addPresetListener(this.onPreset);
   }
 
-  getInitialState() {
+  getSyncState() {
     return {
-      H0: 170,
-      source: "KLGLOTT88"
+      H0: this.synth.frequency,
+      source: this.synth.sourceName,
+      sourceParams: {...this.synth.getSource().params},
+      sourceWave: this._getWavePath()
     };
   }
 
-  onReset = () => {
-    this.setState(this.getInitialState());
+  onPreset = () => {
+    this.setState(this.getSyncState());
   };
 
   onH0 = (evt, newValue) => {
     const newH0 = Math.pow(10, newValue);
 
     this.setState({H0: newH0});
-    this.context.setFrequency(newH0);
+    this.synth.setFrequency(newH0);
   };
 
   onSource = (evt) => {
     const newValue = evt.target.value;
 
     this.setState({source: newValue});
-    this.context.setSource(newValue);
+    this.synth.setSource(newValue);
     this._syncSourceParams();
   };
 
@@ -52,14 +55,14 @@ class GlottalSource extends React.PureComponent {
     const paramValue = evt.target.value;
 
     if (paramValue >= 0.01 && paramValue <= 0.99) {
-      this.context.setSourceParam(paramKey, paramValue);
+      this.synth.setSourceParam(paramKey, paramValue);
       this._syncSourceParams();
     }
   };
 
   _syncSourceParams = () => {
     this.setState({
-      sourceParams: {...this.context.getSource().params},
+      sourceParams: {...this.synth.getSource().params},
       sourceWave: this._getWavePath()
     });
   };
@@ -73,7 +76,7 @@ class GlottalSource extends React.PureComponent {
     const d = [`M ${xStart} ${yStart}`];
     const d2 = new Array(GlottalSource.nbPoints);
 
-    const yData = this.context.getSource().getArray(GlottalSource.nbPoints);
+    const yData = this.synth.getSource().getArray(GlottalSource.nbPoints);
 
     for (let i = 0; i < GlottalSource.nbPoints; ++i) {
       const xNext = xStart + i * xStep;
@@ -104,12 +107,14 @@ class GlottalSource extends React.PureComponent {
                       </Typography>
                     </Grid>
                     <Grid item xs>
-                      <Slider
-                          min={Math.log10(50)}
-                          max={Math.log10(500)}
-                          value={Math.log10(this.state.H0)}
-                          onChange={this.onH0}
-                      />
+                      <Tooltip title="Fundamental frequency, otherwise known as pitch">
+                        <Slider
+                            min={Math.log10(50)}
+                            max={Math.log10(500)}
+                            value={Math.log10(this.state.H0)}
+                            onChange={this.onH0}
+                        />
+                      </Tooltip>
                     </Grid>
                     <Grid item className="freq-slider-value">
                       <Typography>
@@ -131,27 +136,25 @@ class GlottalSource extends React.PureComponent {
                   </Select>
                 </Grid>
                 {
-                  this.state.sourceParams ?
-                      Object.keys(this.context.getSource().params).map(paramKey => (
-                          <Grid item key={paramKey}>
-                            <Grid container spacing={1} alignItems="center">
-                              <Grid item>
-                                <InputLabel>
-                                  {paramKey} =
-                                </InputLabel>
-                              </Grid>
-                              <Grid item>
-                                <TextField
-                                    type="number"
-                                    inputProps={{min: 0.01, max: 0.99, step: 0.01}}
-                                    onChange={this.onSourceParam(paramKey)}
-                                    value={this.state.sourceParams[paramKey]}
-                                />
-                              </Grid>
-                            </Grid>
+                  Object.entries(this.state.sourceParams).map(([key, value]) => (
+                      <Grid item key={key}>
+                        <Grid container spacing={1} alignItems="center">
+                          <Grid item>
+                            <InputLabel>
+                              {key} =
+                            </InputLabel>
                           </Grid>
-                      ))
-                      : undefined
+                          <Grid item>
+                            <TextField
+                                type="number"
+                                inputProps={{min: 0.01, max: 0.99, step: 0.01}}
+                                onChange={this.onSourceParam(key)}
+                                value={value}
+                            />
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                  ))
                 }
               </Grid>
             </Paper>
@@ -165,17 +168,19 @@ class GlottalSource extends React.PureComponent {
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <svg
-                      width={GlottalSource.nbPoints}
-                      height={GlottalSource.nbPoints * 9 / 16}
-                      className="glottal-flow-svg"
-                  >
-                    <path d={this.state.sourceWave}
-                          stroke="orange"
-                          strokeWidth={2}
-                          fill="none"
-                    />
-                  </svg>
+                  <Tooltip title="Shape of a glottal pulse cycle">
+                    <svg
+                        width={GlottalSource.nbPoints}
+                        height={GlottalSource.nbPoints * 9 / 16}
+                        className="glottal-flow-svg"
+                    >
+                      <path d={this.state.sourceWave}
+                            stroke="orange"
+                            strokeWidth={2}
+                            fill="none"
+                      />
+                    </svg>
+                  </Tooltip>
                 </Grid>
               </Grid>
             </Paper>

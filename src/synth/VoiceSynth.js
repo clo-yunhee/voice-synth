@@ -1,8 +1,9 @@
 import Sawtooth from './sources/Sawtooth'
 import CutoffSawtooth from './sources/CutoffSawtooth'
 import RosenbergC from "./sources/RosenbergC"
-import LiljencrantsFant from "./sources/LiljencrantsFant";
-import KLGLOTT88 from "./sources/KLGLOTT88";
+import LiljencrantsFant from "./sources/LiljencrantsFant"
+import KLGLOTT88 from "./sources/KLGLOTT88"
+import synthPresets from "../presets"
 
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
@@ -16,15 +17,13 @@ class VoiceSynth {
       'LF': new LiljencrantsFant(),
       'KLGLOTT88': new KLGLOTT88(),
     };
-    this.reset = this.reset.bind(this);
+    this.onPreset = [];
+    this.loadPreset = this.loadPreset.bind(this);
 
     this.context = new AudioContext();
     this.sourceGain = this.context.createGain();
     this.prefiltGain = this.context.createGain();
     this.amp = this.context.createGain();
-
-    this.onReset = [];
-    this.reset();
 
     this.amp.connect(this.context.destination);
   }
@@ -39,29 +38,36 @@ class VoiceSynth {
     this.amp.gain.value = 0;
   }
 
-  reset() {
-    this.volume = 1.0;
-    this.frequency = 170;
-    this.sourceName = 'KLGLOTT88';
-    this.playing = false;
-    this.getSource().params = this.getSource().getDefaultParams();
+  loadPreset(id) {
+    if (!id) {
+      id = "default";
+    }
+
+    const preset = synthPresets[id];
+
+    this.frequency = preset.frequency;
+    this.sourceName = preset.source.name;
     this._setSource();
+    this.getSource().params = {...preset.source.params};
+    this.formantF = [...preset.formants.freqs];
+    this.formantBw = [...preset.formants.bands];
+
+    this.volume = 1.0;
+    this.playing = false;
+    this.filterPass = true;
     this.sourceGain.gain.value = 0.1;
     this.prefiltGain.gain.value = 10e-7;
     this.amp.gain.value = 0;
-    this.filterPass = true;
-    this.formantF = [730, 1090, 3010, 3350, 3850];
-    this.formantBw = [90, 110, 170, 250, 300];
     this.poles = new Array(2 * this.formantF.length);
     this._setFilters(true);
 
-    if (this.onReset) {
-      this.onReset.forEach(fn => fn());
+    if (this.onPreset) {
+      this.onPreset.forEach(fn => fn());
     }
   }
 
-  addResetListener(callback) {
-    this.onReset.push(callback);
+  addPresetListener(callback) {
+    this.onPreset.push(callback);
   }
 
   setVolume(vol) {
@@ -113,26 +119,26 @@ class VoiceSynth {
   }
 
   _setSource() {
-    const source = this.getSource();
-    const buffer = source.getBuffer(this.context, this.frequency);
-
-    // Add breath (wide-band noise) to opening.
-    const noiseBuffer = source.getNoiseBuffer(this.context, buffer);
-
     if (this.source) {
       this.source.stop();
       this.source.disconnect();
     }
+
     if (this.breath) {
       this.breath.stop();
       this.breath.disconnect();
     }
+
+    const source = this.getSource();
+    const buffer = source.getBuffer(this.context, this.frequency);
 
     this.source = this.context.createBufferSource();
     this.source.buffer = buffer;
     this.source.loop = true;
     this.source.start();
     this.source.connect(this.sourceGain);
+
+    const noiseBuffer = source.getNoiseBuffer(this.context, buffer);
 
     this.breath = this.context.createBufferSource();
     this.breath.buffer = noiseBuffer;
@@ -158,7 +164,7 @@ class VoiceSynth {
     this.sourceGain.disconnect();
 
     if (this.filterPass) {
-      if (change === true) {
+      if (!this.filter || change === true) {
         const {B, A} = this._calculateFilters(change, i);
         this.filter = this.context.createIIRFilter(B, A);
       }
@@ -168,7 +174,6 @@ class VoiceSynth {
       this.filter.connect(this.amp);
     } else {
       this.sourceGain.connect(this.amp);
-      this.breath.connect(this.amp);
     }
   }
 

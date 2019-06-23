@@ -42,7 +42,7 @@ class PeriodicWaveBuffer {
     }
 
     // Scale noise based on proportion of open frames.
-    const noiseAmp = (openFrames / noiseLen) * 0.075;
+    const noiseAmp = (openFrames / noiseLen) * 0.06;
 
     for (let i = 0; i < noiseLen; ++i) {
       noiseData[i] *= noiseAmp;

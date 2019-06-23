@@ -4,37 +4,38 @@ import Slider from "@material-ui/lab/Slider";
 import InputLabel from "@material-ui/core/InputLabel";
 import Paper from "@material-ui/core/Paper";
 import Divider from "@material-ui/core/Divider";
-import React from "react";
-import {Switch} from "@material-ui/core";
+import Switch from "@material-ui/core/Switch";
 import TextField from "@material-ui/core/TextField";
+import Tooltip from "@material-ui/core/Tooltip";
+import React from "react";
 
 class VocalTract extends React.PureComponent {
 
   constructor(props) {
     super(props);
-    this.state = this.getInitialState();
+    this.synth = this.props.synth;
+    this.state = this.getSyncState();
   }
 
   componentDidMount() {
-    this.context.addResetListener(this.onReset);
+    this.synth.addPresetListener(this.onPreset);
   }
 
-  getInitialState() {
-    // Values for an /a/ vowel.
+  getSyncState() {
     return {
-      toggle: true,
-      formants: [730, 1090, 2440, 3350, 3850],
-      bandwidths: [90, 110, 170, 250, 300]
+      toggle: this.synth.filterPass,
+      formants: this.synth.formantF,
+      bandwidths: this.synth.formantBw
     }
   }
 
-  onReset = () => {
-    this.setState(this.getInitialState());
+  onPreset = () => {
+    this.setState(this.getSyncState());
   };
 
   onToggle = (evt, newValue) => {
     this.setState({toggle: newValue});
-    this.context.toggleFilters(newValue);
+    this.synth.toggleFilters(newValue);
   };
 
   onFormantFreq = (formantNb, log) => (evt, newValue) => {
@@ -45,7 +46,7 @@ class VocalTract extends React.PureComponent {
     newFormants[i] = newFi;
 
     this.setState({formants: newFormants});
-    this.context.setFormantFreq(i, newFi);
+    this.synth.setFormantFreq(i, newFi);
   };
 
   onFormantBand = (formantNb, log) => (evt, newValue) => {
@@ -56,7 +57,7 @@ class VocalTract extends React.PureComponent {
     newBandwidths[i] = newBwi;
 
     this.setState({bandwidths: newBandwidths});
-    this.context.setFormantBw(i, newBwi);
+    this.synth.setFormantBw(i, newBwi);
   };
 
   render() {
@@ -75,12 +76,14 @@ class VocalTract extends React.PureComponent {
                     <Typography variant="caption">
                       On/Off
                     </Typography>
-                    <Switch checked={this.state.toggle} onChange={this.onToggle}/>
+                    <Tooltip title="Toggle the vocal tract filter">
+                      <Switch checked={this.state.toggle} onChange={this.onToggle}/>
+                    </Tooltip>
                   </Grid>
                 </Grid>
               </Grid>
               {
-                Object.keys(this.context.formantF).map(formantNb => (
+                Object.keys(this.synth.formantF).map(formantNb => (
                     <React.Fragment key={formantNb}>
                       <Grid item>
                         <Divider variant="middle"/>
@@ -94,12 +97,14 @@ class VocalTract extends React.PureComponent {
                             </InputLabel>
                           </Grid>
                           <Grid item className="formant-freq-slider-container">
-                            <Slider
-                                min={Math.log10(100)}
-                                max={Math.log10(10000)}
-                                value={Math.log10(this.state.formants[formantNb])}
-                                onChange={this.onFormantFreq(formantNb, true)}
-                            />
+                            <Tooltip title={`Adjust which frequency band is emphasized by F${formantNb}`}>
+                              <Slider
+                                  min={Math.log10(100)}
+                                  max={Math.log10(10000)}
+                                  value={Math.log10(this.state.formants[formantNb])}
+                                  onChange={this.onFormantFreq(formantNb, true)}
+                              />
+                            </Tooltip>
                           </Grid>
                           <Grid item>
                             <Grid container direction="row" alignItems="center">
@@ -125,18 +130,22 @@ class VocalTract extends React.PureComponent {
                         <Grid container spacing={1} direction="row" alignItems="center" justify="flex-end"
                               className="formant-band-container">
                           <Grid item>
-                            <InputLabel shrink>
-                              -3dB bandwidth:
-                            </InputLabel>
+                            <Tooltip title="The bandwidth is measured at -3 dB below the center frequency">
+                              <InputLabel shrink>
+                                -3dB bandwidth:
+                              </InputLabel>
+                            </Tooltip>
                           </Grid>
                           <Grid item className="formant-band-slider-container">
-                            <Slider
-                                min={Math.log10(10)}
-                                max={Math.log10(2000)}
-                                value={Math.log10(this.state.bandwidths[formantNb])}
-                                variant="continuous"
-                                onChange={this.onFormantBand(formantNb, true)}
-                            />
+                            <Tooltip title={`Adjust the clarity of the frequencies emphasized by F${formantNb}`}>
+                              <Slider
+                                  min={Math.log10(10)}
+                                  max={Math.log10(2000)}
+                                  value={Math.log10(this.state.bandwidths[formantNb])}
+                                  variant="continuous"
+                                  onChange={this.onFormantBand(formantNb, true)}
+                              />
+                            </Tooltip>
                           </Grid>
                           <Grid item>
                             <Grid container direction="row" alignItems="center">

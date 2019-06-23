@@ -6,42 +6,48 @@ import VolumeDown from '@material-ui/icons/VolumeDown';
 import VolumeUp from '@material-ui/icons/VolumeUp';
 import Slider from "@material-ui/lab/Slider";
 import Button from "@material-ui/core/Button";
+import Tooltip from "@material-ui/core/Tooltip";
 import React from "react";
 
 class ControlsNavbar extends React.Component {
   constructor(props) {
     super(props);
-    this.state = this.getInitialState();
+    this.synth = this.props.synth;
+    this.state = this.getSyncState();
   }
 
   componentDidMount() {
-    this.context.addResetListener(this.onReset);
+    this.synth.addPresetListener(this.onPreset);
   }
 
-  getInitialState() {
+  getSyncState() {
     return {
-      playing: false,
-      volume: 1,
+      playing: this.synth.playing,
+      volume: this.synth.volume,
     }
   }
 
+  onPreset = () => {
+    this.setState(this.getSyncState());
+  };
+
   onReset = () => {
-    this.setState(this.getInitialState());
+    this.synth.loadPreset("default");
   };
 
   onPlayPause = () => {
     if (this.state.playing) {
-      this.context.stop();
+      this.synth.stop();
       this.setState({playing: false});
     } else {
-      this.context.start();
+      this.synth.start();
       this.setState({playing: true});
     }
   };
 
   onVolume = (evt, newValue) => {
     this.setState({volume: newValue});
-    this.context.setVolume(newValue);
+    this.synth.setVolume(newValue);
   };
 
   render() {
@@ -49,12 +55,14 @@ class ControlsNavbar extends React.Component {
         <header className="App-controls">
           <Grid container className="App-controls-left">
             <Grid item>
-              <IconButton
-                  onClick={this.onPlayPause}
-                  style={{color: "white"}}
-              >
-                {this.state.playing ? <PauseIcon/> : <PlayIcon/>}
-              </IconButton>
+              <Tooltip title="Start or pause the synthesizer">
+                <IconButton
+                    onClick={this.onPlayPause}
+                    style={{color: "white"}}
+                >
+                  {this.state.playing ? <PauseIcon/> : <PlayIcon/>}
+                </IconButton>
+              </Tooltip>
             </Grid>
             <Grid item className="volume-slider-container">
               <Grid container spacing={2} alignItems="center">
@@ -62,12 +70,14 @@ class ControlsNavbar extends React.Component {
                   <VolumeDown style={{verticalAlign: "text-top"}}/>
                 </Grid>
                 <Grid item xs>
-                  <Slider
-                      min={0}
-                      max={1}
-                      value={this.state.volume}
-                      onChange={this.onVolume}
-                  />
+                  <Tooltip title="Adjust overall volume">
+                    <Slider
+                        min={0}
+                        max={1}
+                        value={this.state.volume}
+                        onChange={this.onVolume}
+                    />
+                  </Tooltip>
                 </Grid>
                 <Grid item>
                   <VolumeUp style={{verticalAlign: "text-top"}}/>
@@ -77,13 +87,15 @@ class ControlsNavbar extends React.Component {
           </Grid>
           <Grid container className="App-controls-right">
             <Grid item>
-              <Button
-                  variant="contained"
-                  color="secondary"
-                  onClick={this.context.reset}
-              >
-                Reset
-              </Button>
+              <Tooltip title="Reset all parameters">
+                <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={this.onReset}
+                >
+                  Reset
+                </Button>
+              </Tooltip>
             </Grid>
           </Grid>
         </header>
