@@ -4,7 +4,7 @@ class RosenbergC extends PeriodicWaveBuffer {
 
   getDefaultParams() {
     return {
-      Oq: 0.56,
+      Oq: 0.52,
       am: 0.1
     }
   }

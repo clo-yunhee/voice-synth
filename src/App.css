@@ -68,9 +68,10 @@
 }
 
 .App-wrapper {
-  min-width: 100vw;
-  min-height: 100vh;
+  max-width: 100vw;
+  max-height: 100vh;
   padding: calc(4 * (10px + 1.2vmin)) 0;
+  overflow: hidden;
 }
 
 .App-container {
@@ -108,7 +109,7 @@
 }
 
 .formant-freq-value {
-  width: 10ch;
+  width: calc(7ch + 1vmin);
 }
 
 .formant-band-container {
@@ -120,7 +121,7 @@
 }
 
 .formant-band-value {
-  width: 11ch;
+  width: calc(6ch + 1vmin);
 }
 
 .App-footer {

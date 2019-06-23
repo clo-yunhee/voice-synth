@@ -19,14 +19,13 @@ class GlottalSource extends React.PureComponent {
 
   componentDidMount() {
     this.context.addResetListener(this.onReset);
-    this.setState({sourceParams: {...this.context.getSource().params}});
-    this._setStateSourceWave();
+    this._syncSourceParams();
   }
 
   getInitialState() {
     return {
-      H0: 150,
-      source: "rosenbergC"
+      H0: 170,
+      source: "KLGLOTT88"
     };
   }
 
@@ -59,7 +58,10 @@ class GlottalSource extends React.PureComponent {
   };
 
   _syncSourceParams = () => {
-    this.setState({sourceParams: {...this.context.getSource().params}});
+    this.setState({
+      sourceParams: {...this.context.getSource().params},
+      sourceWave: this._getWavePath()
+    });
   };
 
   _getWavePath = () => {
@@ -81,10 +83,6 @@ class GlottalSource extends React.PureComponent {
     }
 
     return d.concat(d2).join(" ");
-  };
-
-  _setStateSourceWave() {
-    this.setState({sourceWave: this._getWavePath()});
   };
 
   render() {
@@ -128,6 +126,8 @@ class GlottalSource extends React.PureComponent {
                     <MenuItem value="sawtooth">Sawtooth</MenuItem>
                     <MenuItem value="cutoffSawtooth">Sawtooth with cut-off</MenuItem>
                     <MenuItem value="rosenbergC">Cosine Rosenberg model</MenuItem>
+                    <MenuItem value="LF">Liljencrants-Fant model</MenuItem>
+                    <MenuItem value="KLGLOTT88">KLGLOTT88 model</MenuItem>
                   </Select>
                 </Grid>
                 {
@@ -142,7 +142,6 @@ class GlottalSource extends React.PureComponent {
                               </Grid>
                               <Grid item>
                                 <TextField
-                                    id={`s-${paramKey}`}
                                     type="number"
                                     inputProps={{min: 0.01, max: 0.99, step: 0.01}}
                                     onChange={this.onSourceParam(paramKey)}
@@ -169,10 +168,9 @@ class GlottalSource extends React.PureComponent {
                   <svg
                       width={GlottalSource.nbPoints}
                       height={GlottalSource.nbPoints * 9 / 16}
-
                       className="glottal-flow-svg"
                   >
-                    <path d={this._getWavePath()}
+                    <path d={this.state.sourceWave}
                           stroke="orange"
                           strokeWidth={2}
                           fill="none"

@@ -6,6 +6,7 @@ import Paper from "@material-ui/core/Paper";
 import Divider from "@material-ui/core/Divider";
 import React from "react";
 import {Switch} from "@material-ui/core";
+import TextField from "@material-ui/core/TextField";
 
 class VocalTract extends React.PureComponent {
 
@@ -36,9 +37,9 @@ class VocalTract extends React.PureComponent {
     this.context.toggleFilters(newValue);
   };
 
-  onFormantFreq = (formantNb) => (evt, newValue) => {
+  onFormantFreq = (formantNb, log) => (evt, newValue) => {
     const i = Number(formantNb);
-    const newFi = Math.pow(10, newValue);
+    const newFi = log ? Math.pow(10, newValue) : Number(evt.target.value);
 
     const newFormants = [...this.state.formants];
     newFormants[i] = newFi;
@@ -47,9 +48,9 @@ class VocalTract extends React.PureComponent {
     this.context.setFormantFreq(i, newFi);
   };
 
-  onFormantBand = (formantNb) => (evt, newValue) => {
+  onFormantBand = (formantNb, log) => (evt, newValue) => {
     const i = Number(formantNb);
-    const newBwi = Math.pow(10, newValue);
+    const newBwi = log ? Math.pow(10, newValue) : Number(evt.target.value);
 
     const newBandwidths = [...this.state.bandwidths];
     newBandwidths[i] = newBwi;
@@ -74,7 +75,7 @@ class VocalTract extends React.PureComponent {
                     <Typography variant="caption">
                       On/Off
                     </Typography>
-                    <Switch value={this.state.toggle} onChange={this.onToggle}/>
+                    <Switch checked={this.state.toggle} onChange={this.onToggle}/>
                   </Grid>
                 </Grid>
               </Grid>
@@ -94,17 +95,29 @@ class VocalTract extends React.PureComponent {
                           </Grid>
                           <Grid item className="formant-freq-slider-container">
                             <Slider
-                                id={`f-${formantNb}-freq`}
                                 min={Math.log10(100)}
                                 max={Math.log10(10000)}
                                 value={Math.log10(this.state.formants[formantNb])}
-                                onChange={this.onFormantFreq(formantNb)}
+                                onChange={this.onFormantFreq(formantNb, true)}
                             />
                           </Grid>
-                          <Grid item className="formant-freq-value">
-                            <Typography>
-                              {Math.round(this.state.formants[formantNb])} Hz
-                            </Typography>
+                          <Grid item>
+                            <Grid container direction="row" alignItems="center">
+                              <Grid item>
+                                <TextField
+                                    type="number"
+                                    inputProps={{min: 10, max: 10000, step: 1}}
+                                    onChange={this.onFormantFreq(formantNb, false)}
+                                    value={Math.round(this.state.formants[formantNb])}
+                                    className="formant-freq-value"
+                                />
+                              </Grid>
+                              <Grid item>
+                                <Typography>
+                                  Hz
+                                </Typography>
+                              </Grid>
+                            </Grid>
                           </Grid>
                         </Grid>
                       </Grid>
@@ -118,17 +131,30 @@ class VocalTract extends React.PureComponent {
                           </Grid>
                           <Grid item className="formant-band-slider-container">
                             <Slider
-                                id={`f-${formantNb}-band`}
                                 min={Math.log10(10)}
                                 max={Math.log10(2000)}
                                 value={Math.log10(this.state.bandwidths[formantNb])}
-                                onChange={this.onFormantBand(formantNb)}
+                                variant="continuous"
+                                onChange={this.onFormantBand(formantNb, true)}
                             />
                           </Grid>
-                          <Grid item className="formant-band-value">
-                            <Typography variant="body2">
-                              {Math.round(this.state.bandwidths[formantNb])} Hz
-                            </Typography>
+                          <Grid item>
+                            <Grid container direction="row" alignItems="center">
+                              <Grid item>
+                                <TextField
+                                    type="number"
+                                    inputProps={{min: 10, max: 2000, step: 1}}
+                                    onChange={this.onFormantBand(formantNb, false)}
+                                    value={Math.round(this.state.bandwidths[formantNb])}
+                                    className="formant-band-value"
+                                />
+                              </Grid>
+                              <Grid item>
+                                <Typography variant="body2">
+                                  Hz
+                                </Typography>
+                              </Grid>
+                            </Grid>
                           </Grid>
                         </Grid>
                       </Grid>
