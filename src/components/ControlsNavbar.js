@@ -1,3 +1,4 @@
+import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
 import PlayIcon from '@material-ui/icons/PlayArrow';
@@ -7,13 +8,16 @@ import VolumeUp from '@material-ui/icons/VolumeUp';
 import Slider from "@material-ui/lab/Slider";
 import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem"
 import React from "react";
+import synthPresets from '../presets'
 
 class ControlsNavbar extends React.Component {
   constructor(props) {
     super(props);
     this.synth = this.props.synth;
-    this.state = this.getSyncState();
+    this.state = {selectedPreset: 'default', ...this.getSyncState()};
   }
 
   componentDidMount() {
@@ -33,6 +37,13 @@ class ControlsNavbar extends React.Component {
 
   onReset = () => {
     this.synth.loadPreset("default");
+  };
+
+  onLoadPreset = (evt) => {
+    const id = evt.target.value;
+
+    this.setState({selectedPreset: id});
+    this.synth.loadPreset(id);
   };
 
   onPlayPause = () => {
@@ -86,6 +97,22 @@ class ControlsNavbar extends React.Component {
             </Grid>
           </Grid>
           <Grid container className="App-controls-right">
+            <Grid item>
+              <Tooltip title="Load synth presets">
+                <Paper className="preset-card">
+                  <Select
+                      value={this.state.selectedPreset}
+                      onChange={this.onLoadPreset}
+                  >
+                    {
+                      Object.entries(synthPresets).map(([id, {name}]) => (
+                          <MenuItem key={id} value={id}>{name}</MenuItem>
+                      ))
+                    }
+                  </Select>
+                </Paper>
+              </Tooltip>
+            </Grid>
             <Grid item>
               <Tooltip title="Reset all parameters">
                 <Button

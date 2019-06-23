@@ -1,14 +1,14 @@
 export default {
-  name: 'Default',
-  frequency: 170,
+  name: 'Bright female /a/',
+  frequency: 245,
   source: {
     name: 'KLGLOTT88',
     params: {
-      Oq: 0.6
+      Oq: 0.8
     }
   },
   formants: {
-    freqs: [730, 1090, 3010, 3350, 3850],
+    freqs: [930, 1650, 3030, 3590, 4790],
     bands: [90, 110, 170, 250, 300]
   }
 }
