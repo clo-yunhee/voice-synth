@@ -6,6 +6,7 @@ import darkFemale_o from './darkFemale_o'
 import darkFemale_on from './darkFemale_on'
 
 import darkMale_a from './darkMale_a'
+import brightMale_a from "./brightMale_a"
 
 import _default from './default'
 
@@ -15,6 +16,7 @@ export default ({
   brightFemale_o,
   darkFemale_o,
   darkFemale_on,
+  brightMale_a,
   darkMale_a,
   default: _default,
 });

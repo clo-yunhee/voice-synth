@@ -25,7 +25,8 @@ class VocalTract extends React.PureComponent {
     return {
       toggle: this.synth.filterPass,
       formants: this.synth.formantF,
-      bandwidths: this.synth.formantBw
+      bandwidths: this.synth.formantBw,
+      gains: this.synth.formantGain
     }
   }
 
@@ -58,6 +59,17 @@ class VocalTract extends React.PureComponent {
 
     this.setState({bandwidths: newBandwidths});
     this.synth.setFormantBw(i, newBwi);
+  };
+
+  onFormantGain = (formantNb) => (evt) => {
+    const i = Number(formantNb);
+    const newGi = evt.target.value;
+
+    const newGains = [...this.state.gains];
+    newGains[i] = newGi;
+
+    this.setState({gains: newGains});
+    this.synth.setFormantGain(i, newGi);
   };
 
   render() {
@@ -127,41 +139,84 @@ class VocalTract extends React.PureComponent {
                         </Grid>
                       </Grid>
                       <Grid item>
-                        <Grid container spacing={1} direction="row" alignItems="center" justify="flex-end"
-                              className="formant-band-container">
+                        <Grid container direction="row" alignItems="center" justify="space-between">
                           <Grid item>
-                            <Tooltip title="The bandwidth is measured at -3 dB below the center frequency">
-                              <InputLabel shrink>
-                                -3dB bandwidth:
-                              </InputLabel>
-                            </Tooltip>
-                          </Grid>
-                          <Grid item className="formant-band-slider-container">
-                            <Tooltip title={`Adjust the clarity of the frequencies emphasized by F${formantNb}`}>
-                              <Slider
-                                  min={Math.log10(10)}
-                                  max={Math.log10(2000)}
-                                  value={Math.log10(this.state.bandwidths[formantNb])}
-                                  variant="continuous"
-                                  onChange={this.onFormantBand(formantNb, true)}
-                              />
-                            </Tooltip>
-                          </Grid>
-                          <Grid item>
-                            <Grid container direction="row" alignItems="center">
+                            <Grid
+                                container
+                                spacing={1}
+                                irection="row"
+                                alignItems="center"
+                                justify="flex-start"
+                                className="formant-gain-container"
+                            >
                               <Grid item>
-                                <TextField
-                                    type="number"
-                                    inputProps={{min: 10, max: 2000, step: 1}}
-                                    onChange={this.onFormantBand(formantNb, false)}
-                                    value={Math.round(this.state.bandwidths[formantNb])}
-                                    className="formant-band-value"
-                                />
+                                <Typography variant="caption">
+                                  Gain:
+                                </Typography>
                               </Grid>
                               <Grid item>
-                                <Typography variant="body2">
-                                  Hz
-                                </Typography>
+                                <Grid container direction="row" alignItems="center">
+                                  <Grid item>
+                                    <TextField
+                                        type="number"
+                                        inputProps={{min: 0, max: -80, step: 1}}
+                                        onChange={this.onFormantGain(formantNb)}
+                                        value={Math.round(this.state.gains[formantNb])}
+                                        className="formant-gain-value"
+                                    />
+                                  </Grid>
+                                  <Grid item>
+                                    <Typography variant="body2">
+                                      dB
+                                    </Typography>
+                                  </Grid>
+                                </Grid>
+                              </Grid>
+                            </Grid>
+                          </Grid>
+                          <Grid item>
+                            <Grid
+                                container
+                                spacing={1}
+                                direction="row"
+                                alignItems="center"
+                                justify="flex-end"
+                                className="formant-band-container"
+                            >
+                              <Grid item>
+                                <Tooltip title="The bandwidth is measured at -3 dB below the center frequency">
+                                  <Typography variant="caption">
+                                    Bandwidth:
+                                  </Typography>
+                                </Tooltip>
+                              </Grid>
+                              <Grid item className="formant-band-slider-container">
+                                <Tooltip title={`Adjust the clarity of the frequencies emphasized by F${formantNb}`}>
+                                  <Slider
+                                      min={Math.log10(10)}
+                                      max={Math.log10(2000)}
+                                      value={Math.log10(this.state.bandwidths[formantNb])}
+                                      onChange={this.onFormantBand(formantNb, true)}
+                                  />
+                                </Tooltip>
+                              </Grid>
+                              <Grid item>
+                                <Grid container direction="row" alignItems="center">
+                                  <Grid item>
+                                    <TextField
+                                        type="number"
+                                        inputProps={{min: 10, max: 2000, step: 1}}
+                                        onChange={this.onFormantBand(formantNb, false)}
+                                        value={Math.round(this.state.bandwidths[formantNb])}
+                                        className="formant-band-value"
+                                    />
+                                  </Grid>
+                                  <Grid item>
+                                    <Typography variant="body2">
+                                      Hz
+                                    </Typography>
+                                  </Grid>
+                                </Grid>
                               </Grid>
                             </Grid>
                           </Grid>

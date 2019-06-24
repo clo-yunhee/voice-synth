@@ -128,6 +128,10 @@
   width: calc(6ch + 1vmin);
 }
 
+.formant-gain-value {
+  width: calc(4ch + 1vmin);
+}
+
 .App-footer {
   z-index: 20;
   position: fixed;

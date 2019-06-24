@@ -18,13 +18,14 @@ class PeriodicWaveBuffer {
     for (let i = 0; i < len; ++i) {
       samples[i] = this.getSample(i / len);
     }
+
     return samples;
   }
 
   getNoiseBuffer(context, buffer) {
     const data = buffer.getChannelData(0);
 
-    const noiseLen = 100 * data.length;
+    const noiseLen = 50 * data.length;
     const noise = context.createBuffer(1, noiseLen, context.sampleRate);
 
     const noiseData = new Float32Array(noiseLen);
@@ -54,7 +55,7 @@ class PeriodicWaveBuffer {
     }
 
     // Scale noise based on proportion of open frames.
-    const noiseAmp = (.5 + openFrames / noiseLen) ** 1.8 * 0.1;
+    const noiseAmp = (openFrames / noiseLen) ** 1.5 * 0.1;
 
     for (let i = 0; i < noiseLen; ++i) {
       noiseData[i] *= noiseAmp;

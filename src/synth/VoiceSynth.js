@@ -26,6 +26,7 @@ class VoiceSynth {
     this.prefiltGain = this.context.createGain();
     this.amp = this.context.createGain();
 
+    this.sourceGain.connect(this.prefiltGain);
     this.amp.connect(this.context.destination);
   }
 
@@ -48,18 +49,20 @@ class VoiceSynth {
 
     this.frequency = preset.frequency;
     this.sourceName = preset.source.name;
-    this._setSource();
     this.getSource().params = {...preset.source.params};
+    this._setSource();
     this.formantF = [...preset.formants.freqs];
     this.formantBw = [...preset.formants.bands];
+    this.formantGain = [...preset.formants.gains];
 
     this.volume = 1.0;
     this.playing = true;
     this.filterPass = true;
     this.sourceGain.gain.value = 0.1;
-    this.prefiltGain.gain.value = 10e-7;
+    this.prefiltGain.gain.value = 10;
     this.amp.gain.value = this.volume;
     this.poles = new Array(2 * this.formantF.length);
+    this._connectFilters();
     this._setFilters(true);
 
     if (this.onPreset) {
@@ -74,7 +77,7 @@ class VoiceSynth {
   setVolume(vol) {
     this.volume = vol;
     if (this.playing) {
-      this.amp.gain.linearRampToValueAtTime(vol, this.context.currentTime + 0.025);
+      this.amp.gain.exponentialRampToValueAtTime(vol, this.context.currentTime + 0.025);
     }
   }
 
@@ -106,7 +109,7 @@ class VoiceSynth {
 
   toggleFilters(flag) {
     this.filterPass = flag;
-    this._setFilters(false);
+    this._setFilters(true);
   }
 
   setFormantFreq(i, freq) {
@@ -116,6 +119,11 @@ class VoiceSynth {
 
   setFormantBw(i, bw) {
     this.formantBw[i] = bw;
+    this._setFilters(true, i);
+  }
+
+  setFormantGain(i, gain) {
+    this.formantGain[i] = gain;
     this._setFilters(true, i);
   }
 
@@ -148,18 +156,57 @@ class VoiceSynth {
     this.breath.connect(this.sourceGain);
   }
 
+  _connectFilters() {
+    if (this.filters) {
+      this.filters.forEach(flt => flt.disconnect());
+    }
+    if (this.preflt) {
+      this.preflt.forEach(flt => flt.disconnect());
+    }
+    this.prefiltGain.disconnect();
+    this.sourceGain.disconnect();
+
+    const N = this.formantF.length;
+
+    this.preflt = new Array(N);
+    this.filters = new Array(N);
+
+    for (let i = 0; i < N; ++i) {
+      this.preflt[i] = this.context.createGain();
+      this.filters[i] = this.context.createBiquadFilter();
+      this.filters[i].type = 'bandpass';
+
+      this.prefiltGain.connect(this.preflt[i]);
+      this.preflt[i].connect(this.filters[i]);
+      this.filters[i].connect(this.amp);
+    }
+  }
+
   _setFilters(change, i) {
-    /*
-    for (let i = 0; i < this.vocalTractFilter.length; ++i) {
-      const flt = this.vocalTractFilter[i];
-      const Fi = this.formantF[i];
-      const Qi = Fi / this.formantBw[i];
 
-      flt.frequency.setValueAtTime(Fi, this.context.currentTime);
-      flt.Q.setValueAtTime(Qi, this.context.currentTime);
-    }*/
+    this.sourceGain.disconnect();
 
-    if (this.filter) {
+    if (this.filterPass) {
+      for (let j = 0; j < this.filters.length; ++j) {
+        const gainNode = this.preflt[j];
+        const filter = this.filters[j];
+        if (change === true && (i === undefined || i === j)) {
+          const Fi = this.formantF[j];
+          const Qi = Fi / this.formantBw[j];
+          const Gi = Math.pow(10, this.formantGain[j] / 20);
+
+          filter.frequency.exponentialRampToValueAtTime(Fi, this.context.currentTime + 0.025);
+          filter.Q.exponentialRampToValueAtTime(Qi, this.context.currentTime + 0.025);
+          gainNode.gain.exponentialRampToValueAtTime(Gi, this.context.currentTime + 0.025);
+        }
+      }
+
+      this.sourceGain.connect(this.prefiltGain);
+    } else {
+      this.sourceGain.connect(this.amp);
+    }
+
+    /*if (this.filter) {
       this.filter.disconnect();
     }
     this.prefiltGain.disconnect();
@@ -176,7 +223,7 @@ class VoiceSynth {
       this.filter.connect(this.amp);
     } else {
       this.sourceGain.connect(this.amp);
-    }
+    }*/
   }
 
   _calculateFilters(change, i) {

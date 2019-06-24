@@ -4,11 +4,12 @@ export default {
   source: {
     name: 'KLGLOTT88',
     params: {
-      Oq: 0.7
+      Oq: 0.8
     }
   },
   formants: {
-    freqs: [450, 2800, 3450, 3590, 4420],
-    bands: [90, 110, 170, 250, 300]
+    freqs: [350, 2000, 2800, 3600, 4950],
+    bands: [60, 100, 120, 150, 200],
+    gains: [0, -20, -15, -40, -56],
   }
 }

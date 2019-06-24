@@ -1,14 +1,15 @@
 export default {
   name: 'Dark male /a/',
-  frequency: 102,
+  frequency: 110,
   source: {
     name: 'KLGLOTT88',
     params: {
-      Oq: 0.5
+      Oq: 0.3
     }
   },
   formants: {
-    freqs: [540, 950, 3450, 3590, 4420],
-    bands: [90, 110, 170, 250, 300]
+    freqs: [600, 1040, 2250, 2450, 2750],
+    bands: [60, 70, 110, 120, 130],
+    gains: [0, -7, -9, -9, -20],
   }
 }
