@@ -28,6 +28,9 @@ class VoiceSynth {
 
     this.sourceGain.connect(this.prefiltGain);
     this.amp.connect(this.context.destination);
+
+    this.formantF = [0, 0, 0, 0, 0];
+    this._connectFilters();
   }
 
   start() {
@@ -58,11 +61,10 @@ class VoiceSynth {
     this.volume = 1.0;
     this.playing = true;
     this.filterPass = true;
-    this.sourceGain.gain.value = 0.1;
-    this.prefiltGain.gain.value = 10;
+    this.sourceGain.value = 0.1;
+    this.prefiltGain.gain.value = 1;
     this.amp.gain.value = this.volume;
     this.poles = new Array(2 * this.formantF.length);
-    this._connectFilters();
     this._setFilters(true);
 
     if (this.onPreset) {

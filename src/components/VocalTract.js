@@ -72,6 +72,10 @@ class VocalTract extends React.PureComponent {
     this.synth.setFormantGain(i, newGi);
   };
 
+  _setFrequencyResponse() {
+
+  }
+
   render() {
     return (
         <Grid item>
@@ -159,7 +163,7 @@ class VocalTract extends React.PureComponent {
                                   <Grid item>
                                     <TextField
                                         type="number"
-                                        inputProps={{min: 0, max: -80, step: 1}}
+                                        inputProps={{min: -80, max: 0, step: 1}}
                                         onChange={this.onFormantGain(formantNb)}
                                         value={Math.round(this.state.gains[formantNb])}
                                         className="formant-gain-value"

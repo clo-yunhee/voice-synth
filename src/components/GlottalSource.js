@@ -8,6 +8,8 @@ import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
 import Tooltip from "@material-ui/core/Tooltip";
 import React from "react";
+import Graph from './Graph';
+import GraphPlot from './GraphPlot';
 
 class GlottalSource extends React.PureComponent {
 
@@ -28,7 +30,7 @@ class GlottalSource extends React.PureComponent {
       H0: this.synth.frequency,
       source: this.synth.sourceName,
       sourceParams: {...this.synth.getSource().params},
-      sourceWave: this._getWavePath()
+      sourceWave: this._getWaveData()
     };
   }
 
@@ -63,29 +65,12 @@ class GlottalSource extends React.PureComponent {
   _syncSourceParams = () => {
     this.setState({
       sourceParams: {...this.synth.getSource().params},
-      sourceWave: this._getWavePath()
+      sourceWave: this._getWaveData()
     });
   };
 
-  _getWavePath = () => {
-    const height = GlottalSource.nbPoints * 9 / 16;
-
-    const [xStart, xStep] = [4, 1];
-    const [yStart, yStep] = [height - 4, height - 8];
-
-    const d = [`M ${xStart} ${yStart}`];
-    const d2 = new Array(GlottalSource.nbPoints);
-
-    const yData = this.synth.getSource().getArray(GlottalSource.nbPoints);
-
-    for (let i = 0; i < GlottalSource.nbPoints; ++i) {
-      const xNext = xStart + i * xStep;
-      const yNext = yStart - yData[i] * yStep;
-
-      d2[i] = `L ${xNext} ${yNext}`;
-    }
-
-    return d.concat(d2).join(" ");
+  _getWaveData = () => {
+    return this.synth.getSource().getArray(GlottalSource.nbPoints);
   };
 
   render() {
@@ -169,17 +154,13 @@ class GlottalSource extends React.PureComponent {
                 </Grid>
                 <Grid item>
                   <Tooltip title="Shape of a glottal pulse cycle">
-                    <svg
+                    <Graph
                         width={GlottalSource.nbPoints}
                         height={GlottalSource.nbPoints * 9 / 16}
                         className="glottal-flow-svg"
                     >
-                      <path d={this.state.sourceWave}
-                            stroke="orange"
-                            strokeWidth={2}
-                            fill="none"
-                      />
-                    </svg>
+                      <GraphPlot color="orange" data={this.state.sourceWave}/>
+                    </Graph>
                   </Tooltip>
                 </Grid>
               </Grid>
