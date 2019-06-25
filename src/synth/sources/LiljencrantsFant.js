@@ -5,18 +5,20 @@ class LiljencrantsFant extends PeriodicWaveBuffer {
 
   getDefaultParams() {
     return {
-      Rd: 0.4
+      Rd: 0.4,
+      Tc: 0.8
     }
   }
 
   getParamRange() {
     return {
-      Rd: {min: 0.3, max: 2.7}
+      Rd: {min: 0.3, max: 2.7},
+      Tc: {min: 0.3, max: 1}
     }
   }
 
   getSample(t) {
-    const {Rd} = this.params;
+    const {Rd, Tc} = this.params;
 
     const Rk = 0.118 * Rd + 0.224;
     const Ra = 0.048 * Rd - 0.01;
@@ -29,7 +31,7 @@ class LiljencrantsFant extends PeriodicWaveBuffer {
     const Te = (1 + Rk) / (2 * Rg * f0);
     const wg = 2 * Math.PI * Rg * f0;
 
-    const Tb = T0 - Te;
+    const Tb = Tc - Te;
     const Ta = e => (1 - Math.exp(-e * Tb)) / e;
 
     // Solve for epsilon
@@ -60,17 +62,21 @@ class LiljencrantsFant extends PeriodicWaveBuffer {
       return X * Y;
 
       //return E0(alpha) * Math.exp(alpha * t) * Math.sin(wg * t);
-    } else {
+    } else if (t <= Tc) {
 
       /*const X = -Ee * (1 / (epsilon * Ta(epsilon)) - E0(alpha));
       const Y = T0 - t + (1 / epsilon) * (1 - Math.exp(epsilon * (T0 - t)));*/
 
-      //const X = 1 / (epsilon**2 * Ta(epsilon));
-      //const Y = Math.exp(-epsilon * )
+      const X = 1 / (epsilon * Ta(epsilon));
+      const Y = t => 1 / epsilon * Math.exp(-epsilon * (t - Te)) + t * Math.exp(-epsilon * Tb);
 
-      return X * Y;
+      const C = this.getSample(Te) - (X * Y(Te));
+
+      return X * Y(t) + C;
 
       //return -Ee / (epsilon * Ta(epsilon)) * (Math.exp(-epsilon * (t - Te)) - Math.exp(-epsilon * Tb));
+    } else {
+      return 0;
     }
 
     /*
