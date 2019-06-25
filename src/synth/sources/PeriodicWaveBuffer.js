@@ -28,6 +28,7 @@ class PeriodicWaveBuffer {
     // force normalisation above 0
     for (let i = 0; i < len; ++i) {
       samples[i] = Math.abs(samples[i]) < 1e-15 ? 0 : samples[i] / Math.abs(amp);
+      samples[i] = Math.min(1, Math.max(-1, samples[i]));
     }
 
     return samples;
