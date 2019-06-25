@@ -56,10 +56,12 @@ class GlottalSource extends React.PureComponent {
   onSourceParam = (paramKey) => (evt) => {
     const paramValue = evt.target.value;
 
-    if (paramValue >= 0.01 && paramValue <= 0.99) {
-      this.synth.setSourceParam(paramKey, paramValue);
-      this._syncSourceParams();
-    }
+    const {min, max} = this.synth.getSource().getParamRange()[paramKey];
+
+    let coercedValue = Math.max(min, Math.min(max, paramValue));
+
+    this.synth.setSourceParam(paramKey, coercedValue);
+    this._syncSourceParams();
   };
 
   _syncSourceParams = () => {
@@ -132,7 +134,7 @@ class GlottalSource extends React.PureComponent {
                           <Grid item>
                             <TextField
                                 type="number"
-                                inputProps={{min: 0.01, max: 0.99, step: 0.01}}
+                                inputProps={{...this.synth.getSource().getParamRange()[key], step: 0.01}}
                                 onChange={this.onSourceParam(key)}
                                 value={value}
                             />

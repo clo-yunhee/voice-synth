@@ -9,6 +9,13 @@ class RosenbergC extends PeriodicWaveBuffer {
     }
   }
 
+  getParamRange() {
+    return {
+      Oq: {min: 0.1, max: 0.9},
+      am: {min: 0, max: 1}
+    }
+  }
+
   getSample(t) {
     const {Oq, am} = this.params;
 

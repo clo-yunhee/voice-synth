@@ -8,14 +8,19 @@ class KLGLOTT88 extends PeriodicWaveBuffer {
     }
   }
 
+  getParamRange() {
+    return {
+      Oq: {min: 0.2, max: 1}
+    }
+  }
+
   getSample(t) {
     const {Oq} = this.params;
 
     if (t <= Oq) {
-      const a = (27 / 4) / (Oq ** 2);
-      const b = (27 / 4) / (Oq ** 3);
+      const te = t / Oq;
 
-      return a * t ** 2 - b * t ** 3;
+      return te ** 2 - te ** 3;
     } else {
       return 0;
     }

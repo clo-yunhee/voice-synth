@@ -6,6 +6,10 @@ class Sawtooth extends PeriodicWaveBuffer {
     return {}
   }
 
+  getParamRange() {
+    return {}
+  }
+
   getSample(t) {
     return 1 - t;
   };

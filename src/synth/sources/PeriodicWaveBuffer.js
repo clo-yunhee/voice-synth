@@ -15,8 +15,19 @@ class PeriodicWaveBuffer {
 
   getArray(len) {
     const samples = new Float32Array(len);
+
+    let amp = 0;
     for (let i = 0; i < len; ++i) {
-      samples[i] = this.getSample(i / len);
+      const y = this.getSample(i / len);
+      if (Math.abs(y) > amp) {
+        amp = y;
+      }
+      samples[i] = y;
+    }
+
+    // force normalisation above 0
+    for (let i = 0; i < len; ++i) {
+      samples[i] = Math.abs(samples[i]) < 1e-15 ? 0 : samples[i] / Math.abs(amp);
     }
 
     return samples;
@@ -82,6 +93,14 @@ class PeriodicWaveBuffer {
    * Returns a dict of possible parameters of the periodic wave.
    */
   getDefaultParams() {
+    throw new Error('Unimplemented method');
+  }
+
+  /**
+   *  (Abstract method)
+   * Returns a dict of parameter range (min, max).
+   */
+  getParamRange() {
     throw new Error('Unimplemented method');
   }
 
