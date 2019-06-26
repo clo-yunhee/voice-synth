@@ -38,6 +38,8 @@ class PeriodicWaveBuffer {
     const data = buffer.getChannelData(0);
 
     const noiseLen = 50 * data.length;
+    const openThreshold = 0.2;
+
     const noise = context.createBuffer(1, noiseLen, context.sampleRate);
 
     const noiseData = new Float32Array(noiseLen);
@@ -48,7 +50,7 @@ class PeriodicWaveBuffer {
     let b = [0, 0, 0, 0, 0, 0, 0];
 
     for (let i = 0; i < noiseLen; ++i) {
-      if (data[i % data.length] >= 0.2) {
+      if (data[i % data.length] >= openThreshold) {
         const white = Math.random() * 2 - 1;
         b[0] = 0.99886 * b[0] + white * 0.0555179;
         b[1] = 0.99332 * b[1] + white * 0.0750759;

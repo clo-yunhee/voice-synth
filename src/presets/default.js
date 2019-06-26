@@ -2,7 +2,7 @@ export default {
   name: 'Default',
   frequency: 170,
   source: {
-    name: 'KLGLOTT88',
+    name: 'LF',
     params: {
       Oq: 0.6
     }

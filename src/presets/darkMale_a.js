@@ -2,7 +2,7 @@ export default {
   name: 'Dark male /a/',
   frequency: 110,
   source: {
-    name: 'KLGLOTT88',
+    name: 'LF',
     params: {
       Oq: 0.3
     }

@@ -19,7 +19,7 @@ class LiljencrantsFant extends PeriodicWaveBuffer {
 
     const p1 = Oq;
     const p2 = 0.1;
-    const p3 = 0.2;
+    const p3 = 0.25;
 
     const te = p1;
     const mtc = te - 1;

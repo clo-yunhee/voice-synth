@@ -2,7 +2,7 @@ export default {
   name: 'Bright female /a/',
   frequency: 245,
   source: {
-    name: 'KLGLOTT88',
+    name: 'LF',
     params: {
       Oq: 0.8
     }

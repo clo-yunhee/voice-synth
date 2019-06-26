@@ -5,6 +5,7 @@ import RosenbergC from "./sources/RosenbergC"
 import LiljencrantsFant from "./sources/LiljencrantsFant"
 import KLGLOTT88 from "./sources/KLGLOTT88"
 import synthPresets from "../presets"
+import {db2gain} from '../gainConversion'
 
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
@@ -195,7 +196,7 @@ class VoiceSynth {
         if (change === true && (i === undefined || i === j)) {
           const Fi = this.formantF[j];
           const Qi = Fi / this.formantBw[j];
-          const Gi = Math.pow(10, this.formantGain[j] / 20);
+          const Gi = db2gain(this.formantGain[j]);
 
           filter.frequency.exponentialRampToValueAtTime(Fi, this.context.currentTime + 0.05);
           filter.Q.exponentialRampToValueAtTime(Qi, this.context.currentTime + 0.05);

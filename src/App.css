@@ -94,7 +94,9 @@
 }
 
 .source-container,
-.glottal-flow-container {
+.glottal-flow-container,
+.vt-container,
+.vt-plot-container {
   padding: 3vmin;
   min-width: 250px;
 }
@@ -102,10 +104,6 @@
 .glottal-flow-svg {
   padding: 6px;
   border: 1px #8997b3 dashed;
-}
-
-.vt-container {
-  padding: 3vmin;
 }
 
 .formant-freq-slider-container {
@@ -130,6 +128,11 @@
 
 .formant-gain-value {
   width: calc(4ch + 1vmin);
+}
+
+.vt-plot-svg {
+  padding: 6px;
+  border: 1px #8997b3 dashed;
 }
 
 .App-footer {

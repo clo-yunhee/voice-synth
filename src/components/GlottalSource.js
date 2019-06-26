@@ -72,7 +72,9 @@ class GlottalSource extends React.PureComponent {
   };
 
   _getWaveData = () => {
-    return this.synth.getSource().getArray(GlottalSource.nbPoints);
+    const data = this.synth.getSource().getArray(GlottalSource.nbPoints);
+
+    return [...data, ...data];
   };
 
   render() {
@@ -158,7 +160,7 @@ class GlottalSource extends React.PureComponent {
                   <Tooltip title="Shape of a glottal pulse cycle">
                     <Graph
                         width={GlottalSource.nbPoints}
-                        height={GlottalSource.nbPoints * 9 / 16}
+                        height={.5 * GlottalSource.nbPoints * 9 / 16}
                         className="glottal-flow-svg"
                     >
                       <GraphPlot color="orange" data={this.state.sourceWave}/>
