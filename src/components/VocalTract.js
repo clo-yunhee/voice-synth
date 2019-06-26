@@ -23,6 +23,7 @@ class VocalTract extends React.PureComponent {
     super(props);
     this.synth = this.props.synth;
     this.state = this.getSyncState();
+    this.state.filterResponse = this._getFrequencyResponse();
   }
 
   componentDidMount() {
@@ -34,13 +35,12 @@ class VocalTract extends React.PureComponent {
       toggle: this.synth.filterPass,
       formants: this.synth.formantF,
       bandwidths: this.synth.formantBw,
-      gains: this.synth.formantGain,
-      filterResponse: this._getFrequencyResponse()
+      gains: this.synth.formantGain
     }
   }
 
   onPreset = () => {
-    this.setState(this.getSyncState());
+    this.setState(this.getSyncState(), this._setFrequencyResponse);
   };
 
   onToggle = (evt, newValue) => {
@@ -55,7 +55,7 @@ class VocalTract extends React.PureComponent {
     const newFormants = [...this.state.formants];
     newFormants[i] = newFi;
 
-    this.setState({formants: newFormants, filterResponse: this._getFrequencyResponse()});
+    this.setState({formants: newFormants}, this._setFrequencyResponse);
     this.synth.setFormantFreq(i, newFi);
   };
 
@@ -66,7 +66,7 @@ class VocalTract extends React.PureComponent {
     const newBandwidths = [...this.state.bandwidths];
     newBandwidths[i] = newBwi;
 
-    this.setState({bandwidths: newBandwidths, filterResponse: this._getFrequencyResponse()});
+    this.setState({bandwidths: newBandwidths}, this._setFrequencyResponse);
     this.synth.setFormantBw(i, newBwi);
   };
 
@@ -77,12 +77,12 @@ class VocalTract extends React.PureComponent {
     const newGains = [...this.state.gains];
     newGains[i] = newGi;
 
-    this.setState({gains: newGains, filterResponse: this._getFrequencyResponse()});
+    this.setState({gains: newGains}, this._setFrequencyResponse);
     this.synth.setFormantGain(i, newGi);
   };
 
   _getFrequencyResponse() {
-    const nbFormants = this.synth.formantF.length;
+    const nbFormants = this.state.formants.length;
     const response = new Array(nbFormants);
 
     const nbPoints = 2 * VocalTract.plotNbPoints;
@@ -105,7 +105,7 @@ class VocalTract extends React.PureComponent {
 
       for (let k = 0; k < nbPoints; ++k) {
         // convert to dB
-        response[i][k] = db2gain(gain2db(response[i][k]) + this.synth.formantGain[i]);
+        response[i][k] = db2gain(gain2db(response[i][k]) + this.state.gains[i]);
         overallResponse[k] += response[i][k];
 
         // transformation is for the plot to look nicer
@@ -118,6 +118,10 @@ class VocalTract extends React.PureComponent {
     }
 
     return [...response, overallResponse];
+  }
+
+  _setFrequencyResponse() {
+    this.setState({filterResponse: this._getFrequencyResponse()});
   }
 
   render() {
