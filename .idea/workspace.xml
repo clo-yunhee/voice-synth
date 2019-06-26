@@ -6,24 +6,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b4a539a2-b839-4402-b6d8-1191159bc54c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/gainConversion.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/GlottalSource.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/GlottalSource.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Graph.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Graph.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/GraphPlot.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/GraphPlot.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/VocalTract.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/VocalTract.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/presets/brightFemale_a.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/presets/brightFemale_a.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/presets/brightFemale_e.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/presets/brightFemale_e.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/presets/brightFemale_o.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/presets/brightFemale_o.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/presets/brightMale_a.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/presets/brightMale_a.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/presets/darkFemale_o.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/presets/darkFemale_o.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/presets/darkFemale_on.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/presets/darkFemale_on.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/presets/darkMale_a.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/presets/darkMale_a.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/presets/default.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/presets/default.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/synth/VoiceSynth.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/synth/VoiceSynth.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/synth/sources/LiljencrantsFant.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/synth/sources/LiljencrantsFant.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/synth/sources/PeriodicWaveBuffer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/synth/sources/PeriodicWaveBuffer.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -39,8 +24,38 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/components/VocalTract.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="114">
-              <caret line="90" column="34" selection-start-line="90" selection-start-column="34" selection-end-line="90" selection-end-column="34" />
+            <state relative-caret-position="209">
+              <caret line="41" column="20" lean-forward="true" selection-start-line="41" selection-start-column="20" selection-end-line="41" selection-end-column="20" />
+              <folding>
+                <element signature="e#0#42#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/synth/sources/CutoffSawtooth.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="171">
+              <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="14" selection-end-column="3" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/Graph.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="228">
+              <caret line="12" column="60" lean-forward="true" selection-start-line="12" selection-start-column="60" selection-end-line="12" selection-end-column="60" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/GlottalSource.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="174">
+              <caret line="67" column="19" lean-forward="true" selection-start-line="67" selection-start-column="19" selection-end-line="67" selection-end-column="19" />
               <folding>
                 <element signature="e#0#42#0" expanded="true" />
               </folding>
@@ -51,20 +66,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/presets/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="152">
-              <caret line="18" column="15" selection-start-line="18" selection-start-column="15" selection-end-line="18" selection-end-column="15" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/synth/VoiceSynth.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-325">
-              <caret line="193" column="40" lean-forward="true" selection-start-line="193" selection-start-column="40" selection-end-line="193" selection-end-column="40" />
-              <folding>
-                <element signature="e#0#30#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="171">
+              <caret line="19" column="13" lean-forward="true" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -81,29 +84,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/GraphPlot.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
+            <state relative-caret-position="639">
               <caret line="34" lean-forward="true" selection-start-line="34" selection-end-line="34" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/Graph.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="266">
-              <caret line="14" column="74" selection-start-line="14" selection-start-column="74" selection-end-line="14" selection-end-column="74" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/GlottalSource.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1479">
-              <caret line="73" column="24" lean-forward="true" selection-start-line="73" selection-start-column="24" selection-end-line="76" selection-end-column="30" />
-              <folding>
-                <element signature="e#0#42#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -122,15 +104,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="416">
               <caret line="132" column="14" selection-start-line="132" selection-start-column="14" selection-end-line="132" selection-end-column="14" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/presets/brightFemale_o.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="190">
-              <caret line="10" column="18" selection-start-line="10" selection-start-column="18" selection-end-line="10" selection-end-column="18" />
             </state>
           </provider>
         </entry>
@@ -207,10 +180,10 @@
         <option value="$PROJECT_DIR$/src/synth/sources/PeriodicWaveBuffer.js" />
         <option value="$PROJECT_DIR$/src/synth/sources/LiljencrantsFant.js" />
         <option value="$PROJECT_DIR$/src/components/Graph.js" />
-        <option value="$PROJECT_DIR$/src/synth/VoiceSynth.js" />
         <option value="$PROJECT_DIR$/src/gainConversion.js" />
         <option value="$PROJECT_DIR$/src/components/GraphPlot.js" />
         <option value="$PROJECT_DIR$/src/App.css" />
+        <option value="$PROJECT_DIR$/src/synth/VoiceSynth.js" />
         <option value="$PROJECT_DIR$/src/components/VocalTract.js" />
       </list>
     </option>
@@ -366,7 +339,7 @@
       <workItem from="1561455491339" duration="7237000" />
       <workItem from="1561475982123" duration="415000" />
       <workItem from="1561476415269" duration="2248000" />
-      <workItem from="1561526061656" duration="5851000" />
+      <workItem from="1561526061656" duration="7647000" />
     </task>
     <task id="LOCAL-00001" summary="Added basic oscillator functionality with gain and H0 sliders.">
       <created>1561018517873</created>
@@ -459,11 +432,25 @@
       <option name="project" value="LOCAL" />
       <updated>1561485179402</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Added plot of vocal tract frequency response.">
+      <created>1561532032919</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1561532032919</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Fixed plot not updating correctly.">
+      <created>1561533194787</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1561533194787</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="140754000" />
+    <option name="totallyTimeSpent" value="142550000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -478,13 +465,13 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.3329821" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.3329821" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3261105" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.312026" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.312026" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3997833" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -493,7 +480,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.32827735" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" weight="0.32932165" />
       <window_info anchor="bottom" id="TypeScript" order="10" weight="0.32936078" />
-      <window_info anchor="bottom" id="Terminal" order="11" weight="0.33802816" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" visible="true" weight="0.33802816" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -545,7 +532,9 @@
     <MESSAGE value="Dedicated components for graph plotting.&#10;Adjusted presets again." />
     <MESSAGE value="Longer transition phase for filter parameters" />
     <MESSAGE value="Reverted changes to LF model. Using limits and normalization to prevent issues." />
-    <option name="LAST_COMMIT_MESSAGE" value="Reverted changes to LF model. Using limits and normalization to prevent issues." />
+    <MESSAGE value="Added plot of vocal tract frequency response." />
+    <MESSAGE value="Fixed plot not updating correctly." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed plot not updating correctly." />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
@@ -610,16 +599,6 @@
     <entry file="file://$PROJECT_DIR$/node_modules/@material-ui/lab/Slider/Slider.d.ts" />
     <entry file="file://$PROJECT_DIR$/node_modules/@material-ui/core/Box/Box.d.ts" />
     <entry file="file://$PROJECT_DIR$/node_modules/@material-ui/core/Select/Select.d.ts" />
-    <entry file="file://$PROJECT_DIR$/src/components/ControlsNavbar.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="102" column="23" selection-start-line="102" selection-start-column="23" selection-end-line="102" selection-end-column="23" />
-          <folding>
-            <element signature="e#0#44#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/node_modules/@material-ui/core/InputLabel/InputLabel.d.ts" />
     <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external/lib.dom.d.ts">
       <provider selected="true" editor-type-id="text-editor">
@@ -649,13 +628,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="228">
           <caret line="12" column="27" selection-start-line="12" selection-start-column="27" selection-end-line="12" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/synth/sources/CutoffSawtooth.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="14" selection-end-column="3" />
         </state>
       </provider>
     </entry>
@@ -736,23 +708,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/@types/react/index.d.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="203">
-          <caret line="458" column="17" selection-start-line="458" selection-start-column="17" selection-end-line="458" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/GlottalSource.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1479">
-          <caret line="73" column="24" lean-forward="true" selection-start-line="73" selection-start-column="24" selection-end-line="76" selection-end-column="30" />
-          <folding>
-            <element signature="e#0#42#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/App.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="416">
@@ -760,20 +715,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/presets/index.js">
+    <entry file="file://$PROJECT_DIR$/node_modules/@types/react/index.d.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="18" column="15" selection-start-line="18" selection-start-column="15" selection-end-line="18" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/synth/VoiceSynth.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-325">
-          <caret line="193" column="40" lean-forward="true" selection-start-line="193" selection-start-column="40" selection-end-line="193" selection-end-column="40" />
-          <folding>
-            <element signature="e#0#30#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="214">
+          <caret line="446" column="40" lean-forward="true" selection-start-line="446" selection-start-column="40" selection-end-line="446" selection-end-column="40" />
         </state>
       </provider>
     </entry>
@@ -784,24 +729,68 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Graph.js">
+    <entry file="file://$PROJECT_DIR$/src/components/GraphPlot.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="14" column="74" selection-start-line="14" selection-start-column="74" selection-end-line="14" selection-end-column="74" />
+        <state relative-caret-position="639">
+          <caret line="34" lean-forward="true" selection-start-line="34" selection-end-line="34" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/GraphPlot.js">
+    <entry file="file://$PROJECT_DIR$/src/components/ControlsNavbar.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="34" lean-forward="true" selection-start-line="34" selection-end-line="34" />
+        <state relative-caret-position="836">
+          <caret line="53" column="25" lean-forward="true" selection-start-line="53" selection-start-column="25" selection-end-line="53" selection-end-column="25" />
+          <folding>
+            <element signature="e#0#44#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/synth/VoiceSynth.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="203" column="9" lean-forward="true" selection-start-line="203" selection-start-column="9" selection-end-line="203" selection-end-column="9" />
+          <folding>
+            <element signature="e#0#30#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/presets/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="19" column="13" lean-forward="true" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/GlottalSource.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="174">
+          <caret line="67" column="19" lean-forward="true" selection-start-line="67" selection-start-column="19" selection-end-line="67" selection-end-column="19" />
+          <folding>
+            <element signature="e#0#42#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Graph.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="228">
+          <caret line="12" column="60" lean-forward="true" selection-start-line="12" selection-start-column="60" selection-end-line="12" selection-end-column="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/synth/sources/CutoffSawtooth.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="14" selection-end-column="3" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/VocalTract.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
-          <caret line="90" column="34" selection-start-line="90" selection-start-column="34" selection-end-line="90" selection-end-column="34" />
+        <state relative-caret-position="209">
+          <caret line="41" column="20" lean-forward="true" selection-start-line="41" selection-start-column="20" selection-end-line="41" selection-end-column="20" />
           <folding>
             <element signature="e#0#42#0" expanded="true" />
           </folding>

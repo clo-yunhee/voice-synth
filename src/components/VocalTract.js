@@ -55,8 +55,8 @@ class VocalTract extends React.PureComponent {
     const newFormants = [...this.state.formants];
     newFormants[i] = newFi;
 
-    this.setState({formants: newFormants}, this._setFrequencyResponse);
     this.synth.setFormantFreq(i, newFi);
+    this.setState({formants: newFormants}, this._setFrequencyResponse);
   };
 
   onFormantBand = (formantNb, log) => (evt, newValue) => {
@@ -66,8 +66,8 @@ class VocalTract extends React.PureComponent {
     const newBandwidths = [...this.state.bandwidths];
     newBandwidths[i] = newBwi;
 
-    this.setState({bandwidths: newBandwidths}, this._setFrequencyResponse);
     this.synth.setFormantBw(i, newBwi);
+    this.setState({bandwidths: newBandwidths}, this._setFrequencyResponse);
   };
 
   onFormantGain = (formantNb) => (evt) => {
@@ -77,8 +77,8 @@ class VocalTract extends React.PureComponent {
     const newGains = [...this.state.gains];
     newGains[i] = newGi;
 
-    this.setState({gains: newGains}, this._setFrequencyResponse);
     this.synth.setFormantGain(i, newGi);
+    this.setState({gains: newGains}, this._setFrequencyResponse);
   };
 
   _getFrequencyResponse() {

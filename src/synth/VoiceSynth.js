@@ -198,9 +198,9 @@ class VoiceSynth {
           const Qi = Fi / this.formantBw[j];
           const Gi = db2gain(this.formantGain[j]);
 
-          filter.frequency.exponentialRampToValueAtTime(Fi, this.context.currentTime + 0.05);
-          filter.Q.exponentialRampToValueAtTime(Qi, this.context.currentTime + 0.05);
-          gainNode.gain.exponentialRampToValueAtTime(Gi, this.context.currentTime + 0.05);
+          filter.frequency.setValueAtTime(Fi, this.context.currentTime);
+          filter.Q.setValueAtTime(Qi, this.context.currentTime);
+          gainNode.gain.setValueAtTime(Gi, this.context.currentTime);
         }
       }
 
