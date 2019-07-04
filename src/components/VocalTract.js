@@ -40,7 +40,7 @@ class VocalTract extends React.PureComponent {
   }
 
   onPreset = () => {
-    this.setState(this.getSyncState(), this._setFrequencyResponse);
+    this.setState({...this.getSyncState(), filterResponse: this._getFrequencyResponse()});
   };
 
   onToggle = (evt, newValue) => {
@@ -55,8 +55,11 @@ class VocalTract extends React.PureComponent {
     const newFormants = [...this.state.formants];
     newFormants[i] = newFi;
 
-    this.synth.setFormantFreq(i, newFi);
-    this.setState({formants: newFormants}, this._setFrequencyResponse);
+    this.setState({formants: newFormants});
+
+    this.synth.setFormantFreq(i, newFi, () => {
+      this.setState({filterResponse: this._getFrequencyResponse(i)});
+    });
   };
 
   onFormantBand = (formantNb, log) => (evt, newValue) => {
@@ -66,8 +69,11 @@ class VocalTract extends React.PureComponent {
     const newBandwidths = [...this.state.bandwidths];
     newBandwidths[i] = newBwi;
 
-    this.synth.setFormantBw(i, newBwi);
-    this.setState({bandwidths: newBandwidths}, this._setFrequencyResponse);
+    this.setState({bandwidths: newBandwidths});
+
+    this.synth.setFormantBw(i, newBwi, () => {
+      this.setState({filterResponse: this._getFrequencyResponse(i)});
+    });
   };
 
   onFormantGain = (formantNb) => (evt) => {
@@ -77,16 +83,29 @@ class VocalTract extends React.PureComponent {
     const newGains = [...this.state.gains];
     newGains[i] = newGi;
 
-    this.synth.setFormantGain(i, newGi);
-    this.setState({gains: newGains}, this._setFrequencyResponse);
+    this.synth.setFormantGain(i, newGi, () => {
+      this.setState({filterResponse: this._getFrequencyResponse(i)});
+    });
   };
 
-  _getFrequencyResponse() {
-    const nbFormants = this.state.formants.length;
+  /*onFormantModified = (formantNb) => () => {
+    this.setState({filterResponse: this._getFrequencyResponse(formantNb)});
+  };*/
+
+  _getFrequencyResponse(j) {
+    const nbFormants = this.synth.formantF.length;
+
     const response = new Array(nbFormants);
 
     const nbPoints = 2 * VocalTract.plotNbPoints;
     const freqs = new Float32Array(nbPoints);
+
+    if (this.gainResponse === undefined) {
+      this.gainResponse = new Array(nbFormants);
+      for (let i = 0; i < nbFormants; ++i) {
+        this.gainResponse[i] = new Float32Array(nbPoints);
+      }
+    }
 
     const minFreq = Math.log10(100);
     const maxFreq = Math.log10(10100);
@@ -101,27 +120,33 @@ class VocalTract extends React.PureComponent {
 
     for (let i = 0; i < nbFormants; ++i) {
       response[i] = new Float32Array(nbPoints);
-      this.synth.filters[i].getFrequencyResponse(freqs, response[i], phaseResponse);
 
-      for (let k = 0; k < nbPoints; ++k) {
-        // convert to dB
-        response[i][k] = db2gain(gain2db(response[i][k]) + this.state.gains[i]);
-        overallResponse[k] += response[i][k];
+      if (j !== undefined && j !== i) {
+        for (let k = 0; k < nbPoints; ++k) {
+          overallResponse[k] += this.gainResponse[i][k];
+          response[i][k] = this.state.filterResponse[i][k];
+        }
+      } else {
+        this.synth.filters[i].getFrequencyResponse(freqs, this.gainResponse[i], phaseResponse);
 
-        // transformation is for the plot to look nicer
-        response[i][k] = gain2db(response[i][k]) / 150 + .99
+        for (let k = 0; k < nbPoints; ++k) {
+          // convert to dB
+          this.gainResponse[i][k] *= db2gain(this.synth.formantGain[i]);
+          overallResponse[k] += this.gainResponse[i][k];
+
+          // transformation is for the plot to look nicer
+          response[i][k] = gain2db(this.gainResponse[i][k]) / 150 + .95
+        }
       }
     }
 
     for (let k = 0; k < nbPoints; ++k) {
-      overallResponse[k] = gain2db(overallResponse[k]) / 150 + .99;
+      overallResponse[k] = gain2db(overallResponse[k]) / 150 + .95;
     }
 
-    return [...response, overallResponse];
-  }
+    response.push(overallResponse);
 
-  _setFrequencyResponse() {
-    this.setState({filterResponse: this._getFrequencyResponse()});
+    return response;
   }
 
   render() {

@@ -1,4 +1,3 @@
-import * as math from 'mathjs'
 import Sawtooth from './sources/Sawtooth'
 import CutoffSawtooth from './sources/CutoffSawtooth'
 import RosenbergC from "./sources/RosenbergC"
@@ -10,6 +9,8 @@ import {db2gain} from '../gainConversion'
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
 class VoiceSynth {
+
+  static callbackDelay = 25;
 
   constructor() {
     this.sources = {
@@ -69,7 +70,9 @@ class VoiceSynth {
     this._setFilters(true);
 
     if (this.onPreset) {
-      this.onPreset.forEach(fn => fn());
+      setTimeout(() => {
+        this.onPreset.forEach(fn => fn())
+      }, VoiceSynth.callbackDelay);
     }
   }
 
@@ -115,19 +118,19 @@ class VoiceSynth {
     this._setFilters(true);
   }
 
-  setFormantFreq(i, freq) {
+  setFormantFreq(i, freq, callback) {
     this.formantF[i] = freq;
-    this._setFilters(true, i);
+    this._setFilters(true, i, callback);
   }
 
-  setFormantBw(i, bw) {
+  setFormantBw(i, bw, callback) {
     this.formantBw[i] = bw;
-    this._setFilters(true, i);
+    this._setFilters(true, i, callback);
   }
 
-  setFormantGain(i, gain) {
+  setFormantGain(i, gain, callback) {
     this.formantGain[i] = gain;
-    this._setFilters(true, i);
+    this._setFilters(true, i, callback);
   }
 
   _setSource() {
@@ -185,7 +188,7 @@ class VoiceSynth {
     }
   }
 
-  _setFilters(change, i) {
+  _setFilters(change, i, callback) {
 
     this.sourceGain.disconnect();
 
@@ -198,9 +201,11 @@ class VoiceSynth {
           const Qi = Fi / this.formantBw[j];
           const Gi = db2gain(this.formantGain[j]);
 
-          filter.frequency.setValueAtTime(Fi, this.context.currentTime);
-          filter.Q.setValueAtTime(Qi, this.context.currentTime);
-          gainNode.gain.setValueAtTime(Gi, this.context.currentTime);
+          const time = this.context.currentTime + (VoiceSynth.callbackDelay / 2000);
+
+          filter.frequency.exponentialRampToValueAtTime(Fi, time);
+          filter.Q.exponentialRampToValueAtTime(Qi, time);
+          gainNode.gain.exponentialRampToValueAtTime(Gi, time);
         }
       }
 
@@ -209,77 +214,9 @@ class VoiceSynth {
       this.sourceGain.connect(this.amp);
     }
 
-    /*if (this.filter) {
-      this.filter.disconnect();
+    if (callback !== undefined) {
+      setTimeout(callback, VoiceSynth.callbackDelay);
     }
-    this.prefiltGain.disconnect();
-    this.sourceGain.disconnect();
-
-    if (this.filterPass) {
-      if (!this.filter || change === true) {
-        const {B, A} = this._calculateFilters(change, i);
-        this.filter = this.context.createIIRFilter(B, A);
-      }
-
-      this.sourceGain.connect(this.prefiltGain);
-      this.prefiltGain.connect(this.filter);
-      this.filter.connect(this.amp);
-    } else {
-      this.sourceGain.connect(this.amp);
-    }*/
-  }
-
-  _calculateFilters(change, i) {
-    const N = this.formantF.length;
-    const fs = this.context.sampleRate;
-
-    for (let j = 0; j < N; ++j) {
-      if (i === undefined || j === i) {
-        const F = this.formantF[j];
-        const Bw = this.formantBw[j];
-
-        const r = Math.exp(-Math.PI * Bw / fs);
-        const phi = 2 * Math.PI * F / fs;
-
-        const pole = math.complex({r, phi});
-
-        this.poles[j] = pole;
-        this.poles[N + j] = math.conj(pole);
-      }
-    }
-
-    const B = [1];
-    const A = VoiceSynth._calculatePoly(this.poles);
-
-    return {B, A};
-  }
-
-  static _calculatePoly(z) {
-    const N = z.length;
-    /*const P = math.zeros(N + 1);
-    P.set([0], math.complex(1));*/
-
-    const P = math.identity(1, N + 1);
-
-    for (let k = 0; k < N; ++k) {
-      //P[1:k+1] = P[1:k+1] - z[k] * P[0:k];
-
-      const ind = math.index(0, math.range(0, k, true));
-      const ind1 = math.index(0, math.range(1, k + 1, true));
-
-      const Pz = math.multiply(z[k], P.subset(ind));
-      const PmPz = math.chain(P.subset(ind1)).subtract(Pz).done();
-
-      P.subset(ind1, PmPz);
-    }
-
-    const Pre = new Array(N + 1);
-
-    for (let k = 0; k < N + 1; ++k) {
-      Pre[k] = math.re(P.get([0, k]));
-    }
-
-    return Pre;
   }
 
 }

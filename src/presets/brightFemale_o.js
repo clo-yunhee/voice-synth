@@ -4,7 +4,7 @@ export default {
   source: {
     name: 'LF',
     params: {
-      Oq: 0.8
+      Oq: 0.65
     }
   },
   formants: {

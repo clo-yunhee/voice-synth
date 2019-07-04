@@ -1,5 +1,5 @@
 function db2gain(dB) {
-  return Math.pow(10, dB / 20);
+  return 10 ** (dB / 20);
 }
 
 function gain2db(gain) {
