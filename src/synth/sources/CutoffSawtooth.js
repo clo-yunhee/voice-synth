@@ -16,7 +16,7 @@ class CutoffSawtooth extends PeriodicWaveBuffer {
 
   getSample(t) {
     if (t < this.params.Oq) {
-      return 1 - t;
+      return t;
     } else {
       return 0;
     }

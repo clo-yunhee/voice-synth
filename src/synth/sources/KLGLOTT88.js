@@ -18,9 +18,7 @@ class KLGLOTT88 extends PeriodicWaveBuffer {
     const {Oq} = this.params;
 
     if (t <= Oq) {
-      const te = t / Oq;
-
-      return te ** 2 - te ** 3;
+      return t ** 2 / Oq ** 2 - t ** 3 / Oq ** 3;
     } else {
       return 0;
     }

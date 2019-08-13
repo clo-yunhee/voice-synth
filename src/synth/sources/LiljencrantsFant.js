@@ -4,22 +4,30 @@ class LiljencrantsFant extends PeriodicWaveBuffer {
 
   getDefaultParams() {
     return {
-      Oq: 0.6
+      Oq: 0.5,
+      am: 0.8
     }
   }
 
   getParamRange() {
+    // Empirical linear regression
+    const max_am = -0.23 * this.params.Oq + 1.01;
+
     return {
-      Oq: {min: 0.25, max: 0.8}
+      Oq: {min: 0.2, max: 0.8},
+      am: {min: 0.74, max: max_am}
     }
   }
 
   getSample(t) {
-    const {Oq} = this.params;
+    // p1 = Oq = Te
+    // p2 = Ug'(Te) = E0 / Ee
+    // p3 = 1 - am = 1 - Tp / Te
+    const {Oq, am} = this.params;
 
     const p1 = Oq;
     const p2 = 0.1;
-    const p3 = 0.25;
+    const p3 = 1 - am;
 
     const te = p1;
     const mtc = te - 1;

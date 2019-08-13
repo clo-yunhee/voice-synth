@@ -4,11 +4,12 @@ export default {
   source: {
     name: 'LF',
     params: {
-      Oq: 0.65
+      Oq: 0.68,
+      am: 0.74
     }
   },
   formants: {
-    freqs: [540, 2900, 3250, 3600, 4950],
+    freqs: [700, 2300, 3250, 3600, 4950],
     bands: [60, 90, 120, 150, 200],
     gains: [0, -20, -15, -40, -56],
   }

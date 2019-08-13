@@ -1,4 +1,3 @@
-import Sawtooth from './sources/Sawtooth'
 import CutoffSawtooth from './sources/CutoffSawtooth'
 import RosenbergC from "./sources/RosenbergC"
 import LiljencrantsFant from "./sources/LiljencrantsFant"
@@ -14,7 +13,6 @@ class VoiceSynth {
 
   constructor() {
     this.sources = {
-      'sawtooth': new Sawtooth(),
       'cutoffSawtooth': new CutoffSawtooth(),
       'rosenbergC': new RosenbergC(),
       'LF': new LiljencrantsFant(),
@@ -63,10 +61,9 @@ class VoiceSynth {
     this.volume = 1.0;
     this.playing = true;
     this.filterPass = true;
-    this.sourceGain.value = 0.1;
-    this.prefiltGain.gain.value = 1;
+    this.sourceGain.gain.value = 0.2;
+    this.prefiltGain.gain.value = 5;
     this.amp.gain.value = this.volume;
-    this.poles = new Array(2 * this.formantF.length);
     this._setFilters(true);
 
     if (this.onPreset) {

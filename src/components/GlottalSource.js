@@ -56,11 +56,28 @@ class GlottalSource extends React.PureComponent {
   onSourceParam = (paramKey) => (evt) => {
     const paramValue = evt.target.value;
 
-    const {min, max} = this.synth.getSource().getParamRange()[paramKey];
+    // Update all parameters - in case they're inter-dependent.
+    const paramRange = this.synth.getSource().getParamRange();
+    Object.entries(this.state.sourceParams).forEach(([key, value]) => {
+      let {min, max} = paramRange[key];
 
-    let coercedValue = Math.max(min, Math.min(max, paramValue));
+      if (key === paramKey) {
+        value = paramValue;
+      }
 
-    this.synth.setSourceParam(paramKey, coercedValue);
+      console.log(key, value, min, max, value);
+
+      // Truncate to 2nd decimal place.
+      min = Math.round(min * 100) / 100;
+      max = Math.round(max * 100) / 100;
+      value = Math.round(value * 100) / 100;
+
+      console.log(key, value, min, max, value);
+
+      let coercedValue = Math.max(min, Math.min(max, value));
+      this.synth.setSourceParam(key, coercedValue);
+    });
+
     this._syncSourceParams();
   };
 
@@ -117,7 +134,6 @@ class GlottalSource extends React.PureComponent {
                       value={this.state.source}
                       onChange={this.onSource}
                   >
-                    <MenuItem value="sawtooth">Sawtooth</MenuItem>
                     <MenuItem value="cutoffSawtooth">Sawtooth with cut-off</MenuItem>
                     <MenuItem value="rosenbergC">Cosine Rosenberg model</MenuItem>
                     <MenuItem value="LF">Liljencrants-Fant model</MenuItem>
@@ -136,7 +152,10 @@ class GlottalSource extends React.PureComponent {
                           <Grid item>
                             <TextField
                                 type="number"
-                                inputProps={{...this.synth.getSource().getParamRange()[key], step: 0.01}}
+                                inputProps={{
+                                  ...this.synth.getSource().getParamRange(this.synth.getSource().params)[key],
+                                  step: 0.01
+                                }}
                                 onChange={this.onSourceParam(key)}
                                 value={value}
                             />
@@ -160,7 +179,7 @@ class GlottalSource extends React.PureComponent {
                   <Tooltip title="Shape of a glottal pulse cycle">
                     <Graph
                         width={GlottalSource.nbPoints}
-                        height={.5 * GlottalSource.nbPoints * 9 / 16}
+                        height={GlottalSource.nbPoints * 9 / 16}
                         className="glottal-flow-svg"
                     >
                       <GraphPlot color="orange" data={this.state.sourceWave}/>

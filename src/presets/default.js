@@ -1,15 +1,16 @@
 export default {
   name: 'Default',
-  frequency: 170,
+  frequency: 245,
   source: {
     name: 'LF',
     params: {
-      Oq: 0.6
+      Oq: 0.6,
+      am: 0.8
     }
   },
   formants: {
-    freqs: [350, 2000, 2800, 3600, 4950],
-    bands: [60, 100, 120, 150, 200],
-    gains: [0, -20, -15, -40, -56],
+    freqs: [990, 1420, 2900, 3900, 4950],
+    bands: [80, 90, 120, 130, 140],
+    gains: [0, -6, -32, -20, -50],
   }
 }

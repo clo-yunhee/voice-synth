@@ -5,14 +5,14 @@ class RosenbergC extends PeriodicWaveBuffer {
   getDefaultParams() {
     return {
       Oq: 0.52,
-      am: 0.1
+      am: 0.8
     }
   }
 
   getParamRange() {
     return {
       Oq: {min: 0.1, max: 0.9},
-      am: {min: 0, max: 1}
+      am: {min: 0.51, max: 0.99}
     }
   }
 
