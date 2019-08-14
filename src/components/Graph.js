@@ -6,7 +6,6 @@ class Graph extends React.Component {
     const {width, height, children} = this.props;
 
     const childProps = {width, height};
-
     let elements = React.Children.toArray(children);
 
     if (elements.length === 1) {

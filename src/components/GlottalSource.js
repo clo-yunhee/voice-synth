@@ -115,8 +115,8 @@ class GlottalSource extends React.PureComponent {
                     <Grid item xs>
                       <Tooltip title="Fundamental frequency, otherwise known as pitch">
                         <Slider
-                            min={Math.log10(50)}
-                            max={Math.log10(500)}
+                            min={Math.log10(70)}
+                            max={Math.log10(600)}
                             value={Math.log10(this.state.H0)}
                             onChange={this.onH0}
                         />

@@ -1,9 +1,9 @@
-function db2gain(dB) {
+function db2amp(dB) {
   return 10 ** (dB / 20);
 }
 
-function gain2db(gain) {
-  return 20 * Math.log10(gain);
+function amp2db(amp) {
+  return 20 * Math.log10(amp);
 }
 
-export {db2gain, gain2db};
+export {db2amp, amp2db};

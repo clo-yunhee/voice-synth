@@ -96,7 +96,8 @@
 .source-container,
 .glottal-flow-container,
 .vt-container,
-.vt-plot-container {
+.vt-plot-container,
+.vt-vowel-container {
   padding: 3vmin;
   min-width: 250px;
 }
@@ -128,11 +129,6 @@
 
 .formant-gain-value {
   width: calc(4ch + 1vmin);
-}
-
-.vt-plot-svg {
-  padding: 6px;
-  border: 1px #8997b3 dashed;
 }
 
 .App-footer {

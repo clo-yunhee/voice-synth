@@ -8,16 +8,36 @@ import Switch from "@material-ui/core/Switch";
 import TextField from "@material-ui/core/TextField";
 import Tooltip from "@material-ui/core/Tooltip";
 import React from "react";
-import Graph from './Graph'
-import GraphPlot from './GraphPlot'
-import {db2gain, gain2db} from '../gainConversion'
+import {HorizontalGridLines, LineSeries, XAxis, XYPlot, YAxis} from 'react-vis';
+import VowelSpace from "./VowelSpace";
+import {amp2db, db2amp} from '../gainConversion'
+
+function formatTickHz(f) {
+  const log2 = Math.log10(2);
+  const log4 = Math.log10(0.5);
+  const logf = Math.log10(f);
+
+  if (logf % 1 === 0
+      || (log2 + logf) % 1 === 0
+      || (log4 + logf) % 1 === 0) {
+
+    if (f < 1000) {
+      return f + " Hz";
+    } else {
+      return (f / 1000) + " kHz";
+    }
+  }
+}
 
 class VocalTract extends React.PureComponent {
 
-  static plotMinFreq = 100;
+  static plotMinFreq = 50;
+  static plotMaxFreq = 10800;
   static plotNbPoints = 512;
+  static plotWidth = 576;
+  static plotHeight = 360;
   static plotColors = ['orange', 'brown', 'green', 'red', 'magenta', 'black'];
-  static plotThickness = [1, 1, 1, 1, 1, 1.25];
+  static plotThickness = [1, 1, 1, 1, 1, 1.5];
 
   constructor(props) {
     super(props);
@@ -88,63 +108,84 @@ class VocalTract extends React.PureComponent {
     });
   };
 
-  /*onFormantModified = (formantNb) => () => {
-    this.setState({filterResponse: this._getFrequencyResponse(formantNb)});
-  };*/
+  onVowelSpaceChange = ({F1, F2, dragEnd}) => {
+    const newFormants = [...this.state.formants];
+    newFormants[0] = F1;
+    newFormants[1] = F2;
+
+    this.setState({formants: newFormants});
+
+    if (!dragEnd) {
+      this.synth.setFormantFreq(0, F1);
+      this.synth.setFormantFreq(1, F2);
+    } else {
+      this.synth.setFormantFreq(0, F1, () => {
+        this.synth.setFormantFreq(1, F2, () => {
+          this.setState({filterResponse: this._getFrequencyResponse()});
+        });
+      });
+    }
+  };
 
   _getFrequencyResponse(j) {
-    const nbFormants = this.synth.formantF.length;
-
-    const response = new Array(nbFormants);
+    const response = [];
 
     const nbPoints = 2 * VocalTract.plotNbPoints;
     const freqs = new Float32Array(nbPoints);
 
-    if (this.gainResponse === undefined) {
-      this.gainResponse = new Array(nbFormants);
-      for (let i = 0; i < nbFormants; ++i) {
-        this.gainResponse[i] = new Float32Array(nbPoints);
-      }
-    }
-
-    const minFreq = Math.log10(100);
-    const maxFreq = Math.log10(10100);
+    const minFreq = Math.log10(VocalTract.plotMinFreq);
+    const maxFreq = Math.log10(VocalTract.plotMaxFreq);
 
     // Log scale.
     for (let k = 0; k < nbPoints; ++k) {
       freqs[k] = Math.pow(10, minFreq + (k * (maxFreq - minFreq)) / nbPoints);
     }
 
+    const magResponse = new Float32Array(nbPoints);
     const phaseResponse = new Float32Array(nbPoints);
+
     const overallResponse = new Float32Array(nbPoints);
 
-    for (let i = 0; i < nbFormants; ++i) {
-      response[i] = new Float32Array(nbPoints);
+    const filters = this.synth.filters;
 
+    for (let i = 0; i < filters.length; ++i) {
       if (j !== undefined && j !== i) {
-        for (let k = 0; k < nbPoints; ++k) {
-          overallResponse[k] += this.gainResponse[i][k];
-          response[i][k] = this.state.filterResponse[i][k];
-        }
+        const r = this.state.filterResponse[i].map(d => d.y);
+
+        response.push(r);
       } else {
-        this.synth.filters[i].getFrequencyResponse(freqs, this.gainResponse[i], phaseResponse);
-
+        filters[i].getFrequencyResponse(freqs, magResponse, phaseResponse);
         for (let k = 0; k < nbPoints; ++k) {
-          // convert to dB
-          this.gainResponse[i][k] *= db2gain(this.synth.formantGain[i]);
-          overallResponse[k] += this.gainResponse[i][k];
+          const gain = amp2db(magResponse[k]);
 
-          // transformation is for the plot to look nicer
-          response[i][k] = gain2db(this.gainResponse[i][k]) / 150 + .95
+          if (i < this.state.gains.length) {
+            magResponse[k] = gain + this.state.gains[i];
+          } else {
+            magResponse[k] = gain;
+          }
         }
+
+        response.push(Array.from(magResponse));
       }
     }
 
+    // Overall response
     for (let k = 0; k < nbPoints; ++k) {
-      overallResponse[k] = gain2db(overallResponse[k]) / 150 + .95;
+      overallResponse[k] = 0;
+      for (let i = 0; i < filters.length; ++i) {
+        overallResponse[k] += db2amp(response[i][k]);
+      }
+      overallResponse[k] = amp2db(overallResponse[k]);
     }
 
-    response.push(overallResponse);
+    response.push(Array.from(overallResponse));
+
+    // Transform into XYPlottable format
+    for (const r of response) {
+      for (let k = 0; k < nbPoints; ++k) {
+        r[k] = {x: freqs[k], y: r[k]};
+      }
+    }
 
     return response;
   }
@@ -315,22 +356,42 @@ class VocalTract extends React.PureComponent {
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <Graph
-                      width={VocalTract.plotNbPoints}
-                      height={VocalTract.plotNbPoints * 9 / 16}
-                      className="vt-plot-svg"
+                  <XYPlot
+                      width={VocalTract.plotWidth}
+                      height={VocalTract.plotHeight}
+                      xType="log"
+                      xDomain={[VocalTract.plotMinFreq, VocalTract.plotMaxFreq]}
+                      yType="linear"
+                      yDomain={[-150, 20]}
                   >
+                    <HorizontalGridLines/>
                     {
                       Object.keys(this.state.filterResponse).map(i => (
-                          <GraphPlot
+                          <LineSeries
                               key={`vtf-plot-${i}`}
-                              color={VocalTract.plotColors[i]}
+                              stroke={VocalTract.plotColors[i]}
                               strokeWidth={VocalTract.plotThickness[i]}
                               data={this.state.filterResponse[i]}
                           />
                       ))
                     }
-                  </Graph>
+                    <XAxis title="Frequency (Hz)" tickFormat={formatTickHz}/>
+                    <YAxis title="Gain (dB)"/>
+                  </XYPlot>
+                </Grid>
+              </Grid>
+            </Paper>
+          </Grid>
+          <Grid item>
+            <Paper className="vt-vowel-container">
+              <Grid container spacing={2} direction="column" alignItems="flex-start">
+                <Grid item>
+                  <Typography variant="subtitle2">
+                    Vowel formant space
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <VowelSpace formants={this.state.formants} onChange={this.onVowelSpaceChange}/>
                 </Grid>
               </Grid>
             </Paper>

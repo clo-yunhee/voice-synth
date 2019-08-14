@@ -3,7 +3,7 @@ import RosenbergC from "./sources/RosenbergC"
 import LiljencrantsFant from "./sources/LiljencrantsFant"
 import KLGLOTT88 from "./sources/KLGLOTT88"
 import synthPresets from "../presets"
-import {db2gain} from '../gainConversion'
+import {db2amp} from '../gainConversion'
 
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
@@ -22,10 +22,27 @@ class VoiceSynth {
     this.loadPreset = this.loadPreset.bind(this);
 
     this.context = new AudioContext();
+    this.sourceFilter = this.context.createBiquadFilter();
+    this.breathFilter = this.context.createBiquadFilter();
     this.sourceGain = this.context.createGain();
     this.prefiltGain = this.context.createGain();
+    this.zeroFilter = this.context.createBiquadFilter();
     this.amp = this.context.createGain();
 
+    this.sourceFilter.type = 'lowpass';
+    this.sourceFilter.frequency.setValueAtTime(10000, this.context.currentTime);
+
+    this.breathFilter.type = 'lowpass';
+    this.breathFilter.frequency.setValueAtTime(1500, this.context.currentTime);
+
+    this.zeroFilter.type = 'bandpass';
+    this.zeroFilter.frequency.setValueAtTime(1, this.context.currentTime);
+    this.zeroFilter.Q.setValueAtTime(1, this.context.currentTime);
+
+    this.zeroFilter.disconnect();
+
+    this.sourceFilter.connect(this.sourceGain);
+    this.breathFilter.connect(this.sourceGain);
     this.sourceGain.connect(this.prefiltGain);
     this.amp.connect(this.context.destination);
 
@@ -148,7 +165,7 @@ class VoiceSynth {
     this.source.buffer = buffer;
     this.source.loop = true;
     this.source.start();
-    this.source.connect(this.sourceGain);
+    this.source.connect(this.sourceFilter);
 
     const noiseBuffer = source.getNoiseBuffer(this.context, buffer);
 
@@ -156,33 +173,36 @@ class VoiceSynth {
     this.breath.buffer = noiseBuffer;
     this.breath.loop = true;
     this.breath.start();
-    this.breath.connect(this.sourceGain);
+    this.breath.connect(this.breathFilter);
   }
 
   _connectFilters() {
     if (this.filters) {
       this.filters.forEach(flt => flt.disconnect());
     }
-    if (this.preflt) {
-      this.preflt.forEach(flt => flt.disconnect());
+    if (this.filterGain) {
+      this.filterGain.forEach(flt => flt.disconnect());
     }
     this.prefiltGain.disconnect();
+    this.zeroFilter.disconnect();
     this.sourceGain.disconnect();
 
     const N = this.formantF.length;
 
-    this.preflt = new Array(N);
+    this.filterGain = new Array(N);
     this.filters = new Array(N);
 
     for (let i = 0; i < N; ++i) {
-      this.preflt[i] = this.context.createGain();
+      this.filterGain[i] = this.context.createGain();
       this.filters[i] = this.context.createBiquadFilter();
       this.filters[i].type = 'bandpass';
 
-      this.prefiltGain.connect(this.preflt[i]);
-      this.preflt[i].connect(this.filters[i]);
-      this.filters[i].connect(this.amp);
+      this.prefiltGain.connect(this.filters[i]);
+      this.filters[i].connect(this.filterGain[i]);
+      this.filterGain[i].connect(this.amp);
     }
+
+    this.zeroFilter.connect(this.amp);
   }
 
   _setFilters(change, i, callback) {
@@ -191,12 +211,13 @@ class VoiceSynth {
 
     if (this.filterPass) {
       for (let j = 0; j < this.filters.length; ++j) {
-        const gainNode = this.preflt[j];
-        const filter = this.filters[j];
         if (change === true && (i === undefined || i === j)) {
+          const gainNode = this.filterGain[j];
+          const filter = this.filters[j];
+
           const Fi = this.formantF[j];
           const Qi = Fi / this.formantBw[j];
-          const Gi = db2gain(this.formantGain[j]);
+          const Gi = db2amp(this.formantGain[j]);
 
           const time = this.context.currentTime + (VoiceSynth.callbackDelay / 2000);
 
