@@ -1,100 +1,54 @@
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import Slider from "@material-ui/lab/Slider";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-import InputLabel from "@material-ui/core/InputLabel";
-import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
-import Tooltip from "@material-ui/core/Tooltip";
 import React from "react";
-import Graph from './Graph';
-import GraphPlot from './GraphPlot';
+import SourceFrequency from "./glottalSource/SourceFrequency";
+import SourceParam from "./glottalSource/SourceParam";
+import SourceGraph from "./glottalSource/SourceGraph";
+import AppContext from "../AppContext";
 
-class GlottalSource extends React.PureComponent {
+class GlottalSource extends React.Component {
 
+  static contextType = AppContext;
   static nbPoints = 256;
 
-  constructor(props) {
+  constructor(props, context) {
     super(props);
-    this.synth = this.props.synth;
-    this.state = this.getSyncState();
-  }
-
-  componentDidMount() {
-    this.synth.addPresetListener(this.onPreset);
-  }
-
-  getSyncState() {
-    return {
-      H0: this.synth.frequency,
-      source: this.synth.sourceName,
-      sourceParams: {...this.synth.getSource().params},
-      sourceWave: this._getWaveData()
-    };
-  }
-
-  onPreset = () => {
-    this.setState(this.getSyncState());
-  };
-
-  onH0 = (evt, newValue) => {
-    const newH0 = Math.pow(10, newValue);
-
-    this.setState({H0: newH0});
-    this.synth.setFrequency(newH0);
-  };
-
-  onSource = (evt) => {
-    const newValue = evt.target.value;
-
-    this.setState({source: newValue});
-    this.synth.setSource(newValue);
-    this._syncSourceParams();
-  };
-
-  onSourceParam = (paramKey) => (evt) => {
-    const paramValue = evt.target.value;
-
-    // Update all parameters - in case they're inter-dependent.
-    const paramRange = this.synth.getSource().getParamRange();
-    Object.entries(this.state.sourceParams).forEach(([key, value]) => {
-      let {min, max} = paramRange[key];
-
-      if (key === paramKey) {
-        value = paramValue;
+    this.state = {
+      frequency: 100,
+      model: {
+        type: 'none', params: {}
       }
+    };
+    context.subscribeEvent('glottalSource.frequency', this.handleFrequency);
+    context.subscribeEvent('glottalSource.model', this.handleModel);
+  }
 
-      console.log(key, value, min, max, value);
-
-      // Truncate to 2nd decimal place.
-      min = Math.round(min * 100) / 100;
-      max = Math.round(max * 100) / 100;
-      value = Math.round(value * 100) / 100;
-
-      console.log(key, value, min, max, value);
-
-      let coercedValue = Math.max(min, Math.min(max, value));
-      this.synth.setSourceParam(key, coercedValue);
-    });
-
-    this._syncSourceParams();
+  onFrequency = (frequency) => {
+    this.context.glottalSource.onFrequency(frequency);
   };
 
-  _syncSourceParams = () => {
-    this.setState({
-      sourceParams: {...this.synth.getSource().params},
-      sourceWave: this._getWaveData()
-    });
+  onModelType = (evt) => {
+    this.context.glottalSource.onModel({name: evt.target.value});
   };
 
-  _getWaveData = () => {
-    const data = this.synth.getSource().getArray(GlottalSource.nbPoints);
+  onModelParam = (key, value) => {
+    this.context.glottalSource.onModel({params: {[key]: value}});
+  };
 
-    return [...data, ...data];
+  handleFrequency = ({frequency}) => {
+    this.setState({frequency});
+  };
+
+  handleModel = ({model}) => {
+    this.setState({model});
   };
 
   render() {
+    const {frequency, model: {type, params, waveform}} = this.state;
+
     return (
         <>
           <Grid item>
@@ -106,33 +60,12 @@ class GlottalSource extends React.PureComponent {
                   </Typography>
                 </Grid>
                 <Grid item className="freq-slider-container">
-                  <Grid container spacing={2} alignItems="center">
-                    <Grid item>
-                      <Typography>
-                        H<sub>0</sub>
-                      </Typography>
-                    </Grid>
-                    <Grid item xs>
-                      <Tooltip title="Fundamental frequency, otherwise known as pitch">
-                        <Slider
-                            min={Math.log10(70)}
-                            max={Math.log10(600)}
-                            value={Math.log10(this.state.H0)}
-                            onChange={this.onH0}
-                        />
-                      </Tooltip>
-                    </Grid>
-                    <Grid item className="freq-slider-value">
-                      <Typography>
-                        = {Math.round(this.state.H0)} Hz
-                      </Typography>
-                    </Grid>
-                  </Grid>
+                  <SourceFrequency frequency={frequency} onChange={this.onFrequency}/>
                 </Grid>
                 <Grid item>
                   <Select
-                      value={this.state.source}
-                      onChange={this.onSource}
+                      value={type}
+                      onChange={this.onModelType}
                   >
                     <MenuItem value="cutoffSawtooth">Sawtooth with cut-off</MenuItem>
                     <MenuItem value="rosenbergC">Cosine Rosenberg model</MenuItem>
@@ -141,26 +74,15 @@ class GlottalSource extends React.PureComponent {
                   </Select>
                 </Grid>
                 {
-                  Object.entries(this.state.sourceParams).map(([key, value]) => (
+                  Object.entries(params).map(([key, {value, min, max}]) => (
                       <Grid item key={key}>
-                        <Grid container spacing={1} alignItems="center">
-                          <Grid item>
-                            <InputLabel>
-                              {key} =
-                            </InputLabel>
-                          </Grid>
-                          <Grid item>
-                            <TextField
-                                type="number"
-                                inputProps={{
-                                  ...this.synth.getSource().getParamRange(this.synth.getSource().params)[key],
-                                  step: 0.01
-                                }}
-                                onChange={this.onSourceParam(key)}
-                                value={value}
-                            />
-                          </Grid>
-                        </Grid>
+                        <SourceParam
+                            name={key}
+                            value={value}
+                            min={min}
+                            max={max}
+                            onChange={this.onModelParam}
+                        />
                       </Grid>
                   ))
                 }
@@ -176,15 +98,7 @@ class GlottalSource extends React.PureComponent {
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <Tooltip title="Shape of a glottal pulse cycle">
-                    <Graph
-                        width={GlottalSource.nbPoints}
-                        height={GlottalSource.nbPoints * 9 / 16}
-                        className="glottal-flow-svg"
-                    >
-                      <GraphPlot color="orange" data={this.state.sourceWave}/>
-                    </Graph>
-                  </Tooltip>
+                  <SourceGraph data={waveform}/>
                 </Grid>
               </Grid>
             </Paper>

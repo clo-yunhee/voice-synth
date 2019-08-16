@@ -18,7 +18,7 @@ class PeriodicWaveBuffer {
   }
 
   getArray(len, isForBuffer) {
-    let samples = new Float32Array(len);
+    const samples = new Float32Array(len);
 
     for (let i = 0; i < len; ++i) {
       samples[i] = this.getSample(i / len);

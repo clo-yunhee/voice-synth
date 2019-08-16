@@ -1,96 +1,96 @@
 .App {
-  text-align: center;
+    text-align: center;
 }
 
 .App-react-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: calc(3 * (10px + 1.2vmin));
-  pointer-events: none;
+    animation: App-logo-spin infinite 20s linear;
+    height: calc(3 * (10px + 1.2vmin));
+    pointer-events: none;
 }
 
 .App-mui-logo {
-  margin: calc(10px + 1.2vmin);
-  height: calc(2 * (10px + 1.2vmin));
-  pointer-events: none;
+    margin: calc(10px + 1.2vmin);
+    height: calc(2 * (10px + 1.2vmin));
+    pointer-events: none;
 }
 
 .App-controls {
-  z-index: 20;
-  position: fixed;
-  top: 0;
-  background-color: #282c34;
-  min-width: 100vw;
-  max-height: 100vh;
-  min-height: calc(4 * (10px + 1.2vmin));
-  font-size: calc(10px + 1.2vmin);
-  color: white;
-  box-sizing: border-box;
-  box-shadow: 0 2px 1px 2px #282c34;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+    z-index: 20;
+    position: fixed;
+    top: 0;
+    background-color: #282c34;
+    min-width: 100vw;
+    max-height: 100vh;
+    min-height: calc(4 * (10px + 1.2vmin));
+    font-size: calc(10px + 1.2vmin);
+    color: white;
+    box-sizing: border-box;
+    box-shadow: 0 2px 1px 2px #282c34;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .App-controls-left {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
 }
 
 .App-controls-left > * {
-  padding-left: calc(.5 * (10px + 1.2vmin));
-  margin-right: calc(.5 * (10px + 1.2vmin));
+    padding-left: calc(.5 * (10px + 1.2vmin));
+    margin-right: calc(.5 * (10px + 1.2vmin));
 }
 
 .App-controls-right {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
 }
 
 .App-controls-right > * {
-  margin-left: calc(.5 * (10px + 1.2vmin));
-  padding-right: calc(.5 * (10px + 1.2vmin));
+    margin-left: calc(.5 * (10px + 1.2vmin));
+    padding-right: calc(.5 * (10px + 1.2vmin));
 }
 
 .App-controls-section {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  margin: 0 calc(.5 * (10px + 1.2vmin));
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 0 calc(.5 * (10px + 1.2vmin));
 }
 
 .volume-slider-container {
-  width: 200px;
+    width: 200px;
 }
 
 .preset-card {
-  padding: 2px 1vw;
+    padding: 2px 1vw;
 }
 
 .App-wrapper {
-  max-width: 100vw;
-  max-height: 100vh;
-  padding: calc(4 * (10px + 1.2vmin)) 0;
-  overflow: hidden;
+    max-width: 100vw;
+    max-height: 100vh;
+    padding: calc(4 * (10px + 1.2vmin)) 0;
+    overflow: hidden;
 }
 
 .App-container {
-  max-width: 100vw;
-  max-height: calc(100vh - 7 * (10px + 1.2vmin));
-  padding: calc(1.5 * (10px + 1.2vmin));
+    max-width: 100vw;
+    max-height: calc(100vh - 7 * (10px + 1.2vmin));
+    padding: calc(1.5 * (10px + 1.2vmin));
 }
 
 .freq-slider-container {
-  padding: 3vmin;
-  min-width: 250px;
+    padding: 3vmin;
+    min-width: 250px;
 }
 
 .freq-slider-value {
-  width: 10ch;
+    width: 10ch;
 }
 
 .source-container,
@@ -98,69 +98,69 @@
 .vt-container,
 .vt-plot-container,
 .vt-vowel-container {
-  padding: 3vmin;
-  min-width: 250px;
+    padding: 3vmin;
+    min-width: 250px;
 }
 
 .glottal-flow-svg {
-  padding: 6px;
-  border: 1px #8997b3 dashed;
+    padding: 6px;
+    border: 1px #8997b3 dashed;
 }
 
 .formant-freq-slider-container {
-  min-width: 250px;
+    min-width: 250px;
 }
 
 .formant-freq-value {
-  width: calc(7ch + 1vmin);
+    width: calc(7ch + 1vmin);
 }
 
 .formant-band-container {
-  font-size: small !important;
+    font-size: small !important;
 }
 
 .formant-band-slider-container {
-  min-width: 75px;
+    min-width: 75px;
 }
 
 .formant-band-value {
-  width: calc(6ch + 1vmin);
+    width: calc(6ch + 1vmin);
 }
 
 .formant-gain-value {
-  width: calc(4ch + 1vmin);
+    width: calc(4ch + 1vmin);
 }
 
 .App-footer {
-  z-index: 20;
-  position: fixed;
-  bottom: 0;
-  background-color: #282c34;
-  min-width: 100vw;
-  min-height: calc(4 * (10px + 1.2vmin));
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 1.2vmin);
-  color: white;
-  box-sizing: border-box;
-  box-shadow: 0 -2px 1px 2px #282c34;
+    z-index: 20;
+    position: fixed;
+    bottom: 0;
+    background-color: #282c34;
+    min-width: 100vw;
+    min-height: calc(4 * (10px + 1.2vmin));
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 1.2vmin);
+    color: white;
+    box-sizing: border-box;
+    box-shadow: 0 -2px 1px 2px #282c34;
 }
 
 .App-link {
-  color: #61dafb;
+    color: #61dafb;
 }
 
 .source-link-container {
-  padding: 0 3vmin;
+    padding: 0 3vmin;
 }
 
 @keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }

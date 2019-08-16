@@ -9,7 +9,7 @@ window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
 class VoiceSynth {
 
-  static callbackDelay = 25;
+  static callbackDelay = 20;
 
   constructor() {
     this.sources = {
@@ -18,7 +18,6 @@ class VoiceSynth {
       'LF': new LiljencrantsFant(),
       'KLGLOTT88': new KLGLOTT88(),
     };
-    this.onPreset = [];
     this.loadPreset = this.loadPreset.bind(this);
 
     this.context = new AudioContext();
@@ -46,6 +45,10 @@ class VoiceSynth {
     this.sourceGain.connect(this.prefiltGain);
     this.amp.connect(this.context.destination);
 
+    this.volume = 1.0;
+    this.playing = false;
+    this.filterPass = true;
+
     this.formantF = [0, 0, 0, 0, 0];
     this._connectFilters();
   }
@@ -60,9 +63,9 @@ class VoiceSynth {
     this.amp.gain.value = 0;
   }
 
-  loadPreset(id) {
+  loadPreset(id, callback) {
     if (!id) {
-      id = "default";
+      throw new Error('No preset name provided.');
     }
 
     const preset = synthPresets[id];
@@ -75,39 +78,49 @@ class VoiceSynth {
     this.formantBw = [...preset.formants.bands];
     this.formantGain = [...preset.formants.gains];
 
-    this.volume = 1.0;
-    this.playing = true;
-    this.filterPass = true;
     this.sourceGain.gain.value = 0.2;
     this.prefiltGain.gain.value = 5;
     this.amp.gain.value = this.volume;
     this._setFilters(true);
 
-    if (this.onPreset) {
+    if (!this.playing) {
+      this.stop();
+    }
+
+    if (callback) {
       setTimeout(() => {
-        this.onPreset.forEach(fn => fn())
+        callback(preset)
       }, VoiceSynth.callbackDelay);
     }
-  }
-
-  addPresetListener(callback) {
-    this.onPreset.push(callback);
   }
 
   setVolume(vol) {
     this.volume = vol;
     if (this.playing) {
-      this.amp.gain.exponentialRampToValueAtTime(vol, this.context.currentTime + 0.025);
+      this.amp.gain.exponentialRampToValueAtTime(Math.max(1e-12, vol), this.context.currentTime + 0.02);
     }
   }
 
-  setFrequency(freq) {
-    this.frequency = freq;
-    this._setSource();
-  }
+  setSource({frequency, name, params}) {
+    if (frequency !== undefined) {
+      this.frequency = frequency;
+    }
+    if (name !== undefined) {
+      this.sourceName = name;
+    }
 
-  setSource(name) {
-    this.sourceName = name;
+    const source = this.getSource();
+
+    if (params !== undefined) {
+      Object.entries(params).forEach(([key, value]) => {
+        if (key in source.params) {
+          source.params[key] = value;
+        } else {
+          throw new Error(`Source parameter "${key}" does not exist.`)
+        }
+      });
+    }
+
     this._setSource();
   }
 
@@ -115,14 +128,8 @@ class VoiceSynth {
     return this.sources[this.sourceName];
   }
 
-  setSourceParam(key, value) {
-    const source = this.getSource();
+  setSourceParam(params) {
 
-    if (source.params.hasOwnProperty(key)) {
-      source.params[key] = Number(value);
-    } else {
-      throw Error("'Property doesn't exist.");
-    }
 
     this._setSource();
   }
@@ -132,19 +139,24 @@ class VoiceSynth {
     this._setFilters(true);
   }
 
-  setFormantFreq(i, freq, callback) {
-    this.formantF[i] = freq;
-    this._setFilters(true, i, callback);
-  }
+  setFormant(formants, callback) {
+    const ii = [];
 
-  setFormantBw(i, bw, callback) {
-    this.formantBw[i] = bw;
-    this._setFilters(true, i, callback);
-  }
+    for (const {i, frequency, gain, bandwidth} of formants) {
+      if (frequency !== undefined) {
+        this.formantF[i] = frequency;
+      }
+      if (gain !== undefined) {
+        this.formantGain[i] = gain;
+      }
+      if (bandwidth !== undefined) {
+        this.formantBw[i] = bandwidth;
+      }
 
-  setFormantGain(i, gain, callback) {
-    this.formantGain[i] = gain;
-    this._setFilters(true, i, callback);
+      ii.push(i);
+    }
+
+    this._setFilters(true, ii, callback);
   }
 
   _setSource() {
@@ -205,19 +217,19 @@ class VoiceSynth {
     this.zeroFilter.connect(this.amp);
   }
 
-  _setFilters(change, i, callback) {
+  _setFilters(change, j, callback) {
 
     this.sourceGain.disconnect();
 
     if (this.filterPass) {
-      for (let j = 0; j < this.filters.length; ++j) {
-        if (change === true && (i === undefined || i === j)) {
-          const gainNode = this.filterGain[j];
-          const filter = this.filters[j];
+      for (let i = 0; i < this.filters.length; ++i) {
+        if (change === true && (j === undefined || j === i || (Array.isArray(j) && j.includes(i)))) {
+          const gainNode = this.filterGain[i];
+          const filter = this.filters[i];
 
-          const Fi = this.formantF[j];
-          const Qi = Fi / this.formantBw[j];
-          const Gi = db2amp(this.formantGain[j]);
+          const Fi = this.formantF[i];
+          const Qi = Fi / this.formantBw[i];
+          const Gi = db2amp(this.formantGain[i]);
 
           const time = this.context.currentTime + (VoiceSynth.callbackDelay / 2000);
 

@@ -1,8 +1,5 @@
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-import IconButton from "@material-ui/core/IconButton";
-import PlayIcon from '@material-ui/icons/PlayArrow';
-import PauseIcon from '@material-ui/icons/Pause';
 import VolumeDown from '@material-ui/icons/VolumeDown';
 import VolumeUp from '@material-ui/icons/VolumeUp';
 import Slider from "@material-ui/lab/Slider";
@@ -11,70 +8,62 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem"
 import React from "react";
-import synthPresets from '../presets'
+import synthPresets, {defaultPreset} from '../presets'
+import PlayPause from "./navbar/PlayPause";
+import AppContext from "../AppContext";
 
-class ControlsNavbar extends React.Component {
-  constructor(props) {
+class Navbar extends React.PureComponent {
+
+  static contextType = AppContext;
+
+  constructor(props, context) {
     super(props);
-    this.synth = this.props.synth;
-    this.state = {selectedPreset: 'default', ...this.getSyncState()};
+    this.state = {
+      playing: false,
+      volume: 1.0,
+      preset: ''
+    };
+    context.subscribeEvent('media.toggle', this.handleToggle);
+    context.subscribeEvent('media.volume', this.handleVolume);
+    context.subscribeEvent('preset', this.handlePreset);
   }
 
-  componentDidMount() {
-    this.synth.addPresetListener(this.onPreset);
-  }
-
-  getSyncState() {
-    return {
-      playing: this.synth.playing,
-      volume: this.synth.volume,
-    }
-  }
-
-  onPreset = () => {
-    this.setState(this.getSyncState());
-  };
-
-  onReset = () => {
-    this.synth.loadPreset("default");
-  };
-
-  onLoadPreset = (evt) => {
-    const id = evt.target.value;
-
-    this.setState({selectedPreset: id});
-    this.synth.loadPreset(id);
-  };
-
-  onPlayPause = () => {
-    if (this.state.playing) {
-      this.synth.stop();
-      this.setState({playing: false});
-    } else {
-      this.synth.start();
-      this.setState({playing: true});
-    }
+  onToggle = (flag) => {
+    this.context.media.onToggle(flag);
   };
 
   onVolume = (evt, newValue) => {
-    this.setState({volume: newValue});
-    this.synth.setVolume(newValue);
+    this.context.media.onVolume(newValue);
+  };
+
+  onPreset = (evt) => {
+    this.context.onPreset(evt.target.value);
+  };
+
+  onReset = () => {
+    this.context.onPreset(defaultPreset);
+  };
+
+  handleToggle = ({flag}) => {
+    this.setState({playing: flag});
+  };
+
+  handleVolume = ({volume}) => {
+    this.setState({volume});
+  };
+
+  handlePreset = ({preset}) => {
+    this.setState({preset});
   };
 
   render() {
     return (
         <header className="App-controls">
           <Grid container className="App-controls-left">
-            <Grid item>
-              <Tooltip title="Start or pause the synthesizer">
-                <IconButton
-                    onClick={this.onPlayPause}
-                    style={{color: "white"}}
-                >
-                  {this.state.playing ? <PauseIcon/> : <PlayIcon/>}
-                </IconButton>
-              </Tooltip>
-            </Grid>
+            <PlayPause
+                playing={this.state.playing}
+                onChange={this.onToggle}
+            />
             <Grid item className="volume-slider-container">
               <Grid container spacing={2} alignItems="center">
                 <Grid item>
@@ -101,12 +90,12 @@ class ControlsNavbar extends React.Component {
               <Tooltip title="Load synth presets">
                 <Paper className="preset-card">
                   <Select
-                      value={this.state.selectedPreset}
-                      onChange={this.onLoadPreset}
+                      value={this.state.preset}
+                      onChange={this.onPreset}
                   >
                     {
-                      Object.entries(synthPresets).map(([id, {name}]) => (
-                          <MenuItem key={id} value={id}>{name}</MenuItem>
+                      Object.values(synthPresets).map(({name}) => (
+                          <MenuItem key={name} value={name}>{name}</MenuItem>
                       ))
                     }
                   </Select>
@@ -131,4 +120,4 @@ class ControlsNavbar extends React.Component {
 
 }
 
-export default ControlsNavbar;
+export default Navbar;

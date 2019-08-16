@@ -66,10 +66,6 @@ const VowelPresets = [
 ];
 
 // Aggregate all generated presets into one set.
-const FinalSet = makeSet(VowelPresets);
+export default makeSet(VowelPresets);
 
-// Export with default.
-export default ({
-  ...FinalSet,
-  default: FinalSet['Alto /a/']
-});
+export const defaultPreset = 'Tenor /a/';

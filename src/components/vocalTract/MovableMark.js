@@ -19,17 +19,21 @@ class MovableMark extends AbstractSeries {
   }
 
   _coord2plot({x, y}) {
+    const {marginLeft, marginTop} = this.props;
+
     const xScale = getAttributeScale(this.props, 'x');
     const yScale = getAttributeScale(this.props, 'y');
 
-    return {x: xScale.invert(x), y: yScale.invert(y)};
+    return {x: xScale.invert(x - marginLeft), y: yScale.invert(y - marginTop)};
   }
 
   _plot2coord({x, y}) {
+    const {marginLeft, marginTop} = this.props;
+
     const xScale = getAttributeScale(this.props, 'x');
     const yScale = getAttributeScale(this.props, 'y');
 
-    return {x: xScale(x), y: yScale(y)};
+    return {x: xScale(x) + marginLeft, y: yScale(y) + marginTop};
   }
 
   startDragging(event) {
@@ -75,10 +79,6 @@ class MovableMark extends AbstractSeries {
   render() {
     const {
       data: [d],
-      radius,
-      stroke,
-      fill,
-      opacity,
       className,
       innerWidth,
       innerHeight,
@@ -94,7 +94,7 @@ class MovableMark extends AbstractSeries {
     const {x, y} = this._plot2coord(d);
 
     return (
-        <g className={`${className} movablemark-container`}>
+        <g className={className}>
           <rect
               fill="black"
               opacity="0"
@@ -120,12 +120,11 @@ class MovableMark extends AbstractSeries {
           />
           <circle
               pointerEvents="none"
-              opacity={opacity}
-              stroke={stroke}
-              fill={fill}
+              stroke="orange"
+              fill="red"
               cx={x}
               cy={y}
-              r={radius}
+              r={4}
           />
         </g>
     );
@@ -145,7 +144,7 @@ MovableMark.propTypes = {
 };
 MovableMark.defaultProps = {
   ...AbstractSeries.defaultProps,
-  data: [{x: 0, y: 0}],
+  data: [{x: 150, y: 500}],
   radius: 2,
   stroke: 'orange',
   fill: 'red',

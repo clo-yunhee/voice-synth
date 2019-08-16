@@ -1093,9 +1093,9 @@
     warning "^4.0.1"
 
 "@material-ui/icons@^4.0.0-rc.0":
-  version "4.0.0-rc.0"
-  resolved "https://registry.yarnpkg.com/@material-ui/icons/-/icons-4.0.0-rc.0.tgz#c7895049ffcf452d74327cc096da7b80d1352d6f"
-  integrity sha512-n1kZUXwpFgcighnMGGf6H87uS5HXAT3wg2sga54/4Azv2Qu1Z0bE8UgdZOHvTV0TgDU9wFCJk5IpEeSwSEqnAA==
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/@material-ui/icons/-/icons-4.2.1.tgz#fe2f1c4f60c24256d244a69d86d0c00e8ed4037e"
+  integrity sha512-FvSD5lUBJ66frI4l4AYAPy2CH14Zs2Dgm0o3oOMr33BdQtOAjCgbdOcvPBeaD1w6OQl31uNW3CKOE8xfPNxvUQ==
   dependencies:
     "@babel/runtime" "^7.2.0"
 
