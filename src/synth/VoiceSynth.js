@@ -9,7 +9,7 @@ window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
 class VoiceSynth {
 
-  static callbackDelay = 20;
+  static callbackDelay = 0.01;
 
   constructor() {
     this.sources = {
@@ -58,27 +58,24 @@ class VoiceSynth {
       this.context.resume();
     }
 
-    if (this.source) {
-      this.source.start();
-    }
-    if (this.breath) {
-      this.breath.start();
-    }
+    this._setSource();
 
-    this.amp.gain.exponentialRampToValueAtTime(this.volume, this.context.currentTime + 0.2);
+    this.source.start();
+    this.breath.start();
+
+    this.amp.gain.setValueAtTime(0, this.context.currentTime);
+    this.amp.gain.linearRampToValueAtTime(this.volume, this.context.currentTime + 0.1);
     this.playing = true;
   }
 
   stop() {
-    if (this.source) {
-      this.source.stop();
-    }
-    if (this.breath) {
-      this.breath.stop();
-    }
+    const time = this.context.currentTime + 0.1;
+
+    this.source.stop(time);
+    this.breath.stop(time);
 
     this.playing = false;
-    this.amp.gain.linearRampToValueAtTime(0, this.context.currentTime + 0.1);
+    this.amp.gain.linearRampToValueAtTime(0, time);
   }
 
   loadPreset(id, callback) {
@@ -91,7 +88,6 @@ class VoiceSynth {
     this.frequency = preset.frequency;
     this.sourceName = preset.source.name;
     this.getSource().params = {...preset.source.params};
-    this._setSource();
     this.formantF = [...preset.formants.freqs];
     this.formantBw = [...preset.formants.bands];
     this.formantGain = [...preset.formants.gains];
@@ -101,17 +97,19 @@ class VoiceSynth {
     this.amp.gain.value = this.volume;
     this._setFilters(true);
 
+    if (this.playing) {
+      this.start();
+    }
+
     if (callback) {
-      setTimeout(() => {
-        callback(preset)
-      }, VoiceSynth.callbackDelay);
+      setTimeout(() => callback(preset), VoiceSynth.callbackDelay / 1000);
     }
   }
 
   setVolume(vol) {
     this.volume = vol;
     if (this.playing) {
-      this.amp.gain.exponentialRampToValueAtTime(Math.max(1e-12, vol), this.context.currentTime + 0.02);
+      this.amp.gain.linearRampToValueAtTime(vol, this.context.currentTime + 0.01);
     }
   }
 
@@ -135,7 +133,9 @@ class VoiceSynth {
       });
     }
 
-    this._setSource();
+    if (this.playing) {
+      this.start();
+    }
   }
 
   getSource() {
@@ -168,16 +168,28 @@ class VoiceSynth {
   }
 
   _setSource() {
+    const source = this.getSource();
+    const buffer = source.getBuffer(this.context, this.frequency);
+
+    // Transition fundamental frequency
+    const time = this.context.currentTime + 0.1;
+
+    const oldFrequency = this.source ? (this.context.sampleRate / this.source.buffer.length) : this.frequency;
+    const detuneCents = 1200 * Math.log2(this.frequency / oldFrequency);
+
     if (this.source) {
-      this.source.disconnect();
+      const node = this.source;
+      node.onended = () => node.disconnect();
+      node.stop(time);
+      node.detune.exponentialRampToValueAtTime(detuneCents, time / 2);
     }
 
     if (this.breath) {
-      this.breath.disconnect();
+      const node = this.breath;
+      node.onended = () => node.disconnect();
+      node.stop(time);
+      node.detune.exponentialRampToValueAtTime(detuneCents, time / 2);
     }
-
-    const source = this.getSource();
-    const buffer = source.getBuffer(this.context, this.frequency);
 
     this.source = this.context.createBufferSource();
     this.source.buffer = buffer;
@@ -235,11 +247,11 @@ class VoiceSynth {
           const Qi = Fi / this.formantBw[i];
           const Gi = db2amp(this.formantGain[i]);
 
-          const time = this.context.currentTime + (VoiceSynth.callbackDelay / 2000);
+          const time = this.context.currentTime + 0.005;
 
-          filter.frequency.exponentialRampToValueAtTime(Fi, time);
-          filter.Q.exponentialRampToValueAtTime(Qi, time);
-          gainNode.gain.exponentialRampToValueAtTime(Gi, time);
+          filter.frequency.linearRampToValueAtTime(Fi, time);
+          filter.Q.linearRampToValueAtTime(Qi, time);
+          gainNode.gain.linearRampToValueAtTime(Gi, time);
         }
       }
 
@@ -249,7 +261,7 @@ class VoiceSynth {
     }
 
     if (callback !== undefined) {
-      setTimeout(callback, VoiceSynth.callbackDelay);
+      setTimeout(callback, VoiceSynth.callbackDelay / 1000);
     }
   }
 

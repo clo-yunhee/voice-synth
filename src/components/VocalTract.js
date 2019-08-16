@@ -9,7 +9,7 @@ import VTResponse, {frequencies, plotNbPoints} from './vocalTract/VTResponse'
 import VTVowels from "./vocalTract/VTVowels";
 import AppContext from '../AppContext';
 
-const df = () => ({frequency: 100, gain: -6, bandwidth: 20});
+const df = () => ({frequency: 150, gain: -6, bandwidth: 20});
 const dr = () => [];
 
 class VocalTract extends React.Component {
