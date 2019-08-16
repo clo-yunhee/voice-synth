@@ -74,6 +74,7 @@ class Navbar extends React.PureComponent {
                     <Slider
                         min={0}
                         max={1}
+                        step={0.01}
                         value={this.state.volume}
                         onChange={this.onVolume}
                     />

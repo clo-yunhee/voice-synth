@@ -54,13 +54,24 @@ class VoiceSynth {
   }
 
   start() {
-    this.amp.gain.value = this.volume;
+    if (this.context.state === "suspended") {
+      // We're inside a click handler here, so Chrome will let us actually play
+      // audio if we call context.resume().
+      this.context.resume();
+      // If we don't do this, there tends to be a weird "pucking" sound
+      this.amp.gain.setValueAtTime(this.volume, this.context.currentTime + 0.3);
+    } else {
+      // Calling this instead of setting the value directly fixes stop/start
+      // after the volume has changed on FireFox.
+      this.amp.gain.setValueAtTime(this.volume, this.context.currentTime);
+    }
     this.playing = true;
   }
 
   stop() {
     this.playing = false;
-    this.amp.gain.value = 0;
+    // This is needed on FireFox, see above.
+    this.amp.gain.setValueAtTime(0, this.context.currentTime);;
   }
 
   loadPreset(id, callback) {
