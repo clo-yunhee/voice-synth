@@ -1,7 +1,7 @@
 import Grid from "@material-ui/core/Grid";
 import InputLabel from "@material-ui/core/InputLabel";
 import Tooltip from "@material-ui/core/Tooltip";
-import Slider from "@material-ui/lab/Slider";
+import Slider from "@material-ui/core/Slider";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import React from "react";
@@ -39,6 +39,7 @@ class FormantFreq extends React.PureComponent {
               <Slider
                   min={Math.log10(150)}
                   max={Math.log10(10000)}
+                  step={0.05}
                   value={Math.log10(frequency)}
                   onChange={this.onChangeLog}
               />

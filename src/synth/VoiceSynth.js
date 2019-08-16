@@ -64,7 +64,7 @@ class VoiceSynth {
     this.breath.start();
 
     this.amp.gain.setValueAtTime(0, this.context.currentTime);
-    this.amp.gain.linearRampToValueAtTime(this.volume, this.context.currentTime + 0.1);
+    this.amp.gain.linearRampToValueAtTime(this.volume, this.context.currentTime + 0.05);
     this.playing = true;
   }
 
@@ -172,7 +172,7 @@ class VoiceSynth {
     const buffer = source.getBuffer(this.context, this.frequency);
 
     // Transition fundamental frequency
-    const time = this.context.currentTime + 0.1;
+    const time = this.context.currentTime + 0.05;
 
     const oldFrequency = this.source ? (this.context.sampleRate / this.source.buffer.length) : this.frequency;
     const detuneCents = 1200 * Math.log2(this.frequency / oldFrequency);
@@ -181,14 +181,14 @@ class VoiceSynth {
       const node = this.source;
       node.onended = () => node.disconnect();
       node.stop(time);
-      node.detune.exponentialRampToValueAtTime(detuneCents, time / 2);
+      node.detune.linearRampToValueAtTime(detuneCents, time / 2);
     }
 
     if (this.breath) {
       const node = this.breath;
       node.onended = () => node.disconnect();
       node.stop(time);
-      node.detune.exponentialRampToValueAtTime(detuneCents, time / 2);
+      node.detune.linearRampToValueAtTime(detuneCents, time / 2);
     }
 
     this.source = this.context.createBufferSource();

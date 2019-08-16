@@ -4,9 +4,20 @@ import {AbstractSeries} from 'react-vis';
 import {getAttributeScale} from 'react-vis/es/utils/scales-utils';
 
 function getLocs(evt) {
-  const xLoc = evt.type === 'touchstart' ? evt.pageX : evt.offsetX;
-  const yLoc = evt.type === 'touchstart' ? evt.pageY : evt.offsetY;
-  return {xLoc, yLoc};
+  const {nativeEvent} = evt;
+
+  if (evt.type.startsWith("touch")) {
+    const rect = evt.target.getBoundingClientRect();
+    return {
+      xLoc: evt.touches[0].clientX - rect.left,
+      yLoc: evt.touches[0].clientY - rect.top
+    };
+  } else {
+    return {
+      xLoc: nativeEvent.offsetX,
+      yLoc: nativeEvent.offsetY
+    };
+  }
 }
 
 class MovableMark extends AbstractSeries {
@@ -16,6 +27,36 @@ class MovableMark extends AbstractSeries {
     this.state = {
       dragging: false,
     };
+  }
+
+  componentDidMount() {
+    let supportsPassiveOption = false;
+    try {
+      const opts = Object.defineProperty({}, 'passive', {
+        get: () => {
+          supportsPassiveOption = true;
+        }
+      });
+      const noop = function () {
+      };
+      window.addEventListener('testPassiveEventSupport', noop, opts);
+      window.removeEventListener('testPassiveEventSupport', noop, opts);
+    } catch (e) {
+    }
+
+    window.addEventListener('touchmove', evt => {
+      if (!this.state.dragging || evt.defaultPrevented) {
+        return;
+      }
+
+      evt.preventDefault();
+      this.onDrag(evt);
+    }, supportsPassiveOption ? {passive: false, capture: false} : false);
+
+  }
+
+  componentWillUnmount() {
+    this.rect.removeEventListener('touchstart');
   }
 
   _coord2plot({x, y}) {
@@ -38,7 +79,7 @@ class MovableMark extends AbstractSeries {
 
   startDragging(event) {
     const {onDrag} = this.props;
-    const {xLoc: x, yLoc: y} = getLocs(event.nativeEvent);
+    const {xLoc: x, yLoc: y} = getLocs(event);
 
     this.setState({
       dragging: true
@@ -49,27 +90,21 @@ class MovableMark extends AbstractSeries {
     }
   }
 
-  stopDragging(event) {
+  stopDragging() {
     const {dragging} = this.state;
     if (!dragging) {
       return;
     }
-    const {onDragEnd} = this.props;
-    const {xLoc: x, yLoc: y} = getLocs(event.nativeEvent);
 
     this.setState({
       dragging: false
     });
-
-    if (onDragEnd) {
-      onDragEnd(this._coord2plot({x, y}));
-    }
   }
 
   onDrag(event) {
     const {onDrag} = this.props;
     const {dragging} = this.state;
-    const {xLoc: x, yLoc: y} = getLocs(event.nativeEvent);
+    const {xLoc: x, yLoc: y} = getLocs(event);
 
     if (dragging && onDrag) {
       onDrag(this._coord2plot({x, y}));
@@ -96,29 +131,32 @@ class MovableMark extends AbstractSeries {
     return (
         <g className={className}>
           <rect
+              className="vt-vowels-rect"
               fill="black"
               opacity="0"
               x="0"
               y="0"
               width={Math.max(plotWidth, 0)}
               height={Math.max(plotHeight, 0)}
+
+              ref={r => this.rect = r}
+
               onMouseDown={e => this.startDragging(e)}
+              onTouchStart={e => this.startDragging(e)}
+
               onMouseMove={e => this.onDrag(e)}
+
               onMouseUp={e => this.stopDragging(e)}
+              onTouchEnd={e => this.stopDragging(e)}
+
               onMouseLeave={e => this.stopDragging(e)}
-              // preventDefault() so that mouse event emulation does not happen
-              onTouchEnd={e => {
-                e.preventDefault();
-                this.stopDragging(e);
-              }}
-              onTouchCancel={e => {
-                e.preventDefault();
-                this.stopDragging(e);
-              }}
+              onTouchCancel={e => this.stopDragging(e)}
+
               onContextMenu={e => e.preventDefault()}
               onContextMenuCapture={e => e.preventDefault()}
           />
           <circle
+              className="vt-vowels-circle"
               pointerEvents="none"
               stroke="orange"
               fill="red"
@@ -140,7 +178,6 @@ MovableMark.propTypes = {
   stroke: PropTypes.string,
   fill: PropTypes.string,
   onDrag: PropTypes.func,
-  onDragEnd: PropTypes.func,
 };
 MovableMark.defaultProps = {
   ...AbstractSeries.defaultProps,
@@ -149,8 +186,6 @@ MovableMark.defaultProps = {
   stroke: 'orange',
   fill: 'red',
   onDrag: () => {
-  },
-  onDragEnd: () => {
   },
 };
 

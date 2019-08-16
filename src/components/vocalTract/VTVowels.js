@@ -1,20 +1,42 @@
 import React from 'react';
-import {XAxis, XYPlot, YAxis} from "react-vis/es";
-import MovableMark from './MovableMark';
+import {XAxis, XYPlot, YAxis} from "react-vis";
+import MovableMark from './vowel/MovableMark';
+import VowelAreaSeries from './vowel/VowelAreaSeries';
 import AppContext from "../../AppContext";
+
+
+const plotWidth = 576;
+const plotHeight = 480;
+
+const plotDomainF1 = [1200, 150];
+const plotTicksF1 = [1200, 1000, 800, 600, 500, 400, 300, 200];
+
+const plotDomainF2 = [3000, 500];
+const plotTicksF2 = [3000, 2500, 2000, 1500, 1000, 500];
+
+function plotTickLabel(f) {
+  if (f < 1000) {
+    return f + " Hz";
+  } else {
+    return (f / 1000) + " kHz";
+  }
+}
+
+// Construct vowel areas
+const stdF1 = 100;
+const stdF2 = 150;
+
+const vowelAreas = [
+  {vowel: '/a/', F1: 800, F2: 1500},
+  {vowel: '/e/', F1: 600, F2: 2000},
+  {vowel: '/i/', F1: 350, F2: 2500},
+  {vowel: '/o/', F1: 600, F2: 1000},
+  {vowel: '/u/', F1: 350, F2: 800}
+];
 
 class VTVowels extends React.Component {
 
   static contextType = AppContext;
-
-  static plotWidth = 300;
-  static plotHeight = 300;
-
-  static plotDomainF1 = [150, 1400];
-  static plotTicksF1 = [150, 400, 800, 1200, 1400];
-
-  static plotDomainF2 = [500, 4000];
-  static plotTicksF2 = [500, 1000, 2000, 3000, 4000];
 
   constructor(props) {
     super(props);
@@ -23,36 +45,9 @@ class VTVowels extends React.Component {
     };
   }
 
-  /*shouldComponentUpdate(nextProps, nextState, nextContext) {
-    // Update if dragging status changed.
-    if (this.state.dragging !== nextState.dragging)
-      return true;
-
-    const {formants} = this.props;
-
-    // Update if formants weren't initialised before or not enough formants.
-    if (formants === undefined || formants.length < 2) {
-      return true;
-    }
-
-    // Optimisation: only update if dF1 > 100 & dF2 > 200.
-    const [{frequency: F1}, {frequency: F2}] = formants;
-    const [{frequency: nextF1}, {frequency: nextF2}] = nextProps.formants;
-
-    return (Math.abs(F1 - nextF1) > 100 && Math.abs(F2 - nextF2) > 200);
-  }*/
-
-  onDrag = ({x: F1, y: F2}) => {
+  onDrag = ({x: F2, y: F1}) => {
     const {onChange} = this.props;
     this.setState({dragging: true});
-    if (onChange) {
-      onChange(F1, F2);
-    }
-  };
-
-  onDragEnd = ({x: F1, y: F2}) => {
-    const {onChange} = this.props;
-    this.setState({dragging: false});
     if (onChange) {
       onChange(F1, F2);
     }
@@ -63,24 +58,32 @@ class VTVowels extends React.Component {
 
     return (
         <XYPlot
-            animation
-            width={VTVowels.plotWidth}
-            height={VTVowels.plotHeight}
-            xDomain={VTVowels.plotDomainF1}
-            yDomain={VTVowels.plotDomainF2}
-            margin={{top: 10, left: 40, right: 20, bottom: 40}}
+            className="vt-plot"
+            width={plotWidth}
+            height={plotHeight}
+            xDomain={plotDomainF2}
+            xType="log"
+            yDomain={plotDomainF1}
+            yType="log"
+            margin={{top: 10, left: 60, right: 30, bottom: 30}}
         >
-          <XAxis title="F1 (Hz)" tickValues={VTVowels.plotTicksF1}/>
-          <YAxis title="F2 (Hz)" tickValues={VTVowels.plotTicksF2}/>
+          <XAxis title="F2 (Hz)" tickValues={plotTicksF2} tickFormat={plotTickLabel}/>
+          <YAxis title="F1 (Hz)" tickValues={plotTicksF1} tickFormat={plotTickLabel}/>
+
+          <VowelAreaSeries
+              stdF1={stdF1}
+              stdF2={stdF2}
+              data={vowelAreas}
+          />
 
           <MovableMark
+              className="vt-vowels-mark"
               opacity={0.75}
               stroke="orange"
               fill="red"
-              data={[{x: F1, y: F2}]}
+              data={[{x: F2, y: F1}]}
               radius={6}
               onDrag={this.onDrag}
-              onDragEnd={this.onDragEnd}
           />
         </XYPlot>
     );

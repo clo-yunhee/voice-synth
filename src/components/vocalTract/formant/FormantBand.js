@@ -1,6 +1,6 @@
 import Grid from "@material-ui/core/Grid";
 import Tooltip from "@material-ui/core/Tooltip";
-import Slider from "@material-ui/lab/Slider";
+import Slider from "@material-ui/core/Slider";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import React from "react";
@@ -47,6 +47,7 @@ class FormantBand extends React.PureComponent {
                 <Slider
                     min={Math.log10(10)}
                     max={Math.log10(2000)}
+                    step={0.05}
                     value={Math.log10(bandwidth)}
                     onChange={this.onChangeLog}
                 />

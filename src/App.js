@@ -17,9 +17,6 @@ class App extends React.PureComponent {
     super(props);
     this.synth = new VoiceSynth();
     this.controller = makeControl(this.synth);
-  }
-
-  componentWillMount() {
     this.controller.onPreset(defaultPreset);
   }
 

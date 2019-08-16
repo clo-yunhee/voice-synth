@@ -9,9 +9,11 @@ class LiljencrantsFant extends PeriodicWaveBuffer {
     }
   }
 
-  getParamRange() {
+  getParamRange(params) {
+    params = params || this.params;
+
     // Empirical linear regression
-    const max_am = -0.23 * this.params.Oq + 1.01;
+    const max_am = -0.23 * params.Oq + 1.01;
 
     return {
       Oq: {min: 0.2, max: 0.8},

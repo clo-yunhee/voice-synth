@@ -129,7 +129,7 @@ class PeriodicWaveBuffer {
    *  (Abstract method)
    * Returns a dict of parameter range (min, max).
    */
-  getParamRange() {
+  getParamRange(params) {
     throw new Error('Unimplemented method');
   }
 

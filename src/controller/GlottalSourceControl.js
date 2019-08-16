@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import AbstractControl from './AbstractControl'
 import {plotNbPoints} from "../components/glottalSource/SourceGraph";
 
@@ -14,7 +15,7 @@ class GlottalSourceControl extends AbstractControl {
   }
 
   getSourceParams(p, source) {
-    const paramRange = source.getParamRange();
+    const paramRange = source.getParamRange(p);
     const params = {};
 
     Object.keys(p).forEach(key => {
@@ -41,43 +42,53 @@ class GlottalSourceControl extends AbstractControl {
     return waveform;
   }
 
+  correctParam(value, min, max) {
+    // Truncate to 2nd decimal place.
+    min = Math.round(min * 100) / 100;
+    max = Math.round(max * 100) / 100;
+
+    let correctedValue = Math.round(value * 100) / 100;
+
+    if (correctedValue < min) {
+      correctedValue = min;
+    }
+    if (correctedValue > max) {
+      correctedValue = max;
+    }
+
+    return correctedValue;
+  }
+
   onFrequency(frequency) {
     this.synth.setSource({frequency});
     this.fireEvent('frequency', {frequency});
   }
 
   onModel(source) {
-    const oldSource = this.synth.getSource();
-    const paramRange = oldSource.getParamRange();
+    if ((source.name === undefined || this.synth.sourceName === source.name)
+        && source.params !== undefined) {
+      const synthSource = this.synth.getSource();
 
-    if (this.synth.sourceName === source.name && source.params !== undefined) {
-      // Check and coerce parameter within bounds in case they're inter-dependent.
-      const oldParams = oldSource.params;
-      Object.entries(oldParams).forEach(([key, value]) => {
-        let {min, max} = paramRange[key];
+      let range = synthSource.getParamRange();
+      let params;
+      let newParams = {...synthSource.params, ...source.params};
 
-        if (key in source.params) {
-          value = source.params[key];
+      // Iteratively update parameters until it becomes stable.
+      do {
+        params = newParams;
+        newParams = {...params};
+
+        for (const [key, value] of Object.entries(newParams)) {
+          let {min, max} = range[key];
+
+          newParams[key] = this.correctParam(value, min, max);
         }
 
-        // Truncate to 2nd decimal place.
-        min = Math.round(min * 100) / 100;
-        max = Math.round(max * 100) / 100;
+        range = synthSource.getParamRange(newParams);
 
-        let correctedValue = Math.round(value * 100) / 100;
+      } while (!_.isEqual(params, newParams));
 
-        if (correctedValue < min) {
-          correctedValue = min;
-        }
-        if (correctedValue > max) {
-          correctedValue = max;
-        }
-
-        // If it has been corrected...
-        if (correctedValue !== value) {
-          source.params[key] = correctedValue;
-        }
-      });
+      source.params = params;
     }
 
     this.synth.setSource(source);

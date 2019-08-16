@@ -2,7 +2,7 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import VolumeDown from '@material-ui/icons/VolumeDown';
 import VolumeUp from '@material-ui/icons/VolumeUp';
-import Slider from "@material-ui/lab/Slider";
+import Slider from "@material-ui/core/Slider";
 import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
 import Select from "@material-ui/core/Select";
@@ -74,6 +74,7 @@ class Navbar extends React.PureComponent {
                     <Slider
                         min={0}
                         max={1}
+                        step={0.01}
                         value={this.state.volume}
                         onChange={this.onVolume}
                     />

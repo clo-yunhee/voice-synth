@@ -1,7 +1,7 @@
 import React from "react";
 import AppContext from "../../AppContext";
 import Grid from "@material-ui/core/Grid";
-import {HorizontalGridLines, LineSeries, VerticalGridLines, XAxis, XYPlot, YAxis} from "react-vis/es";
+import {HorizontalGridLines, LineSeries, VerticalGridLines, XAxis, XYPlot, YAxis} from "react-vis";
 
 const plotWidth = 320;
 const plotHeight = 240;

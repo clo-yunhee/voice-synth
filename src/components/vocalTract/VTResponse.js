@@ -1,5 +1,5 @@
 import React from 'react'
-import {HorizontalGridLines, LineSeries, VerticalGridLines, XAxis, XYPlot, YAxis} from "react-vis/es";
+import {HorizontalGridLines, LineSeries, VerticalGridLines, XAxis, XYPlot, YAxis} from "react-vis";
 import AppContext from "../../AppContext";
 
 const minFreq = 100;
