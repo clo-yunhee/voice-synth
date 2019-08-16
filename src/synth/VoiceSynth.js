@@ -54,13 +54,31 @@ class VoiceSynth {
   }
 
   start() {
-    this.amp.gain.value = this.volume;
+    if (this.context.state === 'suspended') {
+      this.context.resume();
+    }
+
+    if (this.source) {
+      this.source.start();
+    }
+    if (this.breath) {
+      this.breath.start();
+    }
+
+    this.amp.gain.exponentialRampToValueAtTime(this.volume, this.context.currentTime + 0.2);
     this.playing = true;
   }
 
   stop() {
+    if (this.source) {
+      this.source.stop();
+    }
+    if (this.breath) {
+      this.breath.stop();
+    }
+
     this.playing = false;
-    this.amp.gain.value = 0;
+    this.amp.gain.linearRampToValueAtTime(0, this.context.currentTime + 0.1);
   }
 
   loadPreset(id, callback) {
@@ -82,10 +100,6 @@ class VoiceSynth {
     this.prefiltGain.gain.value = 5;
     this.amp.gain.value = this.volume;
     this._setFilters(true);
-
-    if (!this.playing) {
-      this.stop();
-    }
 
     if (callback) {
       setTimeout(() => {
@@ -128,12 +142,6 @@ class VoiceSynth {
     return this.sources[this.sourceName];
   }
 
-  setSourceParam(params) {
-
-
-    this._setSource();
-  }
-
   toggleFilters(flag) {
     this.filterPass = flag;
     this._setFilters(true);
@@ -161,12 +169,10 @@ class VoiceSynth {
 
   _setSource() {
     if (this.source) {
-      this.source.stop();
       this.source.disconnect();
     }
 
     if (this.breath) {
-      this.breath.stop();
       this.breath.disconnect();
     }
 
@@ -176,7 +182,6 @@ class VoiceSynth {
     this.source = this.context.createBufferSource();
     this.source.buffer = buffer;
     this.source.loop = true;
-    this.source.start();
     this.source.connect(this.sourceFilter);
 
     const noiseBuffer = source.getNoiseBuffer(this.context, buffer);
@@ -184,7 +189,6 @@ class VoiceSynth {
     this.breath = this.context.createBufferSource();
     this.breath.buffer = noiseBuffer;
     this.breath.loop = true;
-    this.breath.start();
     this.breath.connect(this.breathFilter);
   }
 

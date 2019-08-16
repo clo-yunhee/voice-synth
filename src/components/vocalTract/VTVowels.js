@@ -68,6 +68,7 @@ class VTVowels extends React.Component {
             height={VTVowels.plotHeight}
             xDomain={VTVowels.plotDomainF1}
             yDomain={VTVowels.plotDomainF2}
+            margin={{top: 10, left: 40, right: 20, bottom: 40}}
         >
           <XAxis title="F1 (Hz)" tickValues={VTVowels.plotTicksF1}/>
           <YAxis title="F2 (Hz)" tickValues={VTVowels.plotTicksF2}/>

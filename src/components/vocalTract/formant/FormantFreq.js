@@ -37,7 +37,7 @@ class FormantFreq extends React.PureComponent {
           <Grid item className="formant-freq-slider-container">
             <Tooltip title={`Adjust which frequency band is emphasized by F${i + 1}`}>
               <Slider
-                  min={Math.log10(100)}
+                  min={Math.log10(150)}
                   max={Math.log10(10000)}
                   value={Math.log10(frequency)}
                   onChange={this.onChangeLog}

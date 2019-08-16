@@ -2,9 +2,9 @@
 <project version="4">
   <component name="BookmarkManager">
     <bookmark url="file://$PROJECT_DIR$/src/synth/VoiceSynth.js" line="32" />
-    <bookmark url="file://$PROJECT_DIR$/src/synth/VoiceSynth.js" line="139" />
+    <bookmark url="file://$PROJECT_DIR$/src/synth/VoiceSynth.js" line="147" />
     <bookmark url="file://$PROJECT_DIR$/src/presets/index.js" line="35" />
-    <bookmark url="file://$PROJECT_DIR$/src/synth/VoiceSynth.js" line="145" mnemonic="1" />
+    <bookmark url="file://$PROJECT_DIR$/src/synth/VoiceSynth.js" line="153" mnemonic="1" />
   </component>
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
     <generated />
@@ -15,47 +15,22 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a539a2-b839-4402-b6d8-1191159bc54c" name="Default Changelist" comment="k">
-      <change afterPath="$PROJECT_DIR$/src/AppContext.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/glottalSource/SourceFrequency.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/glottalSource/SourceGraph.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/glottalSource/SourceParam.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/navbar/PlayPause.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/vocalTract/VTFormant.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/vocalTract/VTHeader.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/vocalTract/VTResponse.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/vocalTract/VTVowels.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/vocalTract/formant/FormantBand.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/vocalTract/formant/FormantFreq.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/vocalTract/formant/FormantGain.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/controller/AbstractControl.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/controller/GlottalSourceControl.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/controller/MediaControl.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/controller/SynthControl.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/controller/VocalTractControl.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/controller/make.js" afterDir="false" />
+    <list default="true" id="b4a539a2-b839-4402-b6d8-1191159bc54c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ControlsNavbar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Navbar.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/GlottalSource.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/GlottalSource.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/MovableMark.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/vocalTract/MovableMark.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Graph.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/GraphPlot.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/VocalTract.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/VocalTract.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/VowelSpace.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/presets/brightFemale_a.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/presets/brightFemale_e.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/presets/brightFemale_i.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/presets/brightFemale_o.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/presets/brightMale_a.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/presets/darkFemale_o.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/presets/darkFemale_on.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/presets/darkMale_a.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/presets/default.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/presets/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/presets/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/vocalTract/VTResponse.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/vocalTract/VTResponse.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/vocalTract/VTVowels.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/vocalTract/VTVowels.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/vocalTract/formant/FormantFreq.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/vocalTract/formant/FormantFreq.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/synth/VoiceSynth.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/synth/VoiceSynth.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/synth/sources/PeriodicWaveBuffer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/synth/sources/PeriodicWaveBuffer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/synth/fzero.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/synth/newtonRaphson.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -72,50 +47,44 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/controller/SynthControl.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="110">
-              <caret line="11" column="3" lean-forward="true" selection-start-line="11" selection-start-column="3" selection-end-line="11" selection-end-column="3" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/index.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="33">
-              <caret line="25" column="41" selection-start-line="25" selection-start-column="41" selection-end-line="25" selection-end-column="41" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/controller/GlottalSourceControl.js">
+        <entry file="file://$PROJECT_DIR$/src/synth/VoiceSynth.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="61">
-              <caret line="49" column="45" lean-forward="true" selection-start-line="49" selection-start-column="45" selection-end-line="50" selection-end-column="49" />
+            <state relative-caret-position="154">
+              <caret line="61" column="23" selection-start-line="61" selection-start-column="23" selection-end-line="61" selection-end-column="23" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/controller/make.js">
+        <entry file="file://$PROJECT_DIR$/src/App.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="110">
-              <caret line="5" column="29" selection-start-line="5" selection-start-column="29" selection-end-line="5" selection-end-column="29" />
+            <state relative-caret-position="320">
+              <caret line="33" column="91" selection-start-line="33" selection-start-column="91" selection-end-line="33" selection-end-column="91" />
               <folding>
-                <element signature="e#0#41#0" expanded="true" />
+                <element signature="e#0#26#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/GlottalSource.js">
+        <entry file="file://$PROJECT_DIR$/src/components/vocalTract/VTFormant.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1034">
-              <caret line="47" selection-start-line="47" selection-end-line="47" />
+            <state relative-caret-position="429">
+              <caret line="21" column="17" lean-forward="true" selection-start-line="21" selection-start-column="17" selection-end-line="21" selection-end-column="17" />
+              <folding>
+                <element signature="e#0#26#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/vocalTract/formant/FormantFreq.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="88">
+              <caret line="39" column="36" selection-start-line="39" selection-start-column="36" selection-end-line="39" selection-end-column="36" />
               <folding>
                 <element signature="e#0#42#0" expanded="true" />
               </folding>
@@ -124,10 +93,55 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/glottalSource/SourceGraph.js">
+        <entry file="file://$PROJECT_DIR$/src/components/vocalTract/VTResponse.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-66">
-              <caret line="25" column="6" selection-start-line="25" selection-start-column="6" selection-end-line="25" selection-end-column="6" />
+            <state relative-caret-position="286">
+              <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
+              <folding>
+                <element signature="e#0#25#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/index.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="308">
+              <caret line="14" selection-start-line="14" selection-end-line="14" />
+              <folding>
+                <element signature="e#0#26#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/GlottalSource.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="946">
+              <caret line="52" column="10" lean-forward="true" selection-start-line="52" selection-start-column="10" selection-end-line="52" selection-end-column="10" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/VocalTract.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1375">
+              <caret line="136" column="41" selection-start-line="136" selection-start-column="41" selection-end-line="136" selection-end-column="41" />
+              <folding>
+                <element signature="e#0#42#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/App.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="704">
+              <caret line="110" column="3" lean-forward="true" selection-start-line="110" selection-start-column="3" selection-end-line="110" selection-end-column="3" />
             </state>
           </provider>
         </entry>
@@ -148,10 +162,12 @@
       <find>this.</find>
       <find>this.context</find>
       <find>material-ui</find>
+      <find>&lt;Paper&gt;</find>
     </findStrings>
     <replaceStrings>
       <replace>GlottalSourcePlot.nbPoints</replace>
       <replace>this.synth</replace>
+      <replace>&lt;Paper className=&quot;App-element&quot;&gt;</replace>
     </replaceStrings>
     <dirStrings>
       <dir>C:\Users\Clo\IdeaProjects\voice-synth\src\components</dir>
@@ -176,12 +192,10 @@
         <option value="$PROJECT_DIR$/src/presets/darkMale_a.js" />
         <option value="$PROJECT_DIR$/src/gainConversion.js" />
         <option value="$PROJECT_DIR$/src/presets/brightFemale_i.js" />
-        <option value="$PROJECT_DIR$/src/index.js" />
         <option value="$PROJECT_DIR$/src/components/Graph.js" />
         <option value="$PROJECT_DIR$/src/components/MovableMarker.js" />
         <option value="$PROJECT_DIR$/src/components/GraphPlot.js" />
         <option value="$PROJECT_DIR$/src/components/MovableMark.js" />
-        <option value="$PROJECT_DIR$/src/App.css" />
         <option value="$PROJECT_DIR$/src/components/vocalTract/VTSwitch.js" />
         <option value="$PROJECT_DIR$/src/components/VowelSpace.js" />
         <option value="$PROJECT_DIR$/src/components/VTVowels.js" />
@@ -190,39 +204,41 @@
         <option value="$PROJECT_DIR$/src/components/navbar/NavbarPlayPause.js" />
         <option value="$PROJECT_DIR$/src/components/ControlsNavbar.js" />
         <option value="$PROJECT_DIR$/src/controller/ControlContext.js" />
-        <option value="$PROJECT_DIR$/src/AppContext.js" />
         <option value="$PROJECT_DIR$/src/controller/AbstractControl.js" />
         <option value="$PROJECT_DIR$/src/components/navbar/PlayPause.js" />
-        <option value="$PROJECT_DIR$/src/controller/MediaControl.js" />
         <option value="$PROJECT_DIR$/src/presets/index.js" />
         <option value="$PROJECT_DIR$/src/components/Navbar.js" />
         <option value="$PROJECT_DIR$/src/components/vocalTract/VTHeader.js" />
         <option value="$PROJECT_DIR$/src/components/vocalTract/VTFormant.js" />
-        <option value="$PROJECT_DIR$/src/components/vocalTract/formant/FormantFreq.js" />
         <option value="$PROJECT_DIR$/src/components/vocalTract/formant/FormantBand.js" />
         <option value="$PROJECT_DIR$/src/controller/VocalTractControl.js" />
         <option value="$PROJECT_DIR$/src/components/glottalSource/SourceFrequency.js" />
-        <option value="$PROJECT_DIR$/src/App.js" />
-        <option value="$PROJECT_DIR$/src/components/vocalTract/VTResponse.js" />
-        <option value="$PROJECT_DIR$/src/components/vocalTract/VTVowels.js" />
         <option value="$PROJECT_DIR$/src/synth/sources/PeriodicWaveBuffer.js" />
         <option value="$PROJECT_DIR$/src/components/glottalSource/SourceGraph.js" />
         <option value="$PROJECT_DIR$/src/components/vocalTract/MovableMark.js" />
-        <option value="$PROJECT_DIR$/src/components/VocalTract.js" />
         <option value="$PROJECT_DIR$/src/components/vocalTract/formant/FormantGain.js" />
-        <option value="$PROJECT_DIR$/src/synth/VoiceSynth.js" />
         <option value="$PROJECT_DIR$/src/components/glottalSource/SourceParam.js" />
-        <option value="$PROJECT_DIR$/src/controller/GlottalSourceControl.js" />
-        <option value="$PROJECT_DIR$/src/components/GlottalSource.js" />
         <option value="$PROJECT_DIR$/src/controller/make.js" />
         <option value="$PROJECT_DIR$/src/controller/SynthControl.js" />
         <option value="$PROJECT_DIR$/public/index.html" />
         <option value="$PROJECT_DIR$/build/index.html" />
+        <option value="$PROJECT_DIR$/src/controller/GlottalSourceControl.js" />
+        <option value="$PROJECT_DIR$/src/AppContext.js" />
+        <option value="$PROJECT_DIR$/src/controller/MediaControl.js" />
+        <option value="$PROJECT_DIR$/src/components/vocalTract/VTVowels.js" />
+        <option value="$PROJECT_DIR$/src/index.js" />
+        <option value="$PROJECT_DIR$/src/components/GlottalSource.js" />
+        <option value="$PROJECT_DIR$/src/components/VocalTract.js" />
+        <option value="$PROJECT_DIR$/src/components/vocalTract/formant/FormantFreq.js" />
+        <option value="$PROJECT_DIR$/src/components/vocalTract/VTResponse.js" />
+        <option value="$PROJECT_DIR$/src/App.js" />
+        <option value="$PROJECT_DIR$/src/App.css" />
+        <option value="$PROJECT_DIR$/src/synth/VoiceSynth.js" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="777" />
+    <option name="x" value="827" />
     <option name="width" value="964" />
     <option name="height" value="1044" />
   </component>
@@ -232,7 +248,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -259,7 +274,48 @@
               <item name="voice-synth" type="b2602c69:ProjectViewProjectNode" />
               <item name="voice-synth" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="voice-synth" type="b2602c69:ProjectViewProjectNode" />
+              <item name="voice-synth" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="glottalSource" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="voice-synth" type="b2602c69:ProjectViewProjectNode" />
+              <item name="voice-synth" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="navbar" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="voice-synth" type="b2602c69:ProjectViewProjectNode" />
+              <item name="voice-synth" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="vocalTract" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="voice-synth" type="b2602c69:ProjectViewProjectNode" />
+              <item name="voice-synth" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="vocalTract" type="462c0819:PsiDirectoryNode" />
+              <item name="formant" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="voice-synth" type="b2602c69:ProjectViewProjectNode" />
+              <item name="voice-synth" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="controller" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="voice-synth" type="b2602c69:ProjectViewProjectNode" />
+              <item name="voice-synth" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="presets" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="voice-synth" type="b2602c69:ProjectViewProjectNode" />
@@ -278,6 +334,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -372,7 +429,8 @@
       <workItem from="1565823820851" duration="19578000" />
       <workItem from="1565865529199" duration="3772000" />
       <workItem from="1565888646891" duration="11189000" />
-      <workItem from="1565909413612" duration="8780000" />
+      <workItem from="1565909413612" duration="10535000" />
+      <workItem from="1565950885536" duration="3415000" />
     </task>
     <task id="LOCAL-00001" summary="Added basic oscillator functionality with gain and H0 sliders.">
       <created>1561018517873</created>
@@ -500,11 +558,18 @@
       <option name="project" value="LOCAL" />
       <updated>1565816699167</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Big refactor for performance and maintainability.&#10;FIXME: Source param coercing not working properly.">
+      <created>1565918259388</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1565918259388</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="252285000" />
+    <option name="totallyTimeSpent" value="257455000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -533,8 +598,8 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.32781458" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50053704" side_tool="true" weight="0.31015453" />
-      <window_info anchor="bottom" id="TypeScript" order="10" weight="0.32936078" />
-      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49973616" visible="true" weight="0.3410596" />
+      <window_info anchor="bottom" id="TypeScript" order="10" weight="0.3289183" />
+      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49973616" weight="0.3410596" />
       <window_info anchor="bottom" id="Database Changes" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -572,42 +637,12 @@
     <MESSAGE value="Changed update order for vocal tract parameters." />
     <MESSAGE value="Updated LF model to add asymmetry parameter.&#10;Reduced beating occurring with aspiration noise." />
     <MESSAGE value="Added a rough (and very laggy) interactive 2d vowel space graph for F1 and F2" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added a rough (and very laggy) interactive 2d vowel space graph for F1 and F2" />
+    <MESSAGE value="Big refactor for performance and maintainability.&#10;FIXME: Source param coercing not working properly." />
+    <option name="LAST_COMMIT_MESSAGE" value="Big refactor for performance and maintainability.&#10;FIXME: Source param coercing not working properly." />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/node_modules/react-vis/es/plot/series/abstract-series.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6">
-          <caret line="295" column="52" lean-forward="true" selection-start-line="62" selection-start-column="4" selection-end-line="295" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/react-vis/es/utils/scales-utils.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18">
-          <caret line="261" column="9" selection-start-line="261" selection-start-column="9" selection-end-line="261" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/@types/prop-types/index.d.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1056">
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/controller/VocalTractAgent" />
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="6" column="38" selection-start-line="6" selection-start-column="38" selection-end-line="6" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/yarn.lock">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="233">
@@ -631,28 +666,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppContext.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="44">
-          <caret line="2" column="15" selection-start-line="2" selection-start-column="15" selection-end-line="2" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="26" lean-forward="true" selection-start-column="26" selection-end-line="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/controller/ControlContext.js" />
-    <entry file="file://$PROJECT_DIR$/src/components/GraphPlot.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="199">
-          <caret line="39" column="12" selection-start-line="39" selection-start-column="12" selection-end-line="39" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/GraphPlot.js" />
     <entry file="file://$PROJECT_DIR$/node_modules/react-dom/cjs/react-dom-unstable-fire.production.min.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="198">
@@ -681,37 +696,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/controller/MediaControl.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="321">
-          <caret line="20" column="34" lean-forward="true" selection-start-line="20" selection-start-column="34" selection-end-line="20" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/presets/default.js" />
-    <entry file="file://$PROJECT_DIR$/src/components/Footer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/node_modules/react-vis/es/plot/xy-plot.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="198">
           <caret line="83" column="4" selection-start-line="83" selection-start-column="4" selection-end-line="83" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Navbar.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="39" column="28" selection-start-line="39" selection-start-column="28" selection-end-line="39" selection-end-column="28" />
-          <folding>
-            <element signature="e#0#44#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -760,16 +749,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/App.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/node_modules/@types/babel__traverse/index.d.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="198">
@@ -777,67 +756,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/controller/VocalTractControl.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="215">
-          <caret line="20" column="4" lean-forward="true" selection-start-line="20" selection-start-column="4" selection-end-line="27" selection-end-column="5" />
-          <folding>
-            <element signature="e#0#47#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/vocalTract/VTResponse.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="67" column="15" selection-start-line="67" selection-start-column="15" selection-end-line="90" selection-end-column="17" />
-          <folding>
-            <element signature="e#0#25#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/vocalTract/formant/FormantFreq.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-132">
-          <caret line="9" column="6" selection-start-line="9" selection-start-column="6" selection-end-line="9" selection-end-column="6" />
-          <folding>
-            <element signature="e#0#42#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/navbar/PlayPause.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="22">
-          <caret line="8" column="20" selection-start-line="8" selection-start-column="20" selection-end-line="8" selection-end-column="20" />
-          <folding>
-            <element signature="e#0#25#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/App.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="551">
-          <caret line="131" column="1" selection-start-line="131" selection-start-column="1" selection-end-line="131" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/synth/sources/PeriodicWaveBuffer.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="308">
           <caret line="20" column="31" lean-forward="true" selection-start-line="20" selection-start-column="31" selection-end-line="20" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/vocalTract/VTFormant.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="21" column="19" selection-start-line="21" selection-start-column="19" selection-end-line="21" selection-end-column="19" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -865,29 +787,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/synth/VoiceSynth.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="103" column="2" selection-start-line="103" selection-start-column="2" selection-end-line="103" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/vocalTract/formant/FormantGain.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="242">
           <caret line="11" column="58" selection-start-line="11" selection-start-column="58" selection-end-line="11" selection-end-column="58" />
           <folding>
             <element signature="e#0#42#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/vocalTract/VTVowels.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="633">
-          <caret line="74" lean-forward="true" selection-start-line="74" selection-end-line="74" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -902,16 +807,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/VocalTract.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
-          <folding>
-            <element signature="e#0#42#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/glottalSource/SourceGraph.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-66">
@@ -919,23 +814,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/GlottalSource.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1034">
-          <caret line="47" selection-start-line="47" selection-end-line="47" />
-          <folding>
-            <element signature="e#0#42#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/controller/make.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="110">
           <caret line="5" column="29" selection-start-line="5" selection-start-column="29" selection-end-line="5" selection-end-column="29" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -946,24 +828,195 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/index.html">
+    <entry file="file://$PROJECT_DIR$/src/controller/SynthControl.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="33">
-          <caret line="25" column="41" selection-start-line="25" selection-start-column="41" selection-end-line="25" selection-end-column="41" />
+        <state relative-caret-position="242">
+          <caret line="11" column="3" selection-start-line="11" selection-start-column="3" selection-end-line="11" selection-end-column="3" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/controller/SynthControl.js">
+    <entry file="file://$PROJECT_DIR$/src/controller/MediaControl.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="11" column="3" lean-forward="true" selection-start-line="11" selection-start-column="3" selection-end-line="11" selection-end-column="3" />
+        <state relative-caret-position="352">
+          <caret line="16" column="20" selection-start-line="16" selection-start-column="20" selection-end-line="16" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="550">
+          <caret line="25" column="41" selection-start-line="25" selection-start-column="41" selection-end-line="25" selection-end-column="41" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/controller/GlottalSourceControl.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="61">
-          <caret line="49" column="45" lean-forward="true" selection-start-line="49" selection-start-column="45" selection-end-line="50" selection-end-column="49" />
+        <state relative-caret-position="1012">
+          <caret line="47" selection-start-line="47" selection-end-line="48" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/navbar/PlayPause.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="88">
+          <caret line="8" column="20" lean-forward="true" selection-start-line="8" selection-start-column="20" selection-end-line="8" selection-end-column="20" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/controller/VocalTractControl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="396">
+          <caret line="20" column="4" selection-start-line="20" selection-start-column="4" selection-end-line="27" selection-end-column="5" />
+          <folding>
+            <element signature="e#0#47#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/synth/sources/LiljencrantsFant.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppContext.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="25" selection-start-column="25" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external/lib.dom.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="282">
+          <caret line="5148" column="10" selection-start-line="5148" selection-start-column="10" selection-end-line="5148" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/synth/sources/RosenbergC.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/vocalTract/VTVowels.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="265">
+          <caret line="70" column="49" selection-start-line="70" selection-start-column="49" selection-end-line="70" selection-end-column="49" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/perfect-scrollbar/types/perfect-scrollbar.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="17" column="14" selection-start-line="17" selection-start-column="14" selection-end-line="17" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Footer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-979">
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Navbar.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-440">
+          <caret line="39" column="28" selection-start-line="39" selection-start-column="28" selection-end-line="39" selection-end-column="28" />
+          <folding>
+            <element signature="e#0#44#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/react-masonry-component/typings.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="44">
+          <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/VocalTract.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1375">
+          <caret line="136" column="41" selection-start-line="136" selection-start-column="41" selection-end-line="136" selection-end-column="41" />
+          <folding>
+            <element signature="e#0#42#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/vocalTract/VTFormant.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="429">
+          <caret line="21" column="17" lean-forward="true" selection-start-line="21" selection-start-column="17" selection-end-line="21" selection-end-column="17" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="308">
+          <caret line="14" selection-start-line="14" selection-end-line="14" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/App.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="320">
+          <caret line="33" column="91" selection-start-line="33" selection-start-column="91" selection-end-line="33" selection-end-column="91" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/App.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="704">
+          <caret line="110" column="3" lean-forward="true" selection-start-line="110" selection-start-column="3" selection-end-line="110" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/vocalTract/formant/FormantFreq.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="88">
+          <caret line="39" column="36" selection-start-line="39" selection-start-column="36" selection-end-line="39" selection-end-column="36" />
+          <folding>
+            <element signature="e#0#42#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/vocalTract/VTResponse.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/GlottalSource.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="946">
+          <caret line="52" column="10" lean-forward="true" selection-start-line="52" selection-start-column="10" selection-end-line="52" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/synth/VoiceSynth.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="61" column="23" selection-start-line="61" selection-start-column="23" selection-end-line="61" selection-end-column="23" />
         </state>
       </provider>
     </entry>

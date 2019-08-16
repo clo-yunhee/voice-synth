@@ -51,58 +51,54 @@ class GlottalSource extends React.Component {
 
     return (
         <>
-          <Grid item>
-            <Paper className="source-container">
-              <Grid container spacing={2} direction="column" alignItems="flex-start">
-                <Grid item>
-                  <Typography variant="subtitle2">
-                    Glottal source
-                  </Typography>
-                </Grid>
-                <Grid item className="freq-slider-container">
-                  <SourceFrequency frequency={frequency} onChange={this.onFrequency}/>
-                </Grid>
-                <Grid item>
-                  <Select
-                      value={type}
-                      onChange={this.onModelType}
-                  >
-                    <MenuItem value="cutoffSawtooth">Sawtooth with cut-off</MenuItem>
-                    <MenuItem value="rosenbergC">Cosine Rosenberg model</MenuItem>
-                    <MenuItem value="LF">Liljencrants-Fant model</MenuItem>
-                    <MenuItem value="KLGLOTT88">KLGLOTT88 model</MenuItem>
-                  </Select>
-                </Grid>
-                {
-                  Object.entries(params).map(([key, {value, min, max}]) => (
-                      <Grid item key={key}>
-                        <SourceParam
-                            name={key}
-                            value={value}
-                            min={min}
-                            max={max}
-                            onChange={this.onModelParam}
-                        />
-                      </Grid>
-                  ))
-                }
+          <Paper className="App-element">
+            <Grid container spacing={2} direction="column" alignItems="flex-start">
+              <Grid item>
+                <Typography variant="subtitle2">
+                  Glottal source
+                </Typography>
               </Grid>
-            </Paper>
-          </Grid>
-          <Grid item>
-            <Paper className="glottal-flow-container">
-              <Grid container spacing={2} direction="column" alignItems="flex-start">
-                <Grid item>
-                  <Typography variant="subtitle2">
-                    Glottal flow waveshape
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <SourceGraph data={waveform}/>
-                </Grid>
+              <Grid item className="freq-slider-container">
+                <SourceFrequency frequency={frequency} onChange={this.onFrequency}/>
               </Grid>
-            </Paper>
-          </Grid>
+              <Grid item>
+                <Select
+                    value={type}
+                    onChange={this.onModelType}
+                >
+                  <MenuItem value="cutoffSawtooth">Sawtooth with cut-off</MenuItem>
+                  <MenuItem value="rosenbergC">Cosine Rosenberg model</MenuItem>
+                  <MenuItem value="LF">Liljencrants-Fant model</MenuItem>
+                  <MenuItem value="KLGLOTT88">KLGLOTT88 model</MenuItem>
+                </Select>
+              </Grid>
+              {
+                Object.entries(params).map(([key, {value, min, max}]) => (
+                    <Grid item key={key}>
+                      <SourceParam
+                          name={key}
+                          value={value}
+                          min={min}
+                          max={max}
+                          onChange={this.onModelParam}
+                      />
+                    </Grid>
+                ))
+              }
+            </Grid>
+          </Paper>
+          <Paper className="App-element">
+            <Grid container spacing={2} direction="column" alignItems="flex-start">
+              <Grid item>
+                <Typography variant="subtitle2">
+                  Glottal flow waveshape
+                </Typography>
+              </Grid>
+              <Grid item>
+                <SourceGraph data={waveform}/>
+              </Grid>
+            </Grid>
+          </Paper>
         </>
     );
   }

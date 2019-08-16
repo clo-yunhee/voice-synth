@@ -1,5 +1,6 @@
 import React from 'react';
-import Grid from '@material-ui/core/Grid';
+import Masonry from 'react-masonry-component';
+import PerfectScrollbar from 'react-perfect-scrollbar';
 import './App.css';
 import VoiceSynth from './synth/VoiceSynth';
 import Navbar from './components/Navbar';
@@ -28,17 +29,13 @@ class App extends React.PureComponent {
           <div className="App">
             <Navbar/>
             <div className="App-wrapper">
-              <Grid
-                  container
-                  spacing={4}
-                  direction="column"
-                  alignItems="flex-start"
-                  alignContent="flex-start"
-                  className="App-container"
-              >
-                <GlottalSource/>
-                <VocalTract/>
-              </Grid>
+              <PerfectScrollbar className="App-scroller">
+                <Masonry className="App-container"
+                         options={{itemSelector: '.App-element', columnWidth: 1, horizontalOrder: true}}>
+                  <GlottalSource/>
+                  <VocalTract/>
+                </Masonry>
+              </PerfectScrollbar>
             </div>
             <Footer/>
           </div>

@@ -2,7 +2,7 @@ import React from 'react'
 import {HorizontalGridLines, LineSeries, VerticalGridLines, XAxis, XYPlot, YAxis} from "react-vis/es";
 import AppContext from "../../AppContext";
 
-const minFreq = 50;
+const minFreq = 100;
 const maxFreq = 11000;
 const plotWidth = 576;
 const plotHeight = 360;

@@ -94,67 +94,61 @@ class VocalTract extends React.Component {
 
     return (
         <>
-          <Grid item>
-            <Paper className="vt-container">
-              <Grid container spacing={2} direction="column">
-                <Grid item>
-                  <VTHeader
-                      toggled={toggled}
-                      onChange={this.onToggle}
-                  />
-                </Grid>
-                {
-                  formants.map((formant, i) => (
-                      <React.Fragment key={i}>
-                        <Grid item>
-                          <Divider variant="middle"/>
-                        </Grid>
-                        <Grid item>
-                          <VTFormant
-                              i={i}
-                              formant={formant}
-                              onFrequency={this.onFrequency}
-                              onGain={this.onGain}
-                              onBandwidth={this.onBandwidth}
-                          />
-                        </Grid>
-                      </React.Fragment>
-                  ))
-                }
+          <Paper className="App-element">
+            <Grid container spacing={2} direction="column">
+              <Grid item>
+                <VTHeader
+                    toggled={toggled}
+                    onChange={this.onToggle}
+                />
               </Grid>
-            </Paper>
-          </Grid>
-          <Grid item>
-            <Paper className="vt-plot-container">
-              <Grid container spacing={2} direction="column" alignItems="flex-start">
-                <Grid item>
-                  <Typography variant="subtitle2">
-                    Vocal tract frequency response
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <VTResponse data={responses}/>
-                </Grid>
+              {
+                formants.map((formant, i) => (
+                    <React.Fragment key={i}>
+                      <Grid item>
+                        <Divider variant="middle"/>
+                      </Grid>
+                      <Grid item>
+                        <VTFormant
+                            i={i}
+                            formant={formant}
+                            onFrequency={this.onFrequency}
+                            onGain={this.onGain}
+                            onBandwidth={this.onBandwidth}
+                        />
+                      </Grid>
+                    </React.Fragment>
+                ))
+              }
+            </Grid>
+          </Paper>
+          <Paper className="App-element">
+            <Grid container spacing={2} direction="column" alignItems="flex-start">
+              <Grid item>
+                <Typography variant="subtitle2">
+                  Vocal tract frequency response
+                </Typography>
               </Grid>
-            </Paper>
-          </Grid>
-          <Grid item>
-            <Paper className="vt-vowel-container">
-              <Grid container spacing={2} direction="column" alignItems="flex-start">
-                <Grid item>
-                  <Typography variant="subtitle2">
-                    Vowel formant space
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <VTVowels
-                      formants={formants}
-                      onChange={this.onVowel}
-                  />
-                </Grid>
+              <Grid item>
+                <VTResponse data={responses}/>
               </Grid>
-            </Paper>
-          </Grid>
+            </Grid>
+          </Paper>
+          <Paper className="App-element">
+            <Grid container spacing={2} direction="column" alignItems="flex-start">
+              <Grid item>
+                <Typography variant="subtitle2">
+                  Vowel formant space
+                </Typography>
+              </Grid>
+              <Grid item>
+                <VTVowels
+                    formants={formants}
+                    onChange={this.onVowel}
+                />
+              </Grid>
+            </Grid>
+          </Paper>
         </>
     );
   }
