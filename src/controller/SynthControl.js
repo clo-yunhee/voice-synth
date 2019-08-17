@@ -11,8 +11,8 @@ class SynthControl extends AbstractControl {
     ]);
   }
 
-  onPreset(id) {
-    this.synth.loadPreset(id, (preset) => {
+  onPreset(preset) {
+    this.synth.loadPreset(preset, () => {
 
       // Get frequency response.
       const formants = this.synth.formantF.map((frequency, i) => ({
@@ -28,7 +28,7 @@ class SynthControl extends AbstractControl {
       const params = this.glottalSource.getSourceParams(preset.source.params, synthSource);
       const waveform = this.glottalSource.getSourceWaveform(synthSource);
 
-      this.fireEvent('preset', {preset: preset.name});
+      this.fireEvent('preset', {preset});
       this.fireEvent('glottalSource.frequency', {frequency: preset.frequency});
       this.fireEvent('glottalSource.model', {model: {type: preset.source.name, params, waveform}});
       this.fireEvent('vocalTract.toggle', {flag: this.synth.filterPass});

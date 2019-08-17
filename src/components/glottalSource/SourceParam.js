@@ -23,6 +23,7 @@ class SourceParam extends React.PureComponent {
           </Grid>
           <Grid item>
             <TextField
+                className="source-param-value"
                 type="number"
                 inputProps={{min, max, step: 0.01}}
                 onChange={this.onChange}

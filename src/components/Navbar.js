@@ -1,14 +1,11 @@
-import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import VolumeDown from '@material-ui/icons/VolumeDown';
 import VolumeUp from '@material-ui/icons/VolumeUp';
 import Slider from "@material-ui/core/Slider";
 import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem"
 import React from "react";
-import synthPresets, {defaultPreset} from '../presets'
+import {defaultPreset} from '../presets'
 import PlayPause from "./navbar/PlayPause";
 import AppContext from "../AppContext";
 
@@ -20,12 +17,10 @@ class Navbar extends React.PureComponent {
     super(props);
     this.state = {
       playing: false,
-      volume: 1.0,
-      preset: ''
+      volume: 1.0
     };
     context.subscribeEvent('media.toggle', this.handleToggle);
     context.subscribeEvent('media.volume', this.handleVolume);
-    context.subscribeEvent('preset', this.handlePreset);
   }
 
   onToggle = (flag) => {
@@ -34,10 +29,6 @@ class Navbar extends React.PureComponent {
 
   onVolume = (evt, newValue) => {
     this.context.media.onVolume(newValue);
-  };
-
-  onPreset = (evt) => {
-    this.context.onPreset(evt.target.value);
   };
 
   onReset = () => {
@@ -52,9 +43,6 @@ class Navbar extends React.PureComponent {
     this.setState({volume});
   };
 
-  handlePreset = ({preset}) => {
-    this.setState({preset});
-  };
 
   render() {
     return (
@@ -87,22 +75,6 @@ class Navbar extends React.PureComponent {
             </Grid>
           </Grid>
           <Grid container className="App-controls-right">
-            <Grid item>
-              <Tooltip title="Load synth presets">
-                <Paper className="preset-card">
-                  <Select
-                      value={this.state.preset}
-                      onChange={this.onPreset}
-                  >
-                    {
-                      Object.values(synthPresets).map(({name}) => (
-                          <MenuItem key={name} value={name}>{name}</MenuItem>
-                      ))
-                    }
-                  </Select>
-                </Paper>
-              </Tooltip>
-            </Grid>
             <Grid item>
               <Tooltip title="Reset all parameters">
                 <Button

@@ -67,10 +67,6 @@
     width: 200px;
 }
 
-.preset-card {
-    padding: 2px 1vw;
-}
-
 .App-wrapper {
     max-width: 100vw;
     max-height: 100vh;
@@ -93,6 +89,19 @@
     /*min-width: 250px;*/
 }
 
+.preset-selector {
+    width: 100vw;
+    padding: 2vmin;
+}
+
+.preset-selector fieldset {
+    padding: 1vmin 5vmin 0;
+}
+
+.preset-selector-vowel {
+    text-transform: none;
+}
+
 .freq-slider-container {
     padding: 3vmin;
     min-width: 250px;
@@ -102,17 +111,21 @@
     width: 10ch;
 }
 
+.source-param-value {
+    width: calc(5ch + 1vmin);
+}
+
 .glottal-flow-svg {
     padding: 6px;
     border: 1px #8997b3 dashed;
 }
 
 .formant-freq-slider-container {
-    min-width: 250px;
+    min-width: 210px;
 }
 
 .formant-freq-value {
-    width: calc(7ch + 1vmin);
+    width: calc(6.5ch + 1vmin);
 }
 
 .formant-band-container {
@@ -124,11 +137,15 @@
 }
 
 .formant-band-value {
-    width: calc(6ch + 1vmin);
+    width: calc(5.5ch + 1vmin);
 }
 
 .formant-gain-value {
-    width: calc(4ch + 1vmin);
+    width: calc(3.5ch + 1vmin);
+}
+
+.vt-vowels-picker {
+    padding: 2vmin 4vmin;
 }
 
 .App-footer {

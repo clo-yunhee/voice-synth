@@ -2,7 +2,6 @@ import CutoffSawtooth from './sources/CutoffSawtooth'
 import RosenbergC from "./sources/RosenbergC"
 import LiljencrantsFant from "./sources/LiljencrantsFant"
 import KLGLOTT88 from "./sources/KLGLOTT88"
-import synthPresets from "../presets"
 import {db2amp} from '../gainConversion'
 
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -78,13 +77,7 @@ class VoiceSynth {
     this.amp.gain.linearRampToValueAtTime(0, time);
   }
 
-  loadPreset(id, callback) {
-    if (!id) {
-      throw new Error('No preset name provided.');
-    }
-
-    const preset = synthPresets[id];
-
+  loadPreset(preset, callback) {
     this.frequency = preset.frequency;
     this.sourceName = preset.source.name;
     this.getSource().params = {...preset.source.params};
@@ -102,7 +95,7 @@ class VoiceSynth {
     }
 
     if (callback) {
-      setTimeout(() => callback(preset), VoiceSynth.callbackDelay / 1000);
+      setTimeout(callback, VoiceSynth.callbackDelay / 1000);
     }
   }
 

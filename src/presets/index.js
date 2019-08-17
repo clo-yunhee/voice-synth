@@ -1,71 +1,184 @@
-function makeF(F0, label, formants, gains, bandwidths, sourceParams) {
-  sourceParams = sourceParams || {};
+export const vowels = [
+  '/æ/',
+  '/e/',
+  '/ʌ/',
+  '/i/',
+  '/ɪ/',
+  '/ɜ/',
+  '/ɒ/',
+  '/ʊ/',
+  '/u/'
+];
 
+const Male = {
+  key: 'M',
+  pitch: 120,
+  source: {Oq: 0.3, am: 0.76},
+  gains: [0, -15, -18, -20, -30],
+  bandwidths: [40, 80, 100, 120, 120],
+};
+
+const Female = {
+  key: 'F',
+  pitch: 220,
+  source: {Oq: 0.6, am: 0.78},
+  gains: [0, -20, -26, -40, -50],
+  bandwidths: [60, 90, 100, 120, 120],
+};
+
+export const Masculine = 0;
+export const Neutral = 0.5;
+export const Feminine = 1;
+
+const makeGen = (gender) => (color) => (vowel, formants) => {
   return {
-    name: label,
-    frequency: F0,
+    gender: gender.key,
+    color,
+    vowel,
+    frequency: gender.pitch,
     source: {
       name: 'LF',
-      params: {
-        Oq: sourceParams.Oq || 0.6,
-        am: sourceParams.am || 0.8,
-      }
+      params: gender.source,
     },
     formants: {
       freqs: formants,
-      bands: bandwidths,
-      gains: gains,
+      bands: gender.bandwidths,
+      gains: gender.gains,
     }
-  }
-}
+  };
+};
 
-function makeSet(...lists) {
-  const set = {};
-  for (const list of lists) {
-    for (const preset of list) {
-      set[preset.name] = preset;
-    }
-  }
-  return set;
-}
+const makeGenM = makeGen(Male);
+const makeGenF = makeGen(Female);
 
-// Average pitches
-const Bass = 100;
-const Tenor = 280;
-const CounterTenor = 320;
-const Alto = 380;
-const Soprano = 580;
+const makeGenMM = makeGenM(Masculine);
+const makeGenMN = makeGenM(Neutral);
+const makeGenMF = makeGenM(Feminine);
 
-// Generate vowels by voice type
-const VowelPresets = [
-  makeF(Soprano, 'Soprano /a/', [800, 1150, 2900, 3900, 4950], [0, -6, -32, -20, -50], [80, 90, 120, 130, 140]),
-  makeF(Soprano, 'Soprano /e/', [350, 2000, 2800, 3600, 4950], [0, -20, -15, -40, -56], [60, 100, 120, 150, 200]),
-  makeF(Soprano, 'Soprano /i/', [270, 2140, 2950, 3900, 4950], [0, -12, -26, -26, -44], [60, 90, 100, 120, 120]),
-  makeF(Soprano, 'Soprano /o/', [450, 800, 2830, 3800, 4950], [0, -11, -22, -22, -50], [70, 80, 100, 130, 135]),
-  makeF(Soprano, 'Soprano /u/', [325, 700, 2700, 3800, 4950], [0, -16, -35, -40, -60], [50, 60, 170, 180, 200]),
-  makeF(Alto, 'Alto /a/', [800, 1150, 2800, 3500, 4950], [0, -4, -20, -36, -60], [80, 90, 120, 130, 140]),
-  makeF(Alto, 'Alto /e/', [400, 1600, 2700, 3300, 4950], [0, -24, -30, -35, -60], [60, 80, 120, 150, 200]),
-  makeF(Alto, 'Alto /i/', [350, 1700, 2700, 3700, 4950], [0, -20, -30, -36, -60], [50, 100, 120, 150, 200]),
-  makeF(Alto, 'Alto /o/', [450, 800, 2830, 3500, 4950], [0, -9, -16, -28, -55], [70, 80, 100, 130, 135]),
-  makeF(Alto, 'Alto /u/', [325, 700, 2530, 3500, 4950], [0, -12, -30, -40, -64], [50, 60, 170, 180, 200]),
-  makeF(CounterTenor, 'Counter-tenor /a/', [660, 1120, 2750, 3000, 3350], [0, -6, -23, -24, -38], [80, 90, 120, 130, 140]),
-  makeF(CounterTenor, 'Counter-tenor /e/', [440, 1800, 2700, 3000, 3300], [0, -14, -18, -20, -20], [70, 80, 100, 120, 120]),
-  makeF(CounterTenor, 'Counter-tenor /i/', [270, 1850, 2900, 3350, 3590], [0, -24, -24, -36, -36], [40, 90, 100, 120, 120]),
-  makeF(CounterTenor, 'Counter-tenor /o/', [430, 820, 2700, 3000, 3300], [0, -10, -26, -22, -34], [40, 80, 100, 120, 120]),
-  makeF(CounterTenor, 'Counter-tenor /u/', [370, 630, 2750, 3000, 3400], [0, -20, -23, -30, -34], [40, 60, 100, 120, 120]),
-  makeF(Tenor, 'Tenor /a/', [650, 1080, 2650, 2900, 3250], [0, -6, -7, -8, -22], [80, 90, 120, 130, 140]),
-  makeF(Tenor, 'Tenor /e/', [400, 1700, 2600, 3200, 3580], [0, -14, -12, -14, -20], [70, 80, 100, 120, 120]),
-  makeF(Tenor, 'Tenor /i/', [290, 1870, 2800, 3250, 3540], [0, -15, -18, -20, -30], [40, 90, 100, 120, 120]),
-  makeF(Tenor, 'Tenor /o/', [400, 800, 2600, 2800, 3000], [0, -10, -12, -12, -26], [40, 80, 100, 120, 120]),
-  makeF(Tenor, 'Tenor /u/', [350, 600, 2700, 2900, 3300], [0, -20, -17, -14, -26], [40, 60, 100, 120, 120]),
-  makeF(Bass, 'Bass /a/', [600, 1040, 2250, 2450, 2750], [0, -7, -9, -9, -20], [60, 70, 110, 120, 130]),
-  makeF(Bass, 'Bass /e/', [400, 1620, 2400, 2800, 3100], [0, -12, -9, -12, -18], [40, 80, 100, 120, 120]),
-  makeF(Bass, 'Bass /i/', [250, 1750, 2600, 3050, 3340], [0, -30, -16, -22, -28], [60, 90, 100, 120, 120]),
-  makeF(Bass, 'Bass /o/', [400, 750, 2400, 2600, 2900], [0, -11, -21, -20, -40], [40, 80, 100, 120, 120]),
-  makeF(Bass, 'Bass /u/', [350, 600, 2400, 2675, 2950], [0, -20, -32, -28, -36], [40, 80, 100, 120, 120]),
+const makeGenFM = makeGenF(Masculine);
+const makeGenFN = makeGenF(Neutral);
+const makeGenFF = makeGenF(Feminine);
+
+const MaleMasculinePresets = [
+  makeGenMM('/æ/', [666, 1400, 2500, 3400, 3600]),
+  makeGenMM('/e/', [450, 1750, 2550, 3300, 3600]),
+  makeGenMM('/ʌ/', [500, 1250, 2550, 3250, 3600]),
+  makeGenMM('/i/', [250, 2200, 2900, 3400, 3600]),
+  makeGenMM('/ɪ/', [380, 1900, 2750, 3350, 3600]),
+  makeGenMM('/ɜ/', [450, 1300, 2400, 3200, 3600]),
+  makeGenMM('/ɒ/', [420, 1050, 2500, 3250, 3600]),
+  makeGenMM('/ʊ/', [400, 1300, 2300, 3200, 3600]),
+  makeGenMM('/u/', [380, 1400, 2200, 3150, 3600])
 ];
 
-// Aggregate all generated presets into one set.
-export default makeSet(VowelPresets);
+const MaleNeutralPresets = [
+  makeGenMN('/æ/', [750, 1500, 2750, 3900, 4100]),
+  makeGenMN('/e/', [500, 1750, 2780, 3800, 4100]),
+  makeGenMN('/ʌ/', [550, 1250, 2780, 3750, 4100]),
+  makeGenMN('/i/', [300, 2200, 3000, 3800, 4100]),
+  makeGenMN('/ɪ/', [400, 2000, 2800, 3900, 4100]),
+  makeGenMN('/ɜ/', [450, 1400, 2600, 3600, 4100]),
+  makeGenMN('/ɒ/', [500, 1100, 2800, 3700, 4100]),
+  makeGenMN('/ʊ/', [400, 1450, 2600, 3600, 4100]),
+  makeGenMN('/u/', [300, 1500, 2400, 3600, 4100])
+];
 
-export const defaultPreset = 'Tenor /a/';
+const MaleFemininePresets = [
+  makeGenMF('/æ/', [800, 1600, 2750, 3900, 4700]),
+  makeGenMF('/e/', [550, 1800, 2780, 3800, 4700]),
+  makeGenMF('/ʌ/', [600, 1400, 2780, 3750, 4700]),
+  makeGenMF('/i/', [400, 2300, 3000, 3800, 4700]),
+  makeGenMF('/ɪ/', [450, 2100, 2800, 3900, 4700]),
+  makeGenMF('/ɜ/', [550, 1500, 2600, 3600, 4700]),
+  makeGenMF('/ɒ/', [530, 1200, 2800, 3700, 4700]),
+  makeGenMF('/ʊ/', [450, 1500, 2600, 3600, 4700]),
+  makeGenMF('/u/', [440, 1550, 2400, 3600, 4700])
+];
+
+const FemaleMasculinePresets = [
+  makeGenFM('/æ/', [900, 1650, 2800, 4000, 4500]),
+  makeGenFM('/e/', [650, 1900, 2850, 4000, 4500]),
+  makeGenFM('/ʌ/', [600, 1500, 2850, 3900, 4500]),
+  makeGenFM('/i/', [450, 2500, 3300, 3950, 4500]),
+  makeGenFM('/ɪ/', [480, 2200, 3000, 4000, 4500]),
+  makeGenFM('/ɜ/', [510, 1600, 2700, 3900, 4500]),
+  makeGenFM('/ɒ/', [490, 1350, 2800, 3750, 4500]),
+  makeGenFM('/ʊ/', [470, 1700, 2700, 3800, 4500]),
+  makeGenFM('/u/', [450, 2000, 2650, 3800, 4500])
+];
+
+const FemaleNeutralPresets = [
+  makeGenFN('/æ/', [950, 1750, 2800, 4000, 4700]),
+  makeGenFN('/e/', [700, 2100, 3000, 4200, 4700]),
+  makeGenFN('/ʌ/', [750, 1600, 2900, 4100, 4700]),
+  makeGenFN('/i/', [400, 2700, 3300, 4150, 4700]),
+  makeGenFN('/ɪ/', [550, 2200, 3100, 4150, 4700]),
+  makeGenFN('/ɜ/', [700, 1900, 2800, 4200, 4700]),
+  makeGenFN('/ɒ/', [600, 1500, 2900, 3900, 4700]),
+  makeGenFN('/ʊ/', [500, 1800, 2800, 4000, 4700]),
+  makeGenFN('/u/', [430, 2100, 2700, 3800, 4700])
+];
+
+const FemaleFemininePresets = [
+  makeGenFF('/æ/', [1000, 1800, 2900, 4200, 4950]),
+  makeGenFF('/e/', [900, 2200, 3100, 4200, 4950]),
+  makeGenFF('/ʌ/', [950, 1750, 3000, 4300, 4950]),
+  makeGenFF('/i/', [550, 2700, 3200, 4100, 4950]),
+  makeGenFF('/ɪ/', [600, 2500, 3100, 4400, 4950]),
+  makeGenFF('/ɜ/', [750, 1800, 2900, 4200, 4950]),
+  makeGenFF('/ɒ/', [700, 1600, 2950, 4100, 4950]),
+  makeGenFF('/ʊ/', [550, 1900, 3000, 4400, 4950]),
+  makeGenFF('/u/', [450, 2000, 2800, 4000, 4950])
+];
+
+function makeSet(...lists) {
+  const presets = {
+    'M': {
+      ...vowels.reduce((acc, v) => {
+        acc[v] = {};
+        return acc;
+      }, {})
+    },
+    'F': {
+      ...vowels.reduce((acc, v) => {
+        acc[v] = {};
+        return acc;
+      }, {})
+    }
+  };
+
+  for (const list of lists) {
+    for (const preset of list) {
+      const {gender, vowel, color} = preset;
+
+      presets[gender][vowel][color] = preset;
+    }
+  }
+
+  return presets;
+}
+
+// Aggregate all generated presets into one set.
+const finalSet = makeSet(
+    MaleMasculinePresets,
+    MaleNeutralPresets,
+    MaleFemininePresets,
+    FemaleMasculinePresets,
+    FemaleNeutralPresets,
+    FemaleFemininePresets
+);
+
+export default finalSet;
+
+// Gender preset getters
+export const getPreset = ({gender, vowel, color}) => {
+  if (color !== 0 && color !== 0.5 && color !== 1) {
+    console.info('Requested vowel interpolation.');
+    console.info('Not implemented yet: rounding to nearest preset color.');
+    color = Math.round(2 * color) / 2;
+  }
+
+  return finalSet[gender][vowel][color];
+};
+
+export const defaultPreset = getPreset({gender: 'F', vowel: '/e/', color: Neutral});

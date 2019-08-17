@@ -44,19 +44,13 @@ class MovableMark extends AbstractSeries {
     } catch (e) {
     }
 
-    window.addEventListener('touchmove', evt => {
-      if (!this.state.dragging || evt.defaultPrevented) {
-        return;
-      }
-
-      evt.preventDefault();
-      this.onDrag(evt);
-    }, supportsPassiveOption ? {passive: false, capture: false} : false);
+    window.addEventListener('touchmove', this.onTouchMove,
+        supportsPassiveOption ? {passive: false, capture: false} : false);
 
   }
 
   componentWillUnmount() {
-    this.rect.removeEventListener('touchstart');
+    window.removeEventListener('touchstart', this.onTouchMove);
   }
 
   _coord2plot({x, y}) {
@@ -111,9 +105,19 @@ class MovableMark extends AbstractSeries {
     }
   }
 
+  onTouchMove(evt) {
+    if (!this.state.dragging || evt.defaultPrevented) {
+      return;
+    }
+
+    evt.preventDefault();
+    this.onDrag(evt);
+  }
+
   render() {
     const {
       data: [d],
+      opacity,
       className,
       innerWidth,
       innerHeight,
@@ -159,10 +163,12 @@ class MovableMark extends AbstractSeries {
               className="vt-vowels-circle"
               pointerEvents="none"
               stroke="orange"
+              strokeOpacity={1}
               fill="red"
+              fillOpacity={opacity}
               cx={x}
               cy={y}
-              r={4}
+              r={6}
           />
         </g>
     );

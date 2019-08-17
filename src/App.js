@@ -4,6 +4,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import './App.css';
 import VoiceSynth from './synth/VoiceSynth';
 import Navbar from './components/Navbar';
+import PresetSelector from './components/PresetSelector'
 import GlottalSource from "./components/GlottalSource"
 import VocalTract from './components/VocalTract'
 import Footer from "./components/Footer";
@@ -27,6 +28,7 @@ class App extends React.PureComponent {
             <Navbar/>
             <div className="App-wrapper">
               <PerfectScrollbar className="App-scroller">
+                <PresetSelector/>
                 <Masonry className="App-container"
                          options={{itemSelector: '.App-element', columnWidth: 1, horizontalOrder: true}}>
                   <GlottalSource/>

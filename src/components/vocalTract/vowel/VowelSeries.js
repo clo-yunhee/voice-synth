@@ -9,7 +9,7 @@ function getLocs(evt) {
   return {xLoc, yLoc};
 }
 
-class VowelAreaSeries extends AbstractSeries {
+class VowelSeries extends AbstractSeries {
 
   constructor(props) {
     super(props);
@@ -64,18 +64,7 @@ class VowelAreaSeries extends AbstractSeries {
 
               return (
                   <React.Fragment key={vowel}>
-                    <ellipse
-                        pointerEvents="none"
-                        stroke="black"
-                        strokeWidth={1}
-                        fill="grey"
-                        fillOpacity={0.5}
-                        cx={x}
-                        cy={y}
-                        rx={10}
-                        ry={10}
-                    />
-                    <text x={x} y={y} dominantBaseline="middle" textAnchor="middle" fontSize="0.8em">
+                    <text x={x} y={y} dominantBaseline="middle" textAnchor="middle" fontSize="0.75em">
                       {vowel}
                     </text>
                   </React.Fragment>
@@ -88,26 +77,21 @@ class VowelAreaSeries extends AbstractSeries {
 
 }
 
-VowelAreaSeries.displayName = 'MovableMark';
-VowelAreaSeries.propTypes = {
+VowelSeries.displayName = 'VowelSeries';
+VowelSeries.propTypes = {
   ...AbstractSeries.propTypes,
   data: PropTypes.array,
   radius: PropTypes.number,
   stroke: PropTypes.string,
   fill: PropTypes.string,
   onHover: PropTypes.func,
-  onDragEnd: PropTypes.func,
 };
-VowelAreaSeries.defaultProps = {
+VowelSeries.defaultProps = {
   ...AbstractSeries.defaultProps,
   data: [{x: 150, y: 500}],
   radius: 2,
   stroke: 'orange',
   fill: 'red',
-  onDrag: () => {
-  },
-  onDragEnd: () => {
-  },
 };
 
-export default VowelAreaSeries;
+export default VowelSeries;

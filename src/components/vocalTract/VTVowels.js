@@ -1,38 +1,55 @@
 import React from 'react';
+import Grid from "@material-ui/core/Grid";
 import {XAxis, XYPlot, YAxis} from "react-vis";
 import MovableMark from './vowel/MovableMark';
-import VowelAreaSeries from './vowel/VowelAreaSeries';
+import VowelSeries from './vowel/VowelSeries';
 import AppContext from "../../AppContext";
+import {getPreset, vowels} from '../../presets'
+import FormLabel from "@material-ui/core/FormLabel";
+import Slider from "@material-ui/core/Slider";
 
-
-const plotWidth = 576;
-const plotHeight = 480;
-
-const plotDomainF1 = [1200, 150];
-const plotTicksF1 = [1200, 1000, 800, 600, 500, 400, 300, 200];
-
-const plotDomainF2 = [3000, 500];
-const plotTicksF2 = [3000, 2500, 2000, 1500, 1000, 500];
+const plotWidth = 400;
+const plotHeight = 300;
 
 function plotTickLabel(f) {
-  if (f < 1000) {
-    return f + " Hz";
-  } else {
-    return (f / 1000) + " kHz";
-  }
+  return f.toLocaleString();
 }
 
 // Construct vowel areas
-const stdF1 = 100;
-const stdF2 = 150;
 
-const vowelAreas = [
-  {vowel: '/a/', F1: 800, F2: 1500},
-  {vowel: '/e/', F1: 600, F2: 2000},
-  {vowel: '/i/', F1: 350, F2: 2500},
-  {vowel: '/o/', F1: 600, F2: 1000},
-  {vowel: '/u/', F1: 350, F2: 800}
-];
+const vowelAverages = {'M': {}, 'F': {}};
+
+['M', 'F'].forEach(gender => {
+  [0.0, 0.5, 1.0].forEach(color => {
+    vowelAverages[gender][color] = vowels.map(vowel => {
+      const {formants: {freqs: [F1, F2]}} = getPreset({gender, color, vowel});
+      return {vowel, F1, F2};
+    });
+  });
+});
+
+const vowelSpaces = {
+  'M': {
+    F1: {
+      ticks: [800, 700, 600, 500, 400, 300],
+      domain: [900, 200]
+    },
+    F2: {
+      ticks: [2200, 2000, 1800, 1600, 1400, 1200, 1000],
+      domain: [2400, 900]
+    }
+  },
+  'F': {
+    F1: {
+      ticks: [1000, 900, 800, 700, 600, 500, 400],
+      domain: [1100, 300]
+    },
+    F2: {
+      ticks: [2600, 2400, 2200, 2000, 1800, 1600, 1400],
+      domain: [2800, 1200]
+    }
+  }
+};
 
 class VTVowels extends React.Component {
 
@@ -41,51 +58,95 @@ class VTVowels extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      dragging: false
+      agab: 1, color: 0.5,
     };
   }
 
   onDrag = ({x: F2, y: F1}) => {
     const {onChange} = this.props;
-    this.setState({dragging: true});
     if (onChange) {
       onChange(F1, F2);
     }
   };
 
+  onGender = (event, newValue) => {
+    this.setState({agab: newValue});
+  };
+
+  onColor = (event, newValue) => {
+    this.setState({color: newValue});
+  };
+
   render() {
     const {formants: [{frequency: F1}, {frequency: F2}]} = this.props;
+    const {agab, color} = this.state;
+
+    const gender = ['M', 'F'][agab];
+
+    const {F1: spaceF1, F2: spaceF2} = vowelSpaces[gender];
 
     return (
-        <XYPlot
-            className="vt-plot"
-            width={plotWidth}
-            height={plotHeight}
-            xDomain={plotDomainF2}
-            xType="log"
-            yDomain={plotDomainF1}
-            yType="log"
-            margin={{top: 10, left: 60, right: 30, bottom: 30}}
-        >
-          <XAxis title="F2 (Hz)" tickValues={plotTicksF2} tickFormat={plotTickLabel}/>
-          <YAxis title="F1 (Hz)" tickValues={plotTicksF1} tickFormat={plotTickLabel}/>
+        <Grid container direction="row">
+          <Grid item>
+            <XYPlot
+                className="vt-plot"
+                width={plotWidth}
+                height={plotHeight}
+                xDomain={spaceF2.domain}
+                xType="linear"
+                yDomain={spaceF1.domain}
+                yType="linear"
+                margin={{top: 10, left: 40, right: 10, bottom: 30}}
+            >
+              <XAxis title="F2 (Hz)" tickValues={spaceF2.ticks} tickFormat={plotTickLabel}/>
+              <YAxis title="F1 (Hz)" tickValues={spaceF1.ticks} tickFormat={plotTickLabel}/>
 
-          <VowelAreaSeries
-              stdF1={stdF1}
-              stdF2={stdF2}
-              data={vowelAreas}
-          />
+              <VowelSeries
+                  data={vowelAverages[gender][color]}
+              />
 
-          <MovableMark
-              className="vt-vowels-mark"
-              opacity={0.75}
-              stroke="orange"
-              fill="red"
-              data={[{x: F2, y: F1}]}
-              radius={6}
-              onDrag={this.onDrag}
-          />
-        </XYPlot>
+              <MovableMark
+                  className="vt-vowels-mark"
+                  opacity={0.75}
+                  data={[{x: F2, y: F1}]}
+                  onDrag={this.onDrag}
+              />
+            </XYPlot>
+          </Grid>
+          <Grid item>
+            <Grid container spacing={2} direction="column" alignItems="stretch" className="vt-vowels-picker">
+              <Grid item>
+                <FormLabel component="legend">Assigned gender</FormLabel>
+                <Slider
+                    min={0}
+                    max={1}
+                    step={null}
+                    marks={[
+                      {value: 0, label: 'Male'},
+                      {value: 1, label: 'Female'}
+                    ]}
+                    value={agab}
+                    onChange={this.onGender}
+                />
+              </Grid>
+              <Grid item>
+                <FormLabel component="legend">Gender expression</FormLabel>
+                <Slider
+                    min={0}
+                    max={1}
+                    step={null}
+                    marks={[
+                      {value: 0, label: 'Masculine'},
+                      {value: 0.5, label: 'Neutral'},
+                      {value: 1, label: 'Feminine'}
+                    ]}
+                    value={color}
+                    onChange={this.onColor}
+                />
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
     );
   }
 

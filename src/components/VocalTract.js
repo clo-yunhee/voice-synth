@@ -95,6 +95,21 @@ class VocalTract extends React.Component {
     return (
         <>
           <Paper className="App-element">
+            <Grid container spacing={2} direction="column" alignItems="flex-start">
+              <Grid item>
+                <Typography variant="subtitle2">
+                  Vowel formant space
+                </Typography>
+              </Grid>
+              <Grid item>
+                <VTVowels
+                    formants={formants}
+                    onChange={this.onVowel}
+                />
+              </Grid>
+            </Grid>
+          </Paper>
+          <Paper className="App-element">
             <Grid container spacing={2} direction="column">
               <Grid item>
                 <VTHeader
@@ -131,21 +146,6 @@ class VocalTract extends React.Component {
               </Grid>
               <Grid item>
                 <VTResponse data={responses}/>
-              </Grid>
-            </Grid>
-          </Paper>
-          <Paper className="App-element">
-            <Grid container spacing={2} direction="column" alignItems="flex-start">
-              <Grid item>
-                <Typography variant="subtitle2">
-                  Vowel formant space
-                </Typography>
-              </Grid>
-              <Grid item>
-                <VTVowels
-                    formants={formants}
-                    onChange={this.onVowel}
-                />
               </Grid>
             </Grid>
           </Paper>
