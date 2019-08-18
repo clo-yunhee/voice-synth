@@ -7,6 +7,7 @@
     "@material-ui/icons": "^4.2.1",
     "@material-ui/lab": "^4.0.0-alpha.23",
     "@material-ui/styles": "^4.3.0",
+    "audioworklet-polyfill": "^1.1.2",
     "fourier-transform": "^1.1.2",
     "lodash": "^4.17.15",
     "mathjs": "^6.0.2",

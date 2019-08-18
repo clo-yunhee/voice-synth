@@ -24,15 +24,19 @@ class SynthControl extends AbstractControl {
       this.vocalTract.withFrequencyResponse(formants);
 
       // Get source.
-      const synthSource = this.synth.getSource();
-      const params = this.glottalSource.getSourceParams(preset.source.params, synthSource);
-      const waveform = this.glottalSource.getSourceWaveform(synthSource);
+      const {params, range} = this.glottalSource.getSourceParams();
 
       this.fireEvent('preset', {preset});
-      this.fireEvent('glottalSource.frequency', {frequency: preset.frequency});
-      this.fireEvent('glottalSource.model', {model: {type: preset.source.name, params, waveform}});
+      this.fireEvent('glottalSource.frequency', {frequency: preset.source.frequency});
+      this.fireEvent('glottalSource.modelType', {name: preset.source.name});
+      this.fireEvent('glottalSource.modelParams', {params, range});
       this.fireEvent('vocalTract.toggle', {flag: this.synth.filterPass});
       this.fireEvent('vocalTract.formant', {formants});
+
+      this.synth.sourceNode.port.onmessage = ({data: waveform}) => {
+        this.fireEvent('glottalSource.waveform', {waveform});
+      };
+      this.glottalSource.onWaveform(params);
     });
   }
 

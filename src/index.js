@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import 'audioworklet-polyfill';
 import './index.css';
 import 'react-vis/dist/style.css';
 import 'react-perfect-scrollbar/dist/css/styles.css';

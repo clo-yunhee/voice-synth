@@ -18,7 +18,7 @@ class VocalTractControl extends AbstractControl {
   }
 
   withFrequencyResponse(formants) {
-    // Get frequency response for each formant.
+    // Get sourceFrequency response for each formant.
     for (const d of formants) {
       this.synth.filters[d.i].getFrequencyResponse(frequencies, magResponse, phaseResponse);
 

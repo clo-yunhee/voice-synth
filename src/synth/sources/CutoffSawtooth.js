@@ -24,4 +24,4 @@ class CutoffSawtooth extends PeriodicWaveBuffer {
 
 }
 
-export default CutoffSawtooth;
+registerProcessor(RosenbergC.prototype.name, RosenbergC);

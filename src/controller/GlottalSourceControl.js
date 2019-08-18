@@ -10,96 +10,134 @@ class GlottalSourceControl extends AbstractControl {
     super(parent);
     this.initHandlers([
       'frequency',
-      'model'
+      'modelType',
+      'modelParams',
+      'waveform'
     ]);
+
+    this.subscribeEvent('modelType', this.handleModelType);
   }
 
-  getSourceParams(p, source) {
-    const paramRange = source.getParamRange(p);
+  getSourceCorrectionFunc() {
+    if (this.synth.sourceName === 'LiljencrantsFant') {
+      return {
+        Oq: (Oq) => ({am: {minValue: 0.74, maxValue: -0.23 * Oq + 1.01}})
+      }
+    } else {
+      return {};
+    }
+  }
+
+  getSourceParams() {
     const params = {};
+    const range = {};
 
-    Object.keys(p).forEach(key => {
-      params[key] = {
-        value: p[key],
-        min: paramRange[key].min,
-        max: paramRange[key].max
-      };
-    });
+    const dynamic = this.getSourceCorrectionFunc();
 
-    return params;
-  }
-
-  getSourceWaveform(source) {
-    const waveform = Array.from(source.getArray(plotNbPoints));
-
-    for (let k = 0; k < plotNbPoints; ++k) {
-      waveform[k] = {
-        x: k / plotNbPoints,
-        y: waveform[k]
-      };
+    for (const [name, {value, minValue, maxValue}] of this.synth.sourceNode.parameters.entries()) {
+      params[name] = value;
+      range[name] = {minValue, maxValue};
     }
 
-    return waveform;
+    for (const name of Object.keys(dynamic)) {
+      const fn = dynamic[name];
+      const p = range[name];
+
+      Object.assign(range, fn(p));
+    }
+
+    return {params, range};
   }
 
-  correctParam(value, min, max) {
+  correctParams(params) {
+    const {
+      params: initialParams,
+      range: initialRange
+    } = this.getSourceParams();
+
+    const dynamic = this.getSourceCorrectionFunc();
+
+    let range = initialRange;
+    let newParams = {...initialParams, ...params};
+
+    // Iteratively update parameters until it becomes stable.
+    do {
+      params = newParams;
+      newParams = {...params};
+
+      for (const [key, value] of Object.entries(newParams)) {
+        let {minValue, maxValue} = range[key];
+
+        const newParam = this.correctParam(value, minValue, maxValue);
+
+        newParams[key] = newParam.value;
+        range[key] = {minValue: range.minValue, maxValue: newParam.maxValue};
+      }
+
+      for (const name of Object.keys(dynamic)) {
+        const fn = dynamic[name];
+        const p = range[name];
+
+        Object.assign(range, fn(p));
+      }
+    } while (!_.isEqual(params, newParams));
+
+    return {params, range};
+  }
+
+  correctParam(value, minValue, maxValue) {
     // Truncate to 2nd decimal place.
-    min = Math.round(min * 100) / 100;
-    max = Math.round(max * 100) / 100;
+    minValue = Math.round(minValue * 100) / 100;
+    maxValue = Math.round(maxValue * 100) / 100;
 
     let correctedValue = Math.round(value * 100) / 100;
 
-    if (correctedValue < min) {
-      correctedValue = min;
+    if (correctedValue < minValue) {
+      correctedValue = minValue;
     }
-    if (correctedValue > max) {
-      correctedValue = max;
+    if (correctedValue > maxValue) {
+      correctedValue = maxValue;
     }
 
-    return correctedValue;
+    return {value: correctedValue, minValue, maxValue};
   }
 
-  onFrequency(frequency) {
-    this.synth.setSource({frequency});
+  onF0(frequency) {
+    this.synth.setSourceFrequency(frequency);
     this.fireEvent('frequency', {frequency});
   }
 
-  onModel(source) {
-    if ((source.name === undefined || this.synth.sourceName === source.name)
-        && source.params !== undefined) {
-      const synthSource = this.synth.getSource();
+  onModelParam(params) {
+    // Correct params if necessary.
+    const {params: correctedParams, range} = this.correctParams(params);
 
-      let range = synthSource.getParamRange();
-      let params;
-      let newParams = {...synthSource.params, ...source.params};
+    this.synth.setSourceParams(correctedParams);
 
-      // Iteratively update parameters until it becomes stable.
-      do {
-        params = newParams;
-        newParams = {...params};
+    this.fireEvent('modelParams', {params: correctedParams, range});
+    this.onWaveform(correctedParams);
+  }
 
-        for (const [key, value] of Object.entries(newParams)) {
-          let {min, max} = range[key];
+  onModelType(name) {
+    this.synth.setSourceType(name);
 
-          newParams[key] = this.correctParam(value, min, max);
-        }
+    this.fireEvent('modelType', {name});
+  }
 
-        range = synthSource.getParamRange(newParams);
+  onWaveform(params) {
+    const p = Object.entries(params).reduce((p, [key, {value}]) => {
+      p[key] = value;
+      return p;
+    }, {});
 
-      } while (!_.isEqual(params, newParams));
+    this.synth.sourceNode.port.postMessage({nbPoints: plotNbPoints, params: p});
+  }
 
-      source.params = params;
+  handleModelType = (name) => {
+    const defaultParams = {};
+    for (const [name, {defaultValue}] of this.synth.sourceNode.parameters.entries()) {
+      defaultParams[name] = defaultValue;
     }
-
-    this.synth.setSource(source);
-
-    const newSource = this.synth.getSource();
-
-    // Add min,max to the params set.
-    const params = this.getSourceParams(newSource.params, newSource);
-    const waveform = this.getSourceWaveform(newSource);
-
-    this.fireEvent('model', {model: {type: this.synth.sourceName, params, waveform}});
+    this.onModelParam(defaultParams);
   }
 
 }

@@ -1,3 +1,5 @@
+import _ from "lodash";
+
 class AbstractControl {
 
   constructor(parent) {
@@ -52,7 +54,7 @@ class AbstractControl {
 
       // Trigger all handlers.
       for (const handler of handlers) {
-        handler(event);
+        handler(_.cloneDeep(event));
       }
     }
   }

@@ -10,7 +10,6 @@ import VocalTract from './components/VocalTract'
 import Footer from "./components/Footer";
 import makeControl from "./controller/make";
 import AppContext from './AppContext'
-import {defaultPreset} from "./presets";
 
 class App extends React.PureComponent {
 
@@ -18,7 +17,6 @@ class App extends React.PureComponent {
     super(props);
     this.synth = new VoiceSynth();
     this.controller = makeControl(this.synth);
-    this.controller.onPreset(defaultPreset);
   }
 
   render() {

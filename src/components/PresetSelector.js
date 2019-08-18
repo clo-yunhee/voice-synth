@@ -5,8 +5,8 @@ import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
 import Slider from "@material-ui/core/Slider";
 import Typography from "@material-ui/core/Typography";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
-import Button from "@material-ui/core/Button";
+import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
+import ToggleButton from "@material-ui/lab/ToggleButton";
 import AppContext from "../AppContext"
 import {defaultPreset, getPreset, vowels} from "../presets";
 
@@ -37,7 +37,7 @@ class PresetSelector extends React.Component {
     this.onPresetChange({color})
   };
 
-  onVowel = (vowel) => (event) => {
+  onVowel = (event, vowel) => {
     this.onPresetChange({vowel})
   };
 
@@ -105,25 +105,24 @@ class PresetSelector extends React.Component {
               <Grid item>
                 <FormControl component="fieldset">
                   <FormLabel component="legend">Vowel</FormLabel>
-                  <ButtonGroup
-                      variant="contained"
+                  <ToggleButtonGroup
                       exclusive
                       value={vowel}
                       onChange={this.onVowel}
                   >
                     {
                       vowels.map(v => (
-                          <Button
+                          <ToggleButton
                               key={v}
-                              onClick={this.onVowel(v)}
+                              value={v}
                           >
                             <Typography className="preset-selector-vowel">
                               {v}
                             </Typography>
-                          </Button>
+                          </ToggleButton>
                       ))
                     }
-                  </ButtonGroup>
+                  </ToggleButtonGroup>
                 </FormControl>
               </Grid>
             </Grid>
