@@ -13,7 +13,7 @@ export const vowels = [
 const Male = {
   key: 'M',
   pitch: 120,
-  params: {Oq: 0.3, am: 0.76},
+  params: {Oq: 0.3, am: 0.77},
   gains: [0, -15, -18, -20, -30],
   bandwidths: [40, 80, 100, 120, 120],
 };
@@ -21,7 +21,7 @@ const Male = {
 const Female = {
   key: 'F',
   pitch: 220,
-  params: {Oq: 0.6, am: 0.78},
+  params: {Oq: 0.6, am: 0.77},
   gains: [0, -20, -26, -40, -50],
   bandwidths: [60, 90, 100, 120, 120],
 };

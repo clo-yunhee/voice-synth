@@ -11,7 +11,7 @@ class SynthControl extends AbstractControl {
     ]);
   }
 
-  onPreset(preset) {
+  onPreset(preset, firstTime) {
     this.synth.loadPreset(preset, () => {
 
       // Get frequency response.
@@ -37,7 +37,7 @@ class SynthControl extends AbstractControl {
         this.fireEvent('glottalSource.waveform', {waveform});
       };
       this.glottalSource.onWaveform(params);
-    });
+    }, firstTime);
   }
 
 }

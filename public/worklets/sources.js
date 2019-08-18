@@ -13,63 +13,66 @@ class AbstractSourceGenerator extends AudioWorkletProcessor {
     this.n = 0;
 
     // Listen for a plot data request
-    this.port.onmessage = ({data: {params, nbPoints}}) => {
-      const data = new Array(nbPoints);
-      for (let k = 0; k < nbPoints; ++k) {
-        const t = k / nbPoints;
-        data[k] = {
-          x: t, y: this.constructor.getSample(t, params)
-        };
+    this.port.onmessage = ({data: {params, nbPoints}}) =>
+        this.sendPlotData(params, nbPoints);
+  }
+
+  sendPlotData(params, nbPoints) {
+    const data = new Array(nbPoints);
+
+    let maxAmplitude = -Infinity;
+    for (let k = 0; k < nbPoints; ++k) {
+      const x = k / nbPoints;
+      const y = this.constructor.getSample(x, params);
+
+      const amplitude = Math.abs(y);
+      if (amplitude > maxAmplitude) {
+        maxAmplitude = amplitude;
       }
-      this.port.postMessage(data);
-    };
+
+      data[k] = {x, y};
+    }
+
+    for (let k = 0; k < nbPoints; ++k) {
+      data[k].y /= maxAmplitude;
+    }
+
+    this.port.postMessage(data);
   }
 
   process(inputs, outputs, parameters) {
+    const input = inputs[0];
     const output = outputs[0];
 
-    const openPhaseThreshold = 0.2;
+    const fs = sampleRate;
 
-    let fs = sampleRate;
-    let f0 = this.sourceFrequency || parameters.sourceFrequency[0];
+    let f0 = this.frequency || parameters.frequency[0];
     let t0 = fs / f0;
+    let params = Object.entries(parameters).reduce((p, [key, param]) => {
+      p[key] = param[0];
+      return p;
+    }, {});
 
     for (const outputChannel of output) {
-      let lastOut = 0;
 
+      // Compute glottal vibration output.
       for (let i = 0; i < outputChannel.length; ++i) {
 
-        // Get each parameter
-        const params = new Map(
-            parameters.entries().map(([key, param]) =>
-                [key, (param.length > 1) ? param[i] : param[0]]
-            )
-        );
+        const sample = this.constructor.getSample(this.n / t0, params);
 
-        const s = this.constructor.getSample(this.n / t0, params);
-
-        // Add glottal vibration output.
-        outputChannel[i] = s;
-
-        // Add glottal aspiration output.
-        if (s > openPhaseThreshold) {
-
-          // Brown noise.
-          const white = Math.random() * 2 - 1;
-          let noise = (lastOut + 0.02 * white) / 1.02;
-          lastOut = noise;
-          noise *= 3.5;
-
-          outputChannel[i] += noise;
-
-        }
+        outputChannel[i] = sample;
 
         this.n++;
 
         if (this.n >= t0) {
           this.n = 0;
-          f0 = parameters.sourceFrequency[i];
+
+          f0 = params.frequency;
           t0 = fs / f0;
+          params = Object.entries(parameters).reduce((p, [key, param]) => {
+            p[key] = param[0];
+            return p;
+          }, {});
         }
       }
     }
@@ -83,7 +86,7 @@ class CutoffSawtooth extends AbstractSourceGenerator {
 
   static get parameterDescriptors() {
     return [
-      {name: 'frequency', defaultValue: 100, minValue: 70, maxValue: 600},
+      {name: 'frequency', defaultValue: 100, minValue: 70, maxValue: 600, automationMode: 'k-rate'},
       {name: 'Oq', defaultValue: 0.6, minValue: 0.2, maxValue: 0.8}
     ];
   }
@@ -104,7 +107,7 @@ class LiljencrantsFant extends AbstractSourceGenerator {
     return [
       {name: 'frequency', defaultValue: 100, minValue: 70, maxValue: 600},
       {name: 'Oq', defaultValue: 0.6, minValue: 0.2, maxValue: 0.8},
-      {name: 'am', defaultValue: 0.8, minValue: 0.74, maxValue: 0.95}
+      {name: 'am', defaultValue: 0.77, minValue: 0.74, maxValue: 0.95}
     ];
   }
 

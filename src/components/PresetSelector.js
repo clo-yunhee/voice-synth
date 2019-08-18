@@ -38,7 +38,7 @@ class PresetSelector extends React.Component {
   };
 
   onVowel = (event, vowel) => {
-    this.onPresetChange({vowel})
+    this.onPresetChange({vowel: vowel || this.state.vowel})
   };
 
   onPresetChange = (newSet) => {

@@ -83,15 +83,17 @@ class GlottalSource extends React.Component {
               </Grid>
               {
                 Object.entries(modelParams).map(([key, value]) => (
-                    <Grid item key={key}>
-                      <SourceParam
-                          name={key}
-                          value={value}
-                          min={modelParamRange[key].minValue}
-                          max={modelParamRange[key].maxValue}
-                          onChange={this.onModelParam}
-                      />
-                    </Grid>
+                    key !== 'frequency' ?
+                        <Grid item key={key}>
+                          <SourceParam
+                              name={key}
+                              value={value}
+                              min={modelParamRange[key].minValue}
+                              max={modelParamRange[key].maxValue}
+                              onChange={this.onModelParam}
+                          />
+                        </Grid>
+                        : false
                 ))
               }
             </Grid>

@@ -1,5 +1,5 @@
+import _ from 'lodash'
 import {db2amp} from '../gainConversion'
-import {defaultPreset} from "../presets";
 
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
@@ -32,17 +32,21 @@ class VoiceSynth {
 
     this.formantF = [0, 0, 0, 0, 0];
     this._connectFilters();
-
-    this.context.audioWorklet.addModule('worklets/sources.js')
-        .then(() => {
-          this.loadPreset(defaultPreset);
-        });
   }
 
-  async start() {
+  loadModules() {
+    return Promise.all([
+      this.context.audioWorklet.addModule('worklets/sources.js'),
+      this.context.audioWorklet.addModule('worklets/aspiration.js'),
+    ]).then(this.createSourceNodes.bind(this));
+  }
+
+  start() {
     if (this.context.state === 'suspended') {
-      await this.context.resume();
+      this.context.resume();
     }
+
+    this.sourceNode.connect(this.sourceAspiration);
 
     this.amp.gain.setValueAtTime(0, this.context.currentTime);
     this.amp.gain.linearRampToValueAtTime(this.volume, this.context.currentTime + 0.05);
@@ -50,14 +54,16 @@ class VoiceSynth {
   }
 
   stop() {
+    this.sourceNode.disconnect();
+
     this.playing = false;
     this.amp.gain.linearRampToValueAtTime(0, this.context.currentTime + 0.05);
   }
 
-  loadPreset(preset, callback) {
-    this.sourceFrequency = preset.source.frequency;
-    this.sourceParams = {...preset.source.params};
-    this.setSourceType(preset.source.name);
+  loadPreset(preset, callback, firstTime) {
+    this.setSourceType(preset.source.name, firstTime);
+    this.setSourceFrequency(preset.source.frequency, firstTime);
+    this.setSourceParams(preset.source.params, firstTime);
     this.formantF = [...preset.formants.freqs];
     this.formantBw = [...preset.formants.bands];
     this.formantGain = [...preset.formants.gains];
@@ -83,33 +89,56 @@ class VoiceSynth {
     }
   }
 
-  setSourceType(name) {
-    this.sourceNode = new AudioWorkletNode(this.context, name);
-    this.setSourceFrequency();
+  createSourceNodes() {
+    this.sourceAspiration = new AudioWorkletNode(this.context, "Aspiration");
+
+    this.sourceAspiration.connect(this.sourceGain);
   }
 
-  setSourceFrequency(frequency) {
-    if (frequency !== undefined) {
-      this.sourceFrequency = frequency;
+  setSourceType(name, firstTime) {
+    if (!firstTime && this.sourceName === name) {
+      return;
     }
+
+    if (this.sourceNode) {
+      this.sourceNode.disconnect();
+    }
+
+    this.sourceName = name;
+    this.sourceNode = new AudioWorkletNode(this.context, name);
+  }
+
+  setSourceFrequency(frequency, firstTime) {
+    if (!firstTime && this.sourceFrequency === frequency) {
+      return;
+    }
+
+    this.sourceFrequency = frequency;
 
     const param = this.sourceNode.parameters.get('frequency');
-    const time = this.context.currentTime + 0.1;
+    const time = this.context.currentTime;
 
-    param.linearRampToValueAtTime(this.sourceFrequency, time);
+    param.exponentialRampToValueAtTime(this.sourceFrequency, time + 0.05);
   }
 
-  setSourceParams(parameters) {
-    if (parameters !== undefined) {
-      this.sourceParams = parameters;
+  setSourceParams(parameters, firstTime) {
+    delete parameters.frequency;
+
+    if (!firstTime && _.isEqual(this.sourceParams, parameters)) {
+      return;
     }
 
-    Object.entries(this.sourceParams).forEach(([key, value]) => {
+    this.sourceParams = parameters;
+
+    Object.entries(parameters).forEach(([key, value]) => {
       if (this.sourceNode.parameters.has(key)) {
         const param = this.sourceNode.parameters.get(key);
-        const time = this.context.currentTime + 0.1;
 
-        param.linearRampToValueAtTime(value, time);
+        if (key !== 'frequency' && param.value !== value) {
+          const time = this.context.currentTime;
+
+          param.linearRampToValueAtTime(value, time + 0.025);
+        }
       } else {
         throw new Error(`Source parameter "${key}" does not exist.`)
       }
@@ -162,9 +191,9 @@ class VoiceSynth {
       this.filters[i] = this.context.createBiquadFilter();
       this.filters[i].type = 'bandpass';
 
-      this.prefiltGain.connect(this.filters[i]);
-      this.filters[i].connect(this.filterGain[i]);
-      this.filterGain[i].connect(this.amp);
+      this.prefiltGain.connect(this.filters[i])
+          .connect(this.filterGain[i])
+          .connect(this.amp);
     }
 
     this.zeroFilter.connect(this.amp);

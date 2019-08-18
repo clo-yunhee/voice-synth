@@ -28,6 +28,18 @@ class GlottalSourceControl extends AbstractControl {
     }
   }
 
+  roundSourceParam(y) {
+    return Math.round(y * 100) / 100;
+  }
+
+  roundSourceParams(params, range) {
+    for (const name of Object.keys(params)) {
+      params[name] = this.roundSourceParam(params[name]);
+      range[name].minValue = this.roundSourceParam(range[name].minValue);
+      range[name].maxValue = this.roundSourceParam(range[name].maxValue);
+    }
+  }
+
   getSourceParams() {
     const params = {};
     const range = {};
@@ -41,15 +53,17 @@ class GlottalSourceControl extends AbstractControl {
 
     for (const name of Object.keys(dynamic)) {
       const fn = dynamic[name];
-      const p = range[name];
+      const p = params[name];
 
       Object.assign(range, fn(p));
     }
 
+    this.roundSourceParams(params, range);
+
     return {params, range};
   }
 
-  correctParams(params) {
+  correctSourceParams(params) {
     const {
       params: initialParams,
       range: initialRange
@@ -59,6 +73,11 @@ class GlottalSourceControl extends AbstractControl {
 
     let range = initialRange;
     let newParams = {...initialParams, ...params};
+
+    console.log('initial', initialParams);
+    console.log('params', params);
+
+    console.log('merge', newParams);
 
     // Iteratively update parameters until it becomes stable.
     do {
@@ -76,30 +95,30 @@ class GlottalSourceControl extends AbstractControl {
 
       for (const name of Object.keys(dynamic)) {
         const fn = dynamic[name];
-        const p = range[name];
+        const p = params[name];
 
         Object.assign(range, fn(p));
       }
+
     } while (!_.isEqual(params, newParams));
+
+    params = newParams;
 
     return {params, range};
   }
 
   correctParam(value, minValue, maxValue) {
     // Truncate to 2nd decimal place.
-    minValue = Math.round(minValue * 100) / 100;
-    maxValue = Math.round(maxValue * 100) / 100;
+    let correctedValue;
 
-    let correctedValue = Math.round(value * 100) / 100;
-
-    if (correctedValue < minValue) {
+    if (value < minValue) {
       correctedValue = minValue;
     }
-    if (correctedValue > maxValue) {
+    if (value > maxValue) {
       correctedValue = maxValue;
     }
 
-    return {value: correctedValue, minValue, maxValue};
+    return {value: correctedValue || value, minValue, maxValue};
   }
 
   onF0(frequency) {
@@ -109,7 +128,7 @@ class GlottalSourceControl extends AbstractControl {
 
   onModelParam(params) {
     // Correct params if necessary.
-    const {params: correctedParams, range} = this.correctParams(params);
+    const {params: correctedParams, range} = this.correctSourceParams(params);
 
     this.synth.setSourceParams(correctedParams);
 
@@ -124,20 +143,15 @@ class GlottalSourceControl extends AbstractControl {
   }
 
   onWaveform(params) {
-    const p = Object.entries(params).reduce((p, [key, {value}]) => {
-      p[key] = value;
-      return p;
-    }, {});
-
-    this.synth.sourceNode.port.postMessage({nbPoints: plotNbPoints, params: p});
+    this.synth.sourceNode.port.postMessage({nbPoints: plotNbPoints, params: params});
   }
 
   handleModelType = (name) => {
-    const defaultParams = {};
+    /*const defaultParams = {};
     for (const [name, {defaultValue}] of this.synth.sourceNode.parameters.entries()) {
-      defaultParams[name] = defaultValue;
+      defaultParams[name] = this.roundSourceParam(defaultValue);
     }
-    this.onModelParam(defaultParams);
+    this.onModelParam(defaultParams);*/
   }
 
 }

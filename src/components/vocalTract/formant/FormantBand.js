@@ -46,7 +46,7 @@ class FormantBand extends React.PureComponent {
               <Tooltip title={`Adjust the clarity of the frequencies emphasized by F${i + 1}`}>
                 <Slider
                     min={Math.log10(10)}
-                    max={Math.log10(2000)}
+                    max={Math.log10(400)}
                     step={0.05}
                     value={Math.log10(bandwidth)}
                     onChange={this.onChangeLog}
@@ -58,7 +58,7 @@ class FormantBand extends React.PureComponent {
                 <Grid item>
                   <TextField
                       type="number"
-                      inputProps={{min: 10, max: 2000, step: 1}}
+                      inputProps={{min: 10, max: 400, step: 1}}
                       onChange={this.onChangeLin}
                       value={Math.round(bandwidth)}
                       className="formant-band-value"
