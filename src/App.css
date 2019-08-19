@@ -168,14 +168,11 @@
     color: white;
     box-sizing: border-box;
     box-shadow: 0 -2px 1px 2px #282c34;
+    padding: 2vmin;
 }
 
-.App-link {
+.github-link {
     color: #61dafb;
-}
-
-.source-link-container {
-    padding: 0 3vmin;
 }
 
 @keyframes App-logo-spin {
