@@ -1,3 +1,7 @@
+const commonParams = [
+  {name: 'frequency', defaultValue: 100, minValue: 70, maxValue: 600},
+];
+
 class AbstractSourceGenerator extends AudioWorkletProcessor {
 
   static get parameterDescriptors() {
@@ -41,26 +45,24 @@ class AbstractSourceGenerator extends AudioWorkletProcessor {
   }
 
   process(inputs, outputs, parameters) {
-    const input = inputs[0];
     const output = outputs[0];
 
     const fs = sampleRate;
 
-    let f0 = this.frequency || parameters.frequency[0];
-    let t0 = fs / f0;
     let params = Object.entries(parameters).reduce((p, [key, param]) => {
       p[key] = param[0];
       return p;
     }, {});
+
+    let f0 = params.frequency;
+    let t0 = fs / f0;
 
     for (const outputChannel of output) {
 
       // Compute glottal vibration output.
       for (let i = 0; i < outputChannel.length; ++i) {
 
-        const sample = this.constructor.getSample(this.n / t0, params);
-
-        outputChannel[i] = sample;
+        outputChannel[i] = this.constructor.getSample(this.n / t0, params);
 
         this.n++;
 
@@ -70,7 +72,7 @@ class AbstractSourceGenerator extends AudioWorkletProcessor {
           f0 = params.frequency;
           t0 = fs / f0;
           params = Object.entries(parameters).reduce((p, [key, param]) => {
-            p[key] = param[0];
+            p[key] = (param.length > 1) ? param[i] : param[0];
             return p;
           }, {});
         }
@@ -86,14 +88,14 @@ class CutoffSawtooth extends AbstractSourceGenerator {
 
   static get parameterDescriptors() {
     return [
-      {name: 'frequency', defaultValue: 100, minValue: 70, maxValue: 600, automationMode: 'k-rate'},
-      {name: 'Oq', defaultValue: 0.6, minValue: 0.2, maxValue: 0.8}
+      ...commonParams,
+      {name: 'Oq', defaultValue: 0.6, minValue: 0.2, maxValue: 0.8},
     ];
   }
 
   static getSample(t, {Oq}) {
     if (t < Oq) {
-      return t;
+      return 1 - t;
     } else {
       return 0;
     }
@@ -105,9 +107,9 @@ class LiljencrantsFant extends AbstractSourceGenerator {
 
   static get parameterDescriptors() {
     return [
-      {name: 'frequency', defaultValue: 100, minValue: 70, maxValue: 600},
+      ...commonParams,
       {name: 'Oq', defaultValue: 0.6, minValue: 0.2, maxValue: 0.8},
-      {name: 'am', defaultValue: 0.77, minValue: 0.74, maxValue: 0.95}
+      {name: 'am', defaultValue: 0.77, minValue: 0.74, maxValue: 0.95},
     ];
   }
 
@@ -122,9 +124,14 @@ class LiljencrantsFant extends AbstractSourceGenerator {
 
     const te = p1;
     const mtc = te - 1;
-    const e0 = 1;
     const wa = Math.PI / (te * (1 - p3));
+
     const a = -Math.log(-p2 * Math.sin(wa * te)) / te;
+
+    // Modification: Set Up = 1 and calculate e0 from that.
+    const Up = 1;
+    const e0 = Up / ((wa * Math.exp(a * Math.PI / wa) + 1) / (a ** 2 + wa ** 2));
+
     const int_a = e0 * ((wa / Math.tan(wa * te) - a) / p2 + wa) / (a ** 2 + wa ** 2);
 
     // if int_a < 0 we should reduce p2
@@ -156,9 +163,9 @@ class RosenbergC extends AbstractSourceGenerator {
 
   static get parameterDescriptors() {
     return [
-      {name: 'frequency', defaultValue: 100, minValue: 70, maxValue: 600},
+      ...commonParams,
       {name: 'Oq', defaultValue: 0.6, minValue: 0.1, maxValue: 0.8},
-      {name: 'am', defaultValue: 0.67, minValue: 0.55, maxValue: 0.9}
+      {name: 'am', defaultValue: 0.67, minValue: 0.55, maxValue: 0.9},
     ];
   }
 
@@ -181,14 +188,14 @@ class KLGLOTT88 extends AbstractSourceGenerator {
 
   static get parameterDescriptors() {
     return [
-      {name: 'frequency', defaultValue: 100, minValue: 70, maxValue: 600},
-      {name: 'Oq', defaultValue: 0.6, minValue: 0.1, maxValue: 0.8}
+      ...commonParams,
+      {name: 'Oq', defaultValue: 0.6, minValue: 0.1, maxValue: 0.8},
     ];
   }
 
   static getSample(t, {Oq}) {
     if (t <= Oq) {
-      return t ** 2 / Oq ** 2 - t ** 3 / Oq ** 3;
+      return (t ** 2 / Oq ** 2 - t ** 3 / Oq ** 3);
     } else {
       return 0;
     }

@@ -120,6 +120,10 @@
     border: 1px #8997b3 dashed;
 }
 
+.vibrato-slider-container {
+  min-width: 50px;
+}
+
 .formant-freq-slider-container {
     min-width: 210px;
 }

@@ -33,6 +33,9 @@ class SynthControl extends AbstractControl {
       this.fireEvent('vocalTract.toggle', {flag: this.synth.filterPass});
       this.fireEvent('vocalTract.formant', {formants});
 
+      this.glottalSource.onVibratoRate(5);
+      this.glottalSource.onVibratoExtent(80);
+
       this.synth.sourceNode.port.onmessage = ({data: waveform}) => {
         this.fireEvent('glottalSource.waveform', {waveform});
       };

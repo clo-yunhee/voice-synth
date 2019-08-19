@@ -8,6 +8,8 @@ import SourceFrequency from "./glottalSource/SourceFrequency";
 import SourceParam from "./glottalSource/SourceParam";
 import SourceGraph from "./glottalSource/SourceGraph";
 import AppContext from "../AppContext";
+import VibratoRate from "./glottalSource/VibratoRate";
+import VibratoExtent from "./glottalSource/VibratoExtent";
 
 class GlottalSource extends React.Component {
 
@@ -24,6 +26,8 @@ class GlottalSource extends React.Component {
     context.subscribeEvent('glottalSource.frequency', this.handleFrequency);
     context.subscribeEvent('glottalSource.modelType', this.handleModelType);
     context.subscribeEvent('glottalSource.modelParams', this.handleModelParams);
+    context.subscribeEvent('glottalSource.vibratoRate', this.handleVibratoRate);
+    context.subscribeEvent('glottalSource.vibratoExtent', this.handleVibratoExtent);
     context.subscribeEvent('glottalSource.waveform', this.handleWaveform);
   }
 
@@ -37,6 +41,14 @@ class GlottalSource extends React.Component {
 
   onModelParam = (key, value) => {
     this.context.glottalSource.onModelParam({[key]: value});
+  };
+
+  onVibratoRate = (frequency) => {
+    this.context.glottalSource.onVibratoRate(frequency);
+  };
+
+  onVibratoExtent = (cents) => {
+    this.context.glottalSource.onVibratoExtent(cents);
   };
 
   handleFrequency = ({frequency}) => {
@@ -55,8 +67,21 @@ class GlottalSource extends React.Component {
     this.setState({waveform});
   };
 
+  handleVibratoRate = ({rate}) => {
+    this.setState({vibratoRate: rate});
+  };
+
+  handleVibratoExtent = ({extent}) => {
+    this.setState({vibratoExtent: extent});
+  };
+
   render() {
-    const {frequency, modelType, modelParams, modelParamRange, waveform} = this.state;
+    const {
+      frequency,
+      modelType, modelParams, modelParamRange,
+      waveform,
+      vibratoRate, vibratoExtent
+    } = this.state;
 
     return (
         <>
@@ -83,7 +108,7 @@ class GlottalSource extends React.Component {
               </Grid>
               {
                 Object.entries(modelParams).map(([key, value]) => (
-                    key !== 'frequency' ?
+                    !(['frequency', 'jitter'].includes(key)) ?
                         <Grid item key={key}>
                           <SourceParam
                               name={key}
@@ -96,6 +121,12 @@ class GlottalSource extends React.Component {
                         : false
                 ))
               }
+              <Grid item>
+                <VibratoRate rate={vibratoRate} onChange={this.onVibratoRate}/>
+              </Grid>
+              <Grid item>
+                <VibratoExtent extent={vibratoExtent} onChange={this.onVibratoExtent}/>
+              </Grid>
             </Grid>
           </Paper>
           <Paper className="App-element">

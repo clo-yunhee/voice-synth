@@ -12,10 +12,10 @@ class GlottalSourceControl extends AbstractControl {
       'frequency',
       'modelType',
       'modelParams',
-      'waveform'
+      'waveform',
+      'vibratoRate',
+      'vibratoExtent',
     ]);
-
-    this.subscribeEvent('modelType', this.handleModelType);
   }
 
   getSourceCorrectionFunc() {
@@ -73,11 +73,6 @@ class GlottalSourceControl extends AbstractControl {
 
     let range = initialRange;
     let newParams = {...initialParams, ...params};
-
-    console.log('initial', initialParams);
-    console.log('params', params);
-
-    console.log('merge', newParams);
 
     // Iteratively update parameters until it becomes stable.
     do {
@@ -139,19 +134,28 @@ class GlottalSourceControl extends AbstractControl {
   onModelType(name) {
     this.synth.setSourceType(name);
 
+    // Default parameters
+    const {params, range} = this.getSourceParams();
+
     this.fireEvent('modelType', {name});
+    this.fireEvent('modelParams', {params, range});
+    this.onWaveform(params);
+  }
+
+  onVibratoRate(rate) {
+    this.synth.setVibratoRate(rate);
+    this.fireEvent('vibratoRate', {rate});
+  }
+
+  onVibratoExtent(extent) {
+    const depth = 2 ** (extent / 1200);
+
+    this.synth.setVibratoDepth(depth);
+    this.fireEvent('vibratoExtent', {extent});
   }
 
   onWaveform(params) {
     this.synth.sourceNode.port.postMessage({nbPoints: plotNbPoints, params: params});
-  }
-
-  handleModelType = (name) => {
-    /*const defaultParams = {};
-    for (const [name, {defaultValue}] of this.synth.sourceNode.parameters.entries()) {
-      defaultParams[name] = this.roundSourceParam(defaultValue);
-    }
-    this.onModelParam(defaultParams);*/
   }
 
 }
