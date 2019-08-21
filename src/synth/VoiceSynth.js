@@ -1,6 +1,3 @@
-import _ from 'lodash'
-import {db2amp} from '../gainConversion'
-
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
 class VoiceSynth {
@@ -23,7 +20,7 @@ class VoiceSynth {
 
     this.volume = 1.0;
     this.playing = false;
-    this.filterPass = true;
+    this.filterPass = false;
 
     this.formantF = [0, 0, 0, 0, 0];
     this._connectFilters();
@@ -31,8 +28,8 @@ class VoiceSynth {
 
   loadModules() {
     return Promise.all([
-      this.context.audioWorklet.addModule('worklets/sources.js'),
-      this.context.audioWorklet.addModule('worklets/aspiration.js'),
+      this.context.audioWorklet.addModule('static/wasm/glottalSources.js'),
+      this.context.audioWorklet.addModule('worklets/aspiration.js')
     ]).then(this.createSourceNodes.bind(this));
   }
 
@@ -41,36 +38,28 @@ class VoiceSynth {
       this.context.resume();
     }
 
-    this.sourceNode.connect(this.sourceAspiration);
-
     this.amp.gain.setValueAtTime(0, this.context.currentTime);
     this.amp.gain.linearRampToValueAtTime(this.volume, this.context.currentTime + 0.05);
     this.playing = true;
   }
 
   stop() {
-    this.sourceNode.disconnect();
-
     this.playing = false;
     this.amp.gain.linearRampToValueAtTime(0, this.context.currentTime + 0.05);
   }
 
   loadPreset(preset, callback, firstTime) {
     this.setSourceType(preset.source.name, firstTime);
-    this.setSourceFrequency(preset.source.frequency, firstTime);
-    this.setSourceParams(preset.source.params, firstTime);
+    this.setSourceFrequency(preset.source.frequency);
+    this.setSourceParams(preset.source.params);
     this.formantF = [...preset.formants.freqs];
     this.formantBw = [...preset.formants.bands];
     this.formantGain = [...preset.formants.gains];
 
     this.sourceGain.gain.value = 0.2;
-    this.prefiltGain.gain.value = 5;
-    this.amp.gain.value = this.volume;
+    this.prefiltGain.gain.value = 0.000005;
+    this.amp.gain.value = this.playing ? this.volume : 0;
     this._setFilters(true);
-
-    if (this.playing) {
-      this.start();
-    }
 
     if (callback) {
       setTimeout(callback, VoiceSynth.callbackDelay / 1000);
@@ -85,19 +74,29 @@ class VoiceSynth {
   }
 
   createSourceNodes() {
+    /*-- Source setup */
+
+    this.sourceNode = new AudioWorkletNode(this.context, 'SourceGenerator', {
+      numberOfInputs: 1,
+      numberOfOutputs: 1,
+      channelCount: 2
+    });
+
     this.sourceFrequency = this.context.createConstantSource();
     this.sourceAspiration = new AudioWorkletNode(this.context, 'Aspiration');
 
     this.sourceFrequency.start();
+    this.sourceFrequency.connect(this.sourceNode);
+    this.sourceNode.connect(this.sourceAspiration);
     this.sourceAspiration.connect(this.sourceGain);
+
+    /*-- Vibrato setup */
 
     this.vibratoRate = this.context.createOscillator();
     this.vibratoDepth = this.context.createConstantSource();
-    this.vibratoMultiplier = this.context.createGain();
-    this.vibratoNode = this.context.createGain();
 
-    this.vibratoRate.type = 'triangle';
-    this.vibratoRate.frequency.value = 6;
+    this.vibratoRate.type = 'sine';
+    this.vibratoRate.frequency.value = 5;
     this.vibratoDepth.offset.value = 1.05;
 
     this.vibratoRate.start();
@@ -122,6 +121,13 @@ class VoiceSynth {
     // Plug that as the amplitude of the oscillator
     this.vibratoRate.connect(diff);
     diff.connect(this.sourceFrequency.offset);
+
+    /*-- Filter setup */
+
+    /*this.vocalTractFilter = new AudioWorkletNode(this.context, 'VTFilter');
+
+    this.prefiltGain.connect(this.vocalTractFilter);
+    this.vocalTractFilter.connect(this.amp);*/
   }
 
   setSourceType(name, firstTime) {
@@ -129,54 +135,19 @@ class VoiceSynth {
       return;
     }
 
-    if (this.sourceNode) {
-      this.sourceNode.disconnect();
-    }
-
     this.sourceName = name;
-    this.sourceNode = new AudioWorkletNode(this.context, name);
-
-    // Connect frequency constant node
-    this.sourceFrequency.connect(this.sourceNode.parameters.get('frequency'));
-
-    if (this.playing) {
-      this.sourceNode.connect(this.sourceAspiration);
-    }
+    this.sourceNode.port.postMessage({type: 'setType', sourceType: name});
   }
 
-  setSourceFrequency(frequency, firstTime) {
+  setSourceFrequency(frequency) {
     const param = this.sourceFrequency.offset;
-    if (!firstTime && param.value === frequency) {
-      return;
-    }
-
     const time = this.context.currentTime;
 
-    param.exponentialRampToValueAtTime(frequency, time + 0.05);
+    param.exponentialRampToValueAtTime(frequency, time + 0.15);
   }
 
-  setSourceParams(parameters, firstTime) {
-    delete parameters.frequency;
-
-    if (!firstTime && _.isEqual(this.sourceParams, parameters)) {
-      return;
-    }
-
-    this.sourceParams = parameters;
-
-    Object.entries(parameters).forEach(([key, value]) => {
-      if (this.sourceNode.parameters.has(key)) {
-        const param = this.sourceNode.parameters.get(key);
-
-        if (key !== 'frequency' && param.value !== value) {
-          const time = this.context.currentTime;
-
-          param.linearRampToValueAtTime(value, time + 0.025);
-        }
-      } else {
-        throw new Error(`Source parameter "${key}" does not exist.`)
-      }
-    });
+  setSourceParams(parameters) {
+    this.sourceNode.port.postMessage({type: 'setParameters', parameters});
   }
 
   setVibratoRate(rate) {
@@ -235,22 +206,20 @@ class VoiceSynth {
       this.filters[i] = this.context.createBiquadFilter();
       this.filters[i].type = 'bandpass';
 
-      this.prefiltGain.connect(this.filters[i])
+      /*this.prefiltGain.connect(this.filters[i])
           .connect(this.filterGain[i])
-          .connect(this.amp);
+          .connect(this.amp);*/
     }
 
-    this.zeroFilter.connect(this.amp);
+    //this.zeroFilter.connect(this.amp);
 
     this.amp.connect(this.context.destination);
   }
 
   _setFilters(change, j, callback) {
 
-    this.sourceGain.disconnect();
-
     if (this.filterPass) {
-      for (let i = 0; i < this.filters.length; ++i) {
+      /*for (let i = 0; i < this.filters.length; ++i) {
         if (change === true && (j === undefined || j === i || (Array.isArray(j) && j.includes(i)))) {
           const gainNode = this.filterGain[i];
           const filter = this.filters[i];
@@ -265,10 +234,28 @@ class VoiceSynth {
           filter.Q.linearRampToValueAtTime(Qi, time);
           gainNode.gain.linearRampToValueAtTime(Gi, time);
         }
+      }*/
+
+      /*for (let i = 0; i < this.formantF.length; ++i) {
+        const paramFreq = this.vocalTractFilter.parameters.get('F' + (i + 1));
+        paramFreq.setValueAtTime(this.formantF[i], this.context.currentTime + 0.05);
+
+        const paramBand = this.vocalTractFilter.parameters.get('bw' + (i + 1));
+        paramBand.setValueAtTime(this.formantBw[i], this.context.currentTime + 0.05);
+      }*/
+
+      try {
+        this.sourceGain.disconnect(this.amp);
+      } catch {
       }
 
       this.sourceGain.connect(this.prefiltGain);
     } else {
+      try {
+        this.sourceGain.disconnect(this.prefiltGain);
+      } catch {
+      }
+
       this.sourceGain.connect(this.amp);
     }
 

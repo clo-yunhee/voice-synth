@@ -48,13 +48,8 @@ class VowelSeries extends AbstractSeries {
 
   render() {
     const {
-      stdF1, stdF2,
       data, className
     } = this.props;
-
-    // 95% band
-    const xScale = getAttributeScale(this.props, 'x');
-    const yScale = getAttributeScale(this.props, 'y');
 
     return (
         <g className={className}>

@@ -1,6 +1,6 @@
 import AbstractControl from './AbstractControl'
 import {frequencies, getFrequencyResponse, plotNbPoints} from "../components/vocalTract/VTResponse";
-import {db2amp} from "../gainConversion";
+import {db2amp} from "../app/gainConversion";
 
 const magResponse = new Float32Array(plotNbPoints);
 const phaseResponse = new Float32Array(plotNbPoints);

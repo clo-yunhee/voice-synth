@@ -14,6 +14,8 @@ class SynthControl extends AbstractControl {
   onPreset(preset, firstTime) {
     this.synth.loadPreset(preset, () => {
 
+      this.synth.sourceNode.port.onmessage = this.handleMessage.bind(this);
+
       // Get frequency response.
       const formants = this.synth.formantF.map((frequency, i) => ({
         i, frequency,
@@ -23,25 +25,38 @@ class SynthControl extends AbstractControl {
 
       this.vocalTract.withFrequencyResponse(formants);
 
-      // Get source.
-      const {params, range} = this.glottalSource.getSourceParams();
-
       this.fireEvent('preset', {preset});
       this.fireEvent('glottalSource.frequency', {frequency: preset.source.frequency});
       this.fireEvent('glottalSource.modelType', {name: preset.source.name});
-      this.fireEvent('glottalSource.modelParams', {params, range});
-      this.fireEvent('vocalTract.toggle', {flag: this.synth.filterPass});
-      this.fireEvent('vocalTract.formant', {formants});
 
       this.glottalSource.onVibratoRate(5);
       this.glottalSource.onVibratoExtent(80);
 
-      this.synth.sourceNode.port.onmessage = ({data: waveform}) => {
-        this.fireEvent('glottalSource.waveform', {waveform});
-      };
-      this.glottalSource.onWaveform(params);
+      this.synth.sourceNode.port.postMessage({type: 'getParameters'});
+
+      this.fireEvent('vocalTract.toggle', {flag: this.synth.filterPass});
+      this.fireEvent('vocalTract.formant', {formants});
+
+      this.glottalSource.requestPlotData();
     }, firstTime);
   }
+
+  handleMessage({data: {type, ...data}}) {
+    if (type === 'createPlotData') {
+      this.fireEvent('glottalSource.waveform', {waveform: data.waveform});
+    } else if (type === 'getParameters') {
+      // Round each parameter to 1e-2.
+      for (const entry of data.parameters) {
+        const param = entry[1];
+
+        for (const [opt, value] of Object.entries(param)) {
+          param[opt] = Math.round(value * 100) / 100;
+        }
+      }
+      this.fireEvent('glottalSource.modelParams', {parameters: data.parameters});
+    }
+  }
+
 
 }
 

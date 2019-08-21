@@ -7,7 +7,7 @@ import VTHeader from './vocalTract/VTHeader'
 import VTFormant from './vocalTract/VTFormant'
 import VTResponse, {frequencies, plotNbPoints} from './vocalTract/VTResponse'
 import VTVowels from "./vocalTract/VTVowels";
-import AppContext from '../AppContext';
+import AppContext from '../app/AppContext';
 
 const df = () => ({frequency: 150, gain: -6, bandwidth: 20});
 const dr = () => [];

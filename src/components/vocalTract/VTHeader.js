@@ -3,7 +3,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Tooltip from "@material-ui/core/Tooltip";
 import Switch from "@material-ui/core/Switch";
-import AppContext from "../../AppContext";
+import AppContext from "../../app/AppContext";
 
 class VTHeader extends React.PureComponent {
 

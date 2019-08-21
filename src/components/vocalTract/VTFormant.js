@@ -3,7 +3,7 @@ import Grid from "@material-ui/core/Grid";
 import FormantFreq from "./formant/FormantFreq";
 import FormantGain from "./formant/FormantGain";
 import FormantBand from "./formant/FormantBand";
-import AppContext from "../../AppContext";
+import AppContext from "../../app/AppContext";
 
 class VTFormant extends React.Component {
 

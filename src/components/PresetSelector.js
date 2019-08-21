@@ -7,7 +7,7 @@ import Slider from "@material-ui/core/Slider";
 import Typography from "@material-ui/core/Typography";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
-import AppContext from "../AppContext"
+import AppContext from "../app/AppContext"
 import {defaultPreset, getPreset, vowels} from "../presets";
 
 function valueDisplayFormat(value) {

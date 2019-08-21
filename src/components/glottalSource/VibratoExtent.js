@@ -13,8 +13,6 @@ class VibratoExtent extends React.Component {
   render() {
     const {extent} = this.props;
 
-    console.log(extent);
-
     return (
         <Grid container spacing={2} alignItems="center">
           <Grid item>
@@ -27,7 +25,7 @@ class VibratoExtent extends React.Component {
               <Slider
                   min={0}
                   max={300}
-                  step={10}
+                  step={5}
                   value={extent}
                   onChange={this.onChange}
               />

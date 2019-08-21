@@ -2,7 +2,7 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import React from "react";
-import AppContext from "../../../AppContext";
+import AppContext from "../../../app/AppContext";
 
 class FormantGain extends React.PureComponent {
 

@@ -36,7 +36,7 @@ const makeGen = (gender) => (color) => (vowel, formants) => {
     color,
     vowel,
     source: {
-      name: 'LiljencrantsFant',
+      name: 'LF',
       frequency: gender.pitch,
       params: gender.params,
     },

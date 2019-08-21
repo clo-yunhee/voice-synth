@@ -3,7 +3,7 @@ import Grid from "@material-ui/core/Grid";
 import {XAxis, XYPlot, YAxis} from "react-vis";
 import MovableMark from './vowel/MovableMark';
 import VowelSeries from './vowel/VowelSeries';
-import AppContext from "../../AppContext";
+import AppContext from "../../app/AppContext";
 import {getPreset, vowels} from '../../presets'
 import FormLabel from "@material-ui/core/FormLabel";
 import Slider from "@material-ui/core/Slider";

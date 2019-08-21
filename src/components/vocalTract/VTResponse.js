@@ -1,6 +1,6 @@
 import React from 'react'
 import {HorizontalGridLines, LineSeries, VerticalGridLines, XAxis, XYPlot, YAxis} from "react-vis";
-import AppContext from "../../AppContext";
+import AppContext from "../../app/AppContext";
 
 const minFreq = 100;
 const maxFreq = 11000;

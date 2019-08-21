@@ -21,9 +21,9 @@
     "react-vis": "^1.11.7"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "monkey-react-scripts start",
+    "build": "monkey-react-scripts build",
+    "test": "monkey-react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -40,5 +40,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "copy-webpack-plugin": "^5.0.4",
+    "monkey-react-scripts": "0.2.1"
   }
 }

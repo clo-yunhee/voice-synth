@@ -1,5 +1,5 @@
 import React from "react";
-import AppContext from "../../AppContext";
+import AppContext from "../../app/AppContext";
 import Grid from "@material-ui/core/Grid";
 import {HorizontalGridLines, LineSeries, VerticalGridLines, XAxis, XYPlot, YAxis} from "react-vis";
 
@@ -8,7 +8,7 @@ const plotHeight = 240;
 const color = 'orange';
 const strokeWidth = 1.25;
 
-export const plotNbPoints = plotWidth;
+export const plotNbPoints = 4 * plotWidth;
 
 
 function formatTickTime(t) {

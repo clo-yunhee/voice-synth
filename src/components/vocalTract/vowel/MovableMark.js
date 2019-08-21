@@ -35,6 +35,7 @@ class MovableMark extends AbstractSeries {
       const opts = Object.defineProperty({}, 'passive', {
         get: () => {
           supportsPassiveOption = true;
+          return true;
         }
       });
       const noop = function () {

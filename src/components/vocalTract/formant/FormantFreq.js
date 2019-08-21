@@ -5,7 +5,7 @@ import Slider from "@material-ui/core/Slider";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import React from "react";
-import AppContext from "../../../AppContext";
+import AppContext from "../../../app/AppContext";
 
 class FormantFreq extends React.PureComponent {
 
@@ -38,7 +38,7 @@ class FormantFreq extends React.PureComponent {
             <Tooltip title={`Adjust which frequency band is emphasized by F${i + 1}`}>
               <Slider
                   min={Math.log10(150)}
-                  max={Math.log10(10000)}
+                  max={Math.log10(6000)}
                   step={0.05}
                   value={Math.log10(frequency)}
                   onChange={this.onChangeLog}

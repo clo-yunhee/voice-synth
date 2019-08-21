@@ -1,5 +1,5 @@
-import reactLogo from "../reactLogo.svg";
-import muiLogo from "../muiLogo.svg";
+import reactLogo from "../app/reactLogo.svg";
+import muiLogo from "../app/muiLogo.svg";
 import Grid from '@material-ui/core/Grid'
 import React from "react";
 import Typography from "@material-ui/core/Typography";

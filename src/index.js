@@ -4,7 +4,7 @@ import 'audioworklet-polyfill';
 import './index.css';
 import 'react-vis/dist/style.css';
 import 'react-perfect-scrollbar/dist/css/styles.css';
-import App from './App';
+import App from './app/App';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(<App/>, document.getElementById('root'));

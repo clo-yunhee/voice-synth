@@ -4,7 +4,7 @@ import Slider from "@material-ui/core/Slider";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import React from "react";
-import AppContext from "../../../AppContext";
+import AppContext from "../../../app/AppContext";
 
 class FormantBand extends React.PureComponent {
 

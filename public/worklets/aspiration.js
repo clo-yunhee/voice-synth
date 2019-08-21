@@ -10,17 +10,7 @@ class Aspiration extends AudioWorkletProcessor {
       const inputChannel = input[ch];
       const outputChannel = output[ch];
 
-      // Count open frames.
-      let openFrames = 0;
-
-      for (let i = 0; i < outputChannel.length; ++i) {
-        if (inputChannel[i] > openPhaseThreshold) {
-          openFrames++;
-        }
-      }
-
       // Compute glottal aspiration output.
-      const noiseMul = openPhaseThreshold * (openFrames / outputChannel.length) ** 0.9 * 0.7;
       let lastOut = 0;
 
       for (let i = 0; i < outputChannel.length; ++i) {
@@ -32,7 +22,9 @@ class Aspiration extends AudioWorkletProcessor {
         lastOut = noise;
         noise *= 3.5;
 
-        outputChannel[i] = (inputChannel[i] || 0) * (1 + noiseMul * noise);
+        const x = inputChannel[i] || 0;
+
+        outputChannel[i] = x * (1 + noise / (200 * openPhaseThreshold));
       }
     }
 

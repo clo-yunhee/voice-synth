@@ -7,7 +7,7 @@ import React from "react";
 import SourceFrequency from "./glottalSource/SourceFrequency";
 import SourceParam from "./glottalSource/SourceParam";
 import SourceGraph from "./glottalSource/SourceGraph";
-import AppContext from "../AppContext";
+import AppContext from "../app/AppContext";
 import VibratoRate from "./glottalSource/VibratoRate";
 import VibratoExtent from "./glottalSource/VibratoExtent";
 
@@ -21,7 +21,9 @@ class GlottalSource extends React.Component {
     this.state = {
       frequency: 100,
       modelType: 'none',
-      modelParams: {},
+      modelParams: [],
+      vibratoRate: 5,
+      vibratoExtent: 80,
     };
     context.subscribeEvent('glottalSource.frequency', this.handleFrequency);
     context.subscribeEvent('glottalSource.modelType', this.handleModelType);
@@ -59,8 +61,8 @@ class GlottalSource extends React.Component {
     this.setState({modelType: name});
   };
 
-  handleModelParams = ({params, range}) => {
-    this.setState({modelParams: params, modelParamRange: range});
+  handleModelParams = ({parameters}) => {
+    this.setState({modelParams: parameters});
   };
 
   handleWaveform = ({waveform}) => {
@@ -102,23 +104,21 @@ class GlottalSource extends React.Component {
                 >
                   <MenuItem value="CutoffSawtooth">Sawtooth with cut-off</MenuItem>
                   <MenuItem value="RosenbergC">Cosine Rosenberg model</MenuItem>
-                  <MenuItem value="LiljencrantsFant">Liljencrants-Fant model</MenuItem>
+                  <MenuItem value="LF">Liljencrants-Fant model</MenuItem>
                   <MenuItem value="KLGLOTT88">KLGLOTT88 model</MenuItem>
                 </Select>
               </Grid>
               {
-                Object.entries(modelParams).map(([key, value]) => (
-                    !(['frequency', 'jitter'].includes(key)) ?
-                        <Grid item key={key}>
-                          <SourceParam
-                              name={key}
-                              value={value}
-                              min={modelParamRange[key].minValue}
-                              max={modelParamRange[key].maxValue}
-                              onChange={this.onModelParam}
-                          />
-                        </Grid>
-                        : false
+                modelParams.map(([key, param]) => (
+                    <Grid item key={key}>
+                      <SourceParam
+                          name={key}
+                          value={param.value}
+                          min={param.minValue}
+                          max={param.maxValue}
+                          onChange={this.onModelParam}
+                      />
+                    </Grid>
                 ))
               }
               <Grid item>

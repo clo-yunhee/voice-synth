@@ -7,7 +7,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import React from "react";
 import {defaultPreset} from '../presets'
 import PlayPause from "./navbar/PlayPause";
-import AppContext from "../AppContext";
+import AppContext from "../app/AppContext";
 
 class Navbar extends React.PureComponent {
 
