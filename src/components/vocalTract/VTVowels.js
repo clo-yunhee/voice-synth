@@ -1,6 +1,6 @@
 import React from 'react';
 import Grid from "@material-ui/core/Grid";
-import {XAxis, XYPlot, YAxis} from "react-vis";
+import {HorizontalGridLines, VerticalGridLines, XAxis, XYPlot, YAxis} from "react-vis";
 import MovableMark from './vowel/MovableMark';
 import VowelSeries from './vowel/VowelSeries';
 import AppContext from "../../app/AppContext";
@@ -28,27 +28,14 @@ const vowelAverages = {'M': {}, 'F': {}};
   });
 });
 
-const vowelSpaces = {
-  'M': {
-    F1: {
-      ticks: [800, 700, 600, 500, 400, 300],
-      domain: [900, 200]
-    },
-    F2: {
-      ticks: [2200, 2000, 1800, 1600, 1400, 1200, 1000],
-      domain: [2400, 900]
-    }
-  },
-  'F': {
-    F1: {
-      ticks: [1000, 900, 800, 700, 600, 500, 400],
-      domain: [1100, 300]
-    },
-    F2: {
-      ticks: [2600, 2400, 2200, 2000, 1800, 1600, 1400],
-      domain: [2800, 1200]
-    }
-  }
+const vowelDomain = {
+  F1: [1600, 200],
+  F2: [4000, 1000],
+};
+
+const vowelTicks = {
+  F1: [1600, 1400, 1200, 1000, 900, 800, 700, 600, 500, 400, 300, 200],
+  F2: [4000, 3500, 3000, 2500, 2000, 1500, 1000],
 };
 
 class VTVowels extends React.Component {
@@ -83,8 +70,6 @@ class VTVowels extends React.Component {
 
     const gender = ['M', 'F'][agab];
 
-    const {F1: spaceF1, F2: spaceF2} = vowelSpaces[gender];
-
     return (
         <Grid container direction="row">
           <Grid item>
@@ -92,14 +77,17 @@ class VTVowels extends React.Component {
                 className="vt-plot"
                 width={plotWidth}
                 height={plotHeight}
-                xDomain={spaceF2.domain}
-                xType="linear"
-                yDomain={spaceF1.domain}
-                yType="linear"
-                margin={{top: 10, left: 40, right: 10, bottom: 30}}
+                xDomain={vowelDomain.F2}
+                xType="log"
+                yDomain={vowelDomain.F1}
+                yType="log"
+                margin={{top: 10, left: 40, right: 30, bottom: 30}}
             >
-              <XAxis title="F2 (Hz)" tickValues={spaceF2.ticks} tickFormat={plotTickLabel}/>
-              <YAxis title="F1 (Hz)" tickValues={spaceF1.ticks} tickFormat={plotTickLabel}/>
+              <XAxis title="F2 (Hz)" tickValues={vowelTicks.F2} tickFormat={plotTickLabel}/>
+              <YAxis title="F1 (Hz)" tickValues={vowelTicks.F1} tickFormat={plotTickLabel}/>
+
+              <VerticalGridLines tickValues={vowelTicks.F2}/>
+              <HorizontalGridLines tickValues={vowelTicks.F1}/>
 
               <VowelSeries
                   data={vowelAverages[gender][color]}
