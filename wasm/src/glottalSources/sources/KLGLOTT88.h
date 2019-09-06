@@ -1,5 +1,4 @@
-#ifndef KLGLOTT88_H
-#define KLGLOTT88_H
+#pragma once
 
 #include <emscripten/val.h>
 #include "../AbstractSource.h"
@@ -13,5 +12,3 @@ public:
 protected:
     float getSample(float t);
 };
-
-#endif // KLGLOTT88_H

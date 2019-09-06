@@ -24,7 +24,7 @@
     "start": "monkey-react-scripts start",
     "build": "monkey-react-scripts build",
     "test": "monkey-react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "monkey-react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"

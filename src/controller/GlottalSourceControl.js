@@ -26,7 +26,7 @@ class GlottalSourceControl extends AbstractControl {
     this.synth.setSourceParams(parameters);
 
     this.synth.sourceNode.port.postMessage({type: 'getParameters'});
-    this.requestPlotData(parameters);
+    this.requestPlotData();
   }
 
   onModelType(name) {

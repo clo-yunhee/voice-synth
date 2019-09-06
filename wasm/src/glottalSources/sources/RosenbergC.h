@@ -1,5 +1,4 @@
-#ifndef ROSENC_SAWTOOTH_H
-#define ROSENC_SAWTOOTH_H
+#pragma once
 
 #include <emscripten/val.h>
 #include "../AbstractSource.h"
@@ -13,5 +12,3 @@ public:
 protected:
     float getSample(float t);
 };
-
-#endif // ROSENC_SAWTOOTH_H

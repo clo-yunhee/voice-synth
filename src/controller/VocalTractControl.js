@@ -1,9 +1,5 @@
 import AbstractControl from './AbstractControl'
-import {frequencies, getFrequencyResponse, plotNbPoints} from "../components/vocalTract/VTResponse";
-import {db2amp} from "../app/gainConversion";
-
-const magResponse = new Float32Array(plotNbPoints);
-const phaseResponse = new Float32Array(plotNbPoints);
+import {frequencies} from "../components/vocalTract/VTResponse";
 
 class VocalTractControl extends AbstractControl {
 
@@ -13,21 +9,9 @@ class VocalTractControl extends AbstractControl {
     super(parent);
     this.initHandlers([
       'toggle',
-      'formant'
+      'formant',
+      'frequencyResponse',
     ]);
-  }
-
-  withFrequencyResponse(formants) {
-    // Get sourceFrequency response for each formant.
-    for (const d of formants) {
-      this.synth.filters[d.i].getFrequencyResponse(frequencies, magResponse, phaseResponse);
-
-      const gain = db2amp(this.synth.formantGain[d.i]);
-
-      d.response = getFrequencyResponse(magResponse, gain);
-    }
-
-    return formants;
   }
 
   onToggle(flag) {
@@ -41,9 +25,8 @@ class VocalTractControl extends AbstractControl {
     }
 
     this.synth.setFormant(formants, () => {
-      this.withFrequencyResponse(formants);
-
       this.fireEvent('formant', {formants});
+      this.requestFrequencyResponse();
     });
   }
 
@@ -63,12 +46,8 @@ class VocalTractControl extends AbstractControl {
     this.onFormant(fst);
   }
 
-  onGain(fst, snd) {
-    if (!Array.isArray(fst)) {
-      fst = [{i: fst, gain: snd}];
-    }
-
-    this.onFormant(fst);
+  requestFrequencyResponse() {
+    this.synth.vocalTractFilter.port.postMessage({type: 'getFrequencyResponse', frequencies});
   }
 
 }

@@ -1,5 +1,4 @@
-#ifndef PARAMETER_DESCRIPTOR_H
-#define PARAMETER_DESCRIPTOR_H
+#pragma once
 
 #include <emscripten/val.h>
 #include <functional>
@@ -39,5 +38,3 @@ public:
     void set(const std::string& k, const ParameterDescriptor& v);
     emscripten::val entries() const;
 };
-
-#endif // PARAMETER_DESCRIPTOR_H

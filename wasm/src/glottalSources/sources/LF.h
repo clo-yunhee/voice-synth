@@ -1,5 +1,4 @@
-#ifndef LF_H
-#define LF_H
+#pragma once
 
 #include <emscripten/val.h>
 #include "../AbstractSource.h"
@@ -18,5 +17,3 @@ private:
     float a, rb;
     float mtc, wa;
 };
-
-#endif // LF_H

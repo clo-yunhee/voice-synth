@@ -1,14 +1,12 @@
-#ifndef ABSTRACT_SOURCE_H
-#define ABSTRACT_SOURCE_H
+#pragma once
 
 #include <emscripten/val.h>
-#include <map>
 #include <string>
 #include "ParameterDescriptor.h"
 
 constexpr unsigned kRenderQuantumFrames = 128;
 constexpr unsigned kBytesPerChannel = kRenderQuantumFrames * sizeof(float);
-constexpr float sampleRate = 44100;
+constexpr float sampleRate = 48000;
 
 class AbstractSource {
 public:
@@ -36,5 +34,3 @@ protected:
 };
 
 bool isType(emscripten::val value, const std::string& type);
-
-#endif // ABSTRACT_SOURCE_H

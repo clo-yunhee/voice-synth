@@ -4,7 +4,7 @@ class SourceGenerator extends AudioWorkletProcessor {
     super();
 
     this.heapOutputBuffer = new HeapAudioBuffer(
-        Module, RENDER_QUANTUM_FRAMES,
+        SourcesModule, RENDER_QUANTUM_FRAMES,
         2, MAX_CHANNEL_COUNT
     );
 
@@ -23,7 +23,7 @@ class SourceGenerator extends AudioWorkletProcessor {
     } else if (data.type === 'setParameters') {
       this.kernel.setParameters(data.parameters);
     } else if (data.type === 'setType') {
-      this.kernel = new Module[data.sourceType]();
+      this.kernel = new SourcesModule[data.sourceType]();
       this.kernel.resetParameters();
     } else {
       console.warn(`MessagePort event type ${data.type} does not exist.`, data);
@@ -48,7 +48,6 @@ class SourceGenerator extends AudioWorkletProcessor {
     // Read F0 from the input.
     this.frequency = input[0][0] || this.frequency;
 
-    // Stereo output.
     const channelCount = output.length;
 
     this.heapOutputBuffer.adaptChannel(channelCount);

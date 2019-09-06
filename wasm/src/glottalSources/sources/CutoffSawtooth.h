@@ -1,5 +1,4 @@
-#ifndef CUTOFF_SAWTOOTH_H
-#define CUTOFF_SAWTOOTH_H
+#pragma once
 
 #include <emscripten/val.h>
 #include "../AbstractSource.h"
@@ -13,5 +12,3 @@ public:
 protected:
     float getSample(float t);
 };
-
-#endif // CUTOFF_SAWTOOTH_H

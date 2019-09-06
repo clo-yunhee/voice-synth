@@ -25,6 +25,7 @@ class VocalTract extends React.Component {
     };
     context.subscribeEvent('vocalTract.toggle', this.handleToggle);
     context.subscribeEvent('vocalTract.formant', this.handleFormantUpdate);
+    context.subscribeEvent('vocalTract.frequencyResponse', this.handleResponse);
   }
 
   onToggle = (flag) => {
@@ -33,10 +34,6 @@ class VocalTract extends React.Component {
 
   onFrequency = (i, frequency) => {
     this.context.vocalTract.onFrequency(i, frequency);
-  };
-
-  onGain = (i, gain) => {
-    this.context.vocalTract.onGain(i, gain);
   };
 
   onBandwidth = (i, bandwidth) => {
@@ -56,40 +53,23 @@ class VocalTract extends React.Component {
 
   handleFormantUpdate = ({formants}) => {
     const {
-      formants: thisFormants,
-      responses
+      formants: thisFormants
     } = this.state;
 
-    // Init overall-response array if needed.
-    if (responses.length <= 5) {
-      responses[5] = new Array(plotNbPoints);
-      for (let k = 0; k < plotNbPoints; ++k) {
-        responses[5][k] = {x: frequencies[k], y: 0};
-      }
-    }
-
-    for (const {i, response, ...rest} of formants) {
+    for (const {i, ...rest} of formants) {
       Object.assign(thisFormants[i], rest);
-
-      // Update overall-response array.
-      for (let k = 0; k < plotNbPoints; ++k) {
-        if (Array.isArray(responses[i]) && responses[i].length > 0) {
-          // Remove response from the old formant.
-          responses[5][k].y -= responses[i][k].y;
-        }
-        // Add response from the new formant.
-        responses[5][k].y += response[k].y;
-      }
-
-      responses[i] = response;
     }
 
-    this.setState({formants: thisFormants, responses});
+    this.setState({formants: thisFormants});
+  };
+
+  handleResponse = ({response}) => {
+    this.setState({response});
   };
 
   render() {
     const {
-      toggled, formants, responses
+      toggled, formants, response
     } = this.state;
 
     return (
@@ -128,7 +108,6 @@ class VocalTract extends React.Component {
                             i={i}
                             formant={formant}
                             onFrequency={this.onFrequency}
-                            onGain={this.onGain}
                             onBandwidth={this.onBandwidth}
                         />
                       </Grid>
@@ -145,7 +124,7 @@ class VocalTract extends React.Component {
                 </Typography>
               </Grid>
               <Grid item>
-                <VTResponse data={responses}/>
+                <VTResponse data={response}/>
               </Grid>
             </Grid>
           </Paper>

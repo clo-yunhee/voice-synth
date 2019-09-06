@@ -20,17 +20,6 @@ for (let k = 0; k < plotNbPoints; ++k) {
   frequencies[k] = 10 ** (logMinFreq + (k * (logMaxFreq - logMinFreq)) / plotWidth);
 }
 
-export function getFrequencyResponse(magResponse, gain) {
-  const array = Array.from(magResponse);
-  for (let k = 0; k < array.length; ++k) {
-    array[k] = {
-      x: frequencies[k],
-      y: array[k] * gain
-    };
-  }
-  return array;
-}
-
 function formatTickHz(f) {
   const log2 = Math.log10(2);
   const log4 = Math.log10(0.5);
@@ -77,16 +66,11 @@ class VTResponse extends React.Component {
           <VerticalGridLines/>
           <XAxis title="Frequency (Hz)" top={0} orientation="top" tickFormat={formatTickHz}/>
           <YAxis title="Gain (dB)" position="start" tickFormat={formatTickDecibel}/>
-          {
-            Object.keys(data).map(i => (
-                <LineSeries
-                    key={`vtf-plot-${i}`}
-                    stroke={color[i]}
-                    strokeWidth={strokeWidth[i]}
-                    data={data[i]}
-                />
-            ))
-          }
+          <LineSeries
+              stroke="orange"
+              strokeWidth={1.3}
+              data={data}
+          />
         </XYPlot>
     )
   }

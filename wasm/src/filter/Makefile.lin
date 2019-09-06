@@ -1,0 +1,14 @@
+TARGET = run-tests
+
+DEPS = test/main.cc
+
+build: $(DEPS)
+	$(CXX) \
+		-I/usr/local/include/eigen3 \
+        -std=c++17 \
+		-g -O0 \
+		$(DEPS) \
+		-o ./$(TARGET)
+
+clean:
+	@rm -f ./$(TARGET)
