@@ -3,7 +3,10 @@
 template<typename ArrayType>
 residuez_out residuez(const ArrayType& B, const ArrayType& A) {
 
-    residue_out st_residue = residue(B, A);
+    ArrayType Br = B.reverse();
+    ArrayType Ar = A.reverse();
+
+    residue_out st_residue = residue(Br, Ar);
 
     ArrayXcd r = st_residue.r;
     ArrayXcd p = st_residue.p;
@@ -12,7 +15,7 @@ residuez_out residuez(const ArrayType& B, const ArrayType& A) {
     
     residuez_out st;
 
-    st.p = inverse(p);
+    st.p = p.cwiseInverse();
     st.r = r * pow(-st.p, e.template cast<double>());
 
     st.f = conj(k);

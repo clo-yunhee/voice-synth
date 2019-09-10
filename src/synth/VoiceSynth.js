@@ -49,8 +49,8 @@ class VoiceSynth {
     this.formantF = [...preset.formants.freqs];
     this.formantBw = [...preset.formants.bands];
 
-    this.sourceGain.gain.value = 1;//0.2;
-    this.prefiltGain.gain.value = 1;
+    this.sourceGain.gain.value = 0.25;//0.2;
+    this.prefiltGain.gain.value = 0.125;
     this.amp.gain.value = this.playing ? this.volume : 0;
     this._setFilters();
 

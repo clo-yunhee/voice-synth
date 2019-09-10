@@ -8,11 +8,10 @@ using namespace emscripten;
 using namespace Eigen;
 
 VTFilter::VTFilter() noexcept {
+    this->spectralTilt = -30;
     this->frequencies = {700, 2100, 3000, 4200, 4700};
     this->bandwidths = {60, 90, 100, 120, 120};
 
-    this->lastx = ArrayXd::Zero(0);
-    this->lasty = ArrayXd::Zero(0);
     this->calculateFilter();
 }
 
@@ -53,46 +52,65 @@ void VTFilter::process(uintptr_t inputPtr, uintptr_t outputPtr, unsigned channel
             x(k) = input[k];
         }
 
-        ArrayXd y = filter(this->B, this->A, x, this->lasty, this->lastx);
+        filter_out<ArrayXd> st = filter(this->B, this->A, x, this->zi);
 
         for (unsigned k = 0; k < kRenderQuantumFrames; ++k) {
-            output[k] = y(k);
+            output[k] = st.y(k);
         }
+
+        this->zi = st.zi;
     }
+
+}
+
+void VTFilter::calculateFormantFilter(unsigned i, ArrayXd& B, ArrayXd& A) {
+
+    double TL = this->spectralTilt;
+
+    double fc = this->frequencies[i];
+    double bw = this->bandwidths[i];
+
+    // Calculate the gain based on the formant frequency and the spectral tilt.
+    //double g = pow(10.0, TL / 20.0) / (log2(fc) - log2(130.0));
+
+    double r = exp(-M_PI * bw / sampleRate);
+    double wc = 2 * M_PI * fc / sampleRate;
+
+    double b0 = (1 - r) * sqrt(1 - 2 * r * cos(2 * wc) + (r * r));
+
+    double a1 = -2 * r * cos(wc);
+    double a2 = r * r;
+
+    B.resize(1);
+    B << b0;
+
+    A.resize(3);
+    A << 1, a1, a2;
 
 }
 
 void VTFilter::calculateFilter() {
 
-    // Calculate the poles for the transfer function denominator polynomial.
+    // Calculate the filter coefficients for each formant.
 
-    ArrayXcd poles(2 * formantCount);
+    double gain = 10e6;
 
-    for (unsigned k = 0; k < formantCount; ++k) {
-        const float f = this->frequencies[k];
-        const float bw = 200;//this->bandwidths[k];
+    this->B = ArrayXd::Constant(1, gain);
+    this->A = ArrayXd::Ones(1);
 
-        const double r = exp(-M_PI * f / sampleRate);
-        const double phi = 2.0 * M_PI * bw / sampleRate;
+    ArrayXd Bs, As;
 
-        const complex pole = std::polar(r, phi);
+    for (unsigned i = 0; i < formantCount; ++i) {
+        calculateFormantFilter(i, Bs, As);
 
-        poles(2*k) = pole;
-        poles(2*k+1) = std::conj(pole);
+        B = conv(B, Bs);
+        A = conv(A, As);
     }
 
-    // Calculate the filter coefficients from poles.
+    // Initialise filter state
 
-    this->B = ArrayXd::Ones(1);
-    this->A = real(poly(poles));
-
-    if (this->lastx.size() != this->B.size()) {
-        this->lastx = ArrayXd::Zero(this->B.size());
-    }
-
-    if (this->lasty.size() != this->A.size()) {
-        this->lasty = ArrayXd::Zero(this->A.size());
-    }
+    unsigned lab = std::max(this->B.size(), this->A.size());
+    this->zi = ArrayXd::Zero(lab - 1);
 }
 
 void VTFilter::setFrequency(unsigned i, float frequency) {

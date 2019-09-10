@@ -8,8 +8,14 @@ ArrayXd freqz(const ArrayXd& b_, const ArrayXd& a_, const ArrayXd& frequencies, 
     unsigned la = a_.size();
     unsigned k = std::max(lb, la);
 
-    ArrayXd b = (ArrayXd(k) << b_, ArrayXd::Zero(k - lb)).finished();
-    ArrayXd a = (ArrayXd(k) << a_, ArrayXd::Zero(k - la)).finished();
+    ArrayXd b = b_;
+    ArrayXd a = a_;
+
+    b.conservativeResize(k);
+    b.tail(k - lb).setZero();
+
+    a.conservativeResize(k);
+    a.tail(k - la).setZero();
 
     ArrayXcd hb = polyval(b, x);
     ArrayXcd ha = polyval(a, x);

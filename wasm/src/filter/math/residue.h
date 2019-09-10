@@ -137,10 +137,10 @@ residue_out residue(const ArrayType& b_, const ArrayType& a_) {
         D(i, i) = A.row(i).cwiseAbs().maxCoeff();
     }
 
-    MatrixXcd DA = D.colPivHouseholderQr().solve(A);
+    MatrixXcd DA = D.fullPivHouseholderQr().solve(A);
     VectorXcd BD = B.cwiseQuotient(D.diagonal());
 
-    st.r = DA.colPivHouseholderQr().solve(BD);
+    st.r = DA.fullPivHouseholderQr().solve(BD);
     st.p = p;
 
     return st;

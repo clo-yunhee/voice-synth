@@ -59,7 +59,7 @@ class VTResponse extends React.Component {
             xType="log"
             xDomain={[minFreq, maxFreq]}
             yType="log"
-            yDomain={[10e-6, 1]}
+            yDomain={[10e-5, 10e1]}
             margin={{top: 30, left: 60, right: 20, bottom: 20}}
         >
           <HorizontalGridLines/>

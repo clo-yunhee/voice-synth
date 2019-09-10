@@ -38,17 +38,17 @@ int main() {
 
     std::cout << " === math module test suite ===" << std::endl;
 
-    RUN_TEST(mpoles);
-    RUN_TEST(poly);
-    RUN_TEST(polyreduce);
-    RUN_TEST(roots);
-    RUN_TEST(filtic);
+    SKIP_TEST(mpoles);
+    SKIP_TEST(poly);
+    SKIP_TEST(polyreduce);
+    SKIP_TEST(roots);
+    SKIP_TEST(filtic);
     SKIP_TEST(filter_zi);
-    RUN_TEST(filter);
-    RUN_TEST(conv);
-    RUN_TEST(deconv);
-    RUN_TEST(residue);
-    RUN_TEST(residuez);
+    SKIP_TEST(filter);
+    SKIP_TEST(conv);
+    SKIP_TEST(deconv);
+    SKIP_TEST(residue);
+    SKIP_TEST(residuez);
     RUN_TEST(formants);
 
     return 0;
@@ -86,8 +86,6 @@ void test_filtic() {
 }
 
 void test_filter_zi() {
-    std::cout << filter_zi(make({1., -1., .5}), make({1, 0, 2})) << std::endl;
-
     assertEqual(filter_zi(make({1., -1., .5}), make({1, 0, 2})), make({5, -1}));
 
     assertEqual(
@@ -98,12 +96,13 @@ void test_filter_zi() {
 
 void test_filter() {
     filter_out<ArrayXd> st;
+    ArrayXd b, a;
 
     st = filter(make({1, -1}), make({.5, -.5}), make({0,1,2,3,4,5}));
     assertEqual(st.y, make({0,2,4,6,8,10}));
 
-    ArrayXd b = make({1, 0, -1});
-    ArrayXd a = make({0.5, -0.5});
+    b = make({1, 0, -1});
+    a = make({0.5, -0.5});
 
     st = filter(b, a, make({0,1,2,3,4,5}), make({1, 2}));
     assertEqual(st.y, make({1, 5, 9, 13, 17, 21}));
@@ -112,6 +111,10 @@ void test_filter() {
     st = filter(b, a, make({4,5,6,3,2,1}), make({13, -10}));
     assertEqual(st.y, make({21, 21, 25, 21, 13, 9}));
     assertEqual(st.zi, make({5, -2}));
+
+    st = filter(make({3, 6, 9, 9}), make({1, 2, 3}), make({1, 0}));
+    assertEqual(st.y, make({3, 0}));
+    assertEqual(st.zi, make({0, 9, 0}));
 }
 
 void test_conv() {
@@ -198,24 +201,15 @@ void test_formants() {
     }));
 
     filter_out<ArrayXd> st_flt = filter(B, A, make({-2,0,1}));
+
     assertEqual(st_flt.y, make({-2.0, -18.0911, -87.4054}));
 
-    // Apply the filter.
+    // Calculate parallel second-order sections.
 
-           /* ArrayXd x(kRenderQuantumFrames);
-            for (unsigned k = 0; k < kRenderQuantumFrames; ++k) {
-                x(k) = input[k];
-            }
+    residuez_out st_rez = residuez(B, A);
 
-            filter_out<ArrayXd> st_filter = filter(this->B, this->A, x, this->zi);
 
-            for (unsigned k = 0; k < kRenderQuantumFrames; ++k) {
-                output[k] = std::isnormal(st_filter.y(k)) ? st_filter.y(k) : 0.0f;
-            }
 
-            this->lasty = st_filter.y.tail(this->A.size() - 1).reverse();
-            this->lastx = x.tail(this->B.size() - 1).reverse();
-            this->zi = st_filter.zi; */
 }
 
 // Testing utility functions
@@ -261,6 +255,6 @@ void assertEqual(const ArrayType& a, const ArrayType& b) {
     assert(a.rows() == b.rows());
     assert(a.cols() == b.cols());
 
-    assert(a.isApprox(b, 0.1));
+    assert((abs(a - b) <= 0.1).all());
 
 }

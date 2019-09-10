@@ -25,11 +25,14 @@ public:
     void process(uintptr_t inputPtr, uintptr_t outputPtr, unsigned channelCount);
 
 private:
+    double spectralTilt;
     std::array<float, formantCount> frequencies;
     std::array<float, formantCount> bandwidths;
 
     Eigen::ArrayXd zi, lastx, lasty;
     Eigen::ArrayXd B, A;
+
+    void calculateFormantFilter(unsigned i, Eigen::ArrayXd& B, Eigen::ArrayXd& A);
 
     void calculateFilter();
 };

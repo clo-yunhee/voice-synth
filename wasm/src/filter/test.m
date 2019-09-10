@@ -46,21 +46,20 @@ function [B,A] = psos2tf(sos,g)
 
 end
 
-
+nsecs=5;
 F =  [700, 2100, 3000, 4200, 4700]; BW = [60, 90, 100, 120, 120]; fs = 48000; R = exp(-pi*BW/fs); theta = 2*pi*F/fs; poles = R .* exp(j*theta); B = 1; A = real(poly([poles,conj(poles)]));
 
-% freqz(B,A); % View frequency response:
-
-disp("  B =")
-disp(B)
-disp("  A = ")
-disp(A)
-
-disp("  filter(B, A, [-2 0 1]) = ")
-disp(filter(B, A, [-2 0 1]))
+%freqz(B,A); % View frequency response:
 
 % Convert to parallel complex one-poles (PFE):
 [r,p,f] = residuez(B,A);
+
+disp('r = ')
+disp(r)
+disp('p = ')
+disp(p)
+disp('f = ')
+disp(f)
 
 As = zeros(nsecs,3);
 Bs = zeros(nsecs,3);
@@ -88,21 +87,22 @@ disp(sprintf('||B-Bh|| = %g',...
 % Plot overlay and sum of all three
 % resonator amplitude responses:
 nfft=512;
-H = zeros(nsecs+1,nfft);
+H = zeros(nsecs+2,nfft);
 for i=1:nsecs
   [Hiw,w] = freqz(Bs(i,:),As(i,:));
-  H(1+i,:) = Hiw(:).';
+  H(2+i,:) = Hiw(:).';
 end
-H(1,:) = sum(H(2:nsecs+1,:));
+H(1,:) = freqz(B, A).';
+H(2,:) = sum(H(3:nsecs+1,:));
 ttl = 'Amplitude Response';
 xlab = 'Frequency (Hz)';
 ylab = 'Magnitude (dB)';
 sym = '';
-lgnd = {'sum','sec 1','sec 2', 'sec 3'};
+lgnd = {'tf', 'sum','sec 1','sec 2', 'sec 3'};
 np=nfft/2; % Only plot for positive frequencies
 wp = w(1:np); Hp=H(:,1:np);
 figure(1); clf;
-myplot(wp,20*log10(abs(Hp)),sym,ttl,xlab,ylab,1,lgnd);
+myplot(wp/pi*fs,20*log10(abs(Hp)),sym,ttl,xlab,ylab,1,lgnd);
 disp('PAUSING'); pause;
 saveplot('../eps/lpcexovl.eps');
 
