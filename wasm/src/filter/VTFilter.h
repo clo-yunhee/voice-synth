@@ -29,7 +29,7 @@ private:
     std::array<float, formantCount> frequencies;
     std::array<float, formantCount> bandwidths;
 
-    Eigen::ArrayXd zi, lastx, lasty;
+    Eigen::Array2Xd zi, lasty;
     Eigen::ArrayXd B, A;
 
     void calculateFormantFilter(unsigned i, Eigen::ArrayXd& B, Eigen::ArrayXd& A);

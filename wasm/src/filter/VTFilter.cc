@@ -8,11 +8,13 @@ using namespace emscripten;
 using namespace Eigen;
 
 VTFilter::VTFilter() noexcept {
-    this->spectralTilt = -30;
+    this->spectralTilt = -5;
     this->frequencies = {700, 2100, 3000, 4200, 4700};
     this->bandwidths = {60, 90, 100, 120, 120};
 
+    this->lasty = Array2Xd::Zero(2, 1);
     this->calculateFilter();
+    this->lasty.resize(2, this->zi.cols());
 }
 
 void VTFilter::getFrequencyResponse(val frequencies, val response) {
@@ -45,20 +47,22 @@ void VTFilter::process(uintptr_t inputPtr, uintptr_t outputPtr, unsigned channel
         float *input = &inputBuffer[ch * kRenderQuantumFrames];
         float *output = &outputBuffer[ch * kRenderQuantumFrames];
 
+        // Map input and output buffers to Eigen objects.
+        Map<const ArrayXf> arrIn(input, kRenderQuantumFrames);
+        Map<ArrayXf> arrOut(output, kRenderQuantumFrames);
+
+        // Set the input variables.
+        ArrayXd x = arrIn.cast<double>();
+        ArrayXd zi = this->zi.row(ch);
+
         // Apply the filter.
+        filter_out<ArrayXd> st = filter(this->B, this->A, x, zi);
 
-        ArrayXd x(kRenderQuantumFrames);
-        for (unsigned k = 0; k < kRenderQuantumFrames; ++k) {
-            x(k) = input[k];
-        }
+        // Set the output variables.
+        arrOut = st.y.cast<float>();
 
-        filter_out<ArrayXd> st = filter(this->B, this->A, x, this->zi);
-
-        for (unsigned k = 0; k < kRenderQuantumFrames; ++k) {
-            output[k] = st.y(k);
-        }
-
-        this->zi = st.zi;
+        this->zi.row(ch) = st.zi;
+        this->lasty.row(ch) = st.y.tail(zi.size()).reverse();
     }
 
 }
@@ -93,7 +97,7 @@ void VTFilter::calculateFilter() {
 
     // Calculate the filter coefficients for each formant.
 
-    double gain = 10e6;
+    double gain = 12e6;
 
     this->B = ArrayXd::Constant(1, gain);
     this->A = ArrayXd::Ones(1);
@@ -110,7 +114,15 @@ void VTFilter::calculateFilter() {
     // Initialise filter state
 
     unsigned lab = std::max(this->B.size(), this->A.size());
-    this->zi = ArrayXd::Zero(lab - 1);
+
+    this->zi.resize(2, lab - 1);
+
+    for (unsigned ch = 0; ch < 2; ++ch) {
+
+        ArrayXd lasty = this->lasty.row(ch);
+
+        this->zi.row(ch) = filtic(this->B, this->A, lasty);
+    }
 }
 
 void VTFilter::setFrequency(unsigned i, float frequency) {

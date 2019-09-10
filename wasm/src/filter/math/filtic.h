@@ -31,10 +31,10 @@ ArrayType filtic(const ArrayType& b_, const ArrayType& a_, const ArrayType& y_, 
     ArrayXs x = x_;
     ArrayXs y = y_;
 
-    x.resize(lz, NoChange);
+    x.conservativeResize(lz);
     x.tail(lz - x_.size()).setZero();
 
-    y.resize(lz, NoChange);
+    y.conservativeResize(lz);
     y.tail(lz - y_.size()).setZero();
 
     for (int i = lz - 1; i >= 0; --i) {
