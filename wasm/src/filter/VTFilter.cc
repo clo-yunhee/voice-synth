@@ -2,7 +2,7 @@
 #include <cmath>
 #include <iostream>
 #include "VTFilter.h"
-#include "signal.h"
+#include "octave.h"
 
 using namespace emscripten;
 using namespace Eigen;

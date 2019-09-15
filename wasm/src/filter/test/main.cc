@@ -3,7 +3,7 @@
 #include <cmath>
 #include <iterator>
 #include <iostream>
-#include "../signal.h"
+#include "octave.h"
 
 void test_find();
 void test_mpoles();

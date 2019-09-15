@@ -12,7 +12,7 @@ build: $(DEPS)
         -s WASM=1 \
 		-s BINARYEN_ASYNC_COMPILATION=0 \
 		-s ASSERTIONS=0 \
-		-O1 --llvm-opts 3 --llvm-lto 3 \
+		-O1 \
 		$(DEPS) $(SOURCES) \
 		-o ../../build/$(TARGET) \
 		--pre-js ../lib/wasm-audio-helper.js \

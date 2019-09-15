@@ -5,6 +5,7 @@ DEPS = VTFilter.cc bindings.cc
 build: $(DEPS)
 	@emcc --bind \
 	    -I/usr/local/include/eigen3 \
+		-I../lib \
         -std=c++17 \
         -s SINGLE_FILE=1 \
         -s MODULARIZE_INSTANCE=1 \
@@ -12,7 +13,7 @@ build: $(DEPS)
         -s WASM=1 \
 		-s BINARYEN_ASYNC_COMPILATION=0 \
 		-s ASSERTIONS=0 \
-		-O1 --llvm-opts 3 --llvm-lto 3 \
+		-O1 \
 		$(DEPS) \
 		-o ../../build/$(TARGET) \
 		--pre-js ../lib/wasm-audio-helper.js \

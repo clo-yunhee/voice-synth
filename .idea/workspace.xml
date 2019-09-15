@@ -9,24 +9,27 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a539a2-b839-4402-b6d8-1191159bc54c" name="Default Changelist" comment="Added vibrato controls">
+    <list default="true" id="b4a539a2-b839-4402-b6d8-1191159bc54c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/vocalTract/VTResponse.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/vocalTract/VTResponse.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/synth/VoiceSynth.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/synth/VoiceSynth.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/wasm/build/vocalTractFilter.js" beforeDir="false" afterPath="$PROJECT_DIR$/wasm/build/vocalTractFilter.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wasm/src/filter/Makefile.lin" beforeDir="false" afterPath="$PROJECT_DIR$/wasm/src/filter/Makefile.lin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wasm/src/filter/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/wasm/src/filter/Makefile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/wasm/src/filter/VTFilter.cc" beforeDir="false" afterPath="$PROJECT_DIR$/wasm/src/filter/VTFilter.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wasm/src/filter/VTFilter.h" beforeDir="false" afterPath="$PROJECT_DIR$/wasm/src/filter/VTFilter.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wasm/src/filter/math/deconv.h" beforeDir="false" afterPath="$PROJECT_DIR$/wasm/src/filter/math/deconv.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wasm/src/filter/math/filter.h" beforeDir="false" afterPath="$PROJECT_DIR$/wasm/src/filter/math/filter.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wasm/src/filter/math/filter_zi.h" beforeDir="false" afterPath="$PROJECT_DIR$/wasm/src/filter/math/filter_zi.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wasm/src/filter/math/filtic.h" beforeDir="false" afterPath="$PROJECT_DIR$/wasm/src/filter/math/filtic.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wasm/src/filter/math/freqz.h" beforeDir="false" afterPath="$PROJECT_DIR$/wasm/src/filter/math/freqz.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wasm/src/filter/math/polyval.h" beforeDir="false" afterPath="$PROJECT_DIR$/wasm/src/filter/math/polyval.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wasm/src/filter/math/residue.h" beforeDir="false" afterPath="$PROJECT_DIR$/wasm/src/filter/math/residue.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wasm/src/filter/math/residuez.h" beforeDir="false" afterPath="$PROJECT_DIR$/wasm/src/filter/math/residuez.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wasm/src/filter/run-tests" beforeDir="false" afterPath="$PROJECT_DIR$/wasm/src/filter/run-tests" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wasm/src/filter/test.m" beforeDir="false" afterPath="$PROJECT_DIR$/wasm/src/filter/test.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wasm/src/filter/math/conv.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wasm/src/filter/math/deconv.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wasm/src/filter/math/filter.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wasm/src/filter/math/filter_zi.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wasm/src/filter/math/filtic.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wasm/src/filter/math/find.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wasm/src/filter/math/freqz.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wasm/src/filter/math/mpoles.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wasm/src/filter/math/poly.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wasm/src/filter/math/polyreduce.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wasm/src/filter/math/polyval.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wasm/src/filter/math/psos2tf.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wasm/src/filter/math/residue.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wasm/src/filter/math/residuez.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wasm/src/filter/math/roots.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wasm/src/filter/signal.h" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/wasm/src/filter/test/main.cc" beforeDir="false" afterPath="$PROJECT_DIR$/wasm/src/filter/test/main.cc" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -40,11 +43,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/wasm/src/filter/VTFilter.cc">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="308">
-              <caret line="83" column="14" selection-start-line="83" selection-start-column="14" selection-end-line="83" selection-end-column="14" />
+            <state relative-caret-position="212">
+              <caret line="116" selection-start-line="116" selection-end-line="116" />
             </state>
           </provider>
         </entry>
@@ -52,17 +55,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/synth/VoiceSynth.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
+            <state relative-caret-position="1144">
               <caret line="52" column="39" selection-start-line="52" selection-start-column="39" selection-end-line="52" selection-end-column="39" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/vocalTract/VTResponse.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="320">
-              <caret line="61" column="35" lean-forward="true" selection-start-line="61" selection-start-column="35" selection-end-line="61" selection-end-column="35" />
+            <state relative-caret-position="1298">
+              <caret line="61" column="35" selection-start-line="61" selection-start-column="35" selection-end-line="61" selection-end-column="35" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
               </folding>
@@ -73,17 +76,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/wasm/src/filter/VTFilter.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="586">
-              <caret line="34" column="57" selection-start-line="34" selection-start-column="57" selection-end-line="34" selection-end-column="57" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/wasm/src/filter/math/filter.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="814">
-              <caret line="37" column="73" selection-start-line="37" selection-start-column="73" selection-end-line="37" selection-end-column="73" />
+            <state relative-caret-position="682">
+              <caret line="31" column="30" selection-start-line="31" selection-start-column="30" selection-end-line="31" selection-end-column="30" />
             </state>
           </provider>
         </entry>
@@ -118,7 +112,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/wasm/src/filter/math/filtic.h" />
         <option value="$PROJECT_DIR$/wasm/src/filter/math/filter_zi.h" />
         <option value="$PROJECT_DIR$/wasm/src/filter/math/polyval.h" />
         <option value="$PROJECT_DIR$/wasm/src/filter/math/freqz.h" />
@@ -127,17 +120,18 @@
         <option value="$PROJECT_DIR$/wasm/src/filter/math/residuez.h" />
         <option value="$PROJECT_DIR$/wasm/src/filter/test/main.cc" />
         <option value="$PROJECT_DIR$/wasm/src/filter/math/filter.h" />
-        <option value="$PROJECT_DIR$/wasm/src/filter/VTFilter.h" />
-        <option value="$PROJECT_DIR$/wasm/src/filter/VTFilter.cc" />
         <option value="$PROJECT_DIR$/src/synth/VoiceSynth.js" />
         <option value="$PROJECT_DIR$/src/components/vocalTract/VTResponse.js" />
+        <option value="$PROJECT_DIR$/wasm/src/filter/VTFilter.h" />
+        <option value="$PROJECT_DIR$/wasm/src/filter/math/filtic.h" />
+        <option value="$PROJECT_DIR$/wasm/src/filter/VTFilter.cc" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="960" />
+    <option name="x" value="956" />
     <option name="width" value="964" />
-    <option name="height" value="1048" />
+    <option name="height" value="1044" />
   </component>
   <component name="ProjectId" id="1Pbjknf5hxnMiAfX6LTaCMwoQFZ" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -147,86 +141,7 @@
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes>
-      <pane id="Scope" />
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="voice-synth" type="b2602c69:ProjectViewProjectNode" />
-              <item name="voice-synth" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="voice-synth" type="b2602c69:ProjectViewProjectNode" />
-              <item name="voice-synth" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="voice-synth" type="b2602c69:ProjectViewProjectNode" />
-              <item name="voice-synth" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="voice-synth" type="b2602c69:ProjectViewProjectNode" />
-              <item name="voice-synth" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="vocalTract" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="voice-synth" type="b2602c69:ProjectViewProjectNode" />
-              <item name="voice-synth" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="vocalTract" type="462c0819:PsiDirectoryNode" />
-              <item name="formant" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="voice-synth" type="b2602c69:ProjectViewProjectNode" />
-              <item name="voice-synth" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="synth" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="voice-synth" type="b2602c69:ProjectViewProjectNode" />
-              <item name="voice-synth" type="462c0819:PsiDirectoryNode" />
-              <item name="wasm" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="voice-synth" type="b2602c69:ProjectViewProjectNode" />
-              <item name="voice-synth" type="462c0819:PsiDirectoryNode" />
-              <item name="wasm" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="voice-synth" type="b2602c69:ProjectViewProjectNode" />
-              <item name="voice-synth" type="462c0819:PsiDirectoryNode" />
-              <item name="wasm" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="filter" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="voice-synth" type="b2602c69:ProjectViewProjectNode" />
-              <item name="voice-synth" type="462c0819:PsiDirectoryNode" />
-              <item name="wasm" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="filter" type="462c0819:PsiDirectoryNode" />
-              <item name="math" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="voice-synth" type="b2602c69:ProjectViewProjectNode" />
-              <item name="voice-synth" type="462c0819:PsiDirectoryNode" />
-              <item name="wasm" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="filter" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-    </panes>
+    <panes />
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
@@ -355,6 +270,8 @@
       <workItem from="1567868775856" duration="6516000" />
       <workItem from="1567962510219" duration="11174000" />
       <workItem from="1568100073547" duration="7646000" />
+      <workItem from="1568124133779" duration="3083000" />
+      <workItem from="1568197692062" duration="465000" />
     </task>
     <task id="LOCAL-00001" summary="Added basic oscillator functionality with gain and H0 sliders.">
       <created>1561018517873</created>
@@ -538,11 +455,18 @@
       <option name="project" value="LOCAL" />
       <updated>1566395639115</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="Fixed some crackling">
+      <created>1568136419915</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1568136419915</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="25336000" />
+    <option name="totallyTimeSpent" value="28884000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -554,7 +478,8 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="960" y="0" width="964" height="1048" extended-state="0" />
+    <frame x="956" y="0" width="964" height="1044" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.31256714" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -665,7 +590,8 @@
     <MESSAGE value="Start of migration to AudioWorklet based audionodes" />
     <MESSAGE value="Added vibrato controls" />
     <MESSAGE value="Changed npm to yarn in README" />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed npm to yarn in README" />
+    <MESSAGE value="Fixed some crackling" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed some crackling" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
@@ -729,13 +655,6 @@
         <state relative-caret-position="-466" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/wasm/src/filter/math/filtic.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="21" selection-start-line="21" selection-end-line="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -767,41 +686,48 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/wasm/src/filter/math/filter.h">
+    <entry file="file://$PROJECT_DIR$/wasm/src/filter/math/filtic.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="814">
-          <caret line="37" column="73" selection-start-line="37" selection-start-column="73" selection-end-line="37" selection-end-column="73" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/wasm/src/filter/VTFilter.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="586">
-          <caret line="34" column="57" selection-start-line="34" selection-start-column="57" selection-end-line="34" selection-end-column="57" />
+        <state relative-caret-position="61">
+          <caret line="3" column="23" lean-forward="true" selection-start-line="3" selection-start-column="23" selection-end-line="3" selection-end-column="23" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/wasm/src/filter/VTFilter.cc">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="83" column="14" selection-start-line="83" selection-start-column="14" selection-end-line="83" selection-end-column="14" />
+        <state relative-caret-position="212">
+          <caret line="116" selection-start-line="116" selection-end-line="116" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/synth/VoiceSynth.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
+        <state relative-caret-position="1144">
           <caret line="52" column="39" selection-start-line="52" selection-start-column="39" selection-end-line="52" selection-end-column="39" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/vocalTract/VTResponse.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="61" column="35" lean-forward="true" selection-start-line="61" selection-start-column="35" selection-end-line="61" selection-end-column="35" />
+        <state relative-caret-position="1298">
+          <caret line="61" column="35" selection-start-line="61" selection-start-column="35" selection-end-line="61" selection-end-column="35" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wasm/src/filter/VTFilter.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="682">
+          <caret line="31" column="30" selection-start-line="31" selection-start-column="30" selection-end-line="31" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wasm/src/filter/math/filter.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="814">
+          <caret line="37" column="73" selection-start-line="37" selection-start-column="73" selection-end-line="37" selection-end-column="73" />
         </state>
       </provider>
     </entry>
